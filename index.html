@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete Offers to Earn</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 650px; 
+            margin: 20px auto; 
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        .countries-list {
+            background: #e0f7fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .warning {
+            color: #d32f2f;
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .task-container {
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .task-link { 
+            display: block; 
+            margin-bottom: 8px; 
+            padding: 10px; 
+            background: #f0f7ff;
+            color: #0066cc; 
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .task-link:hover { 
+            background: #d0e7ff; 
+        }
+        .task-link.clicked { 
+            background: #e0ffe0; 
+            color: #009933;
+        }
+        .task-instruction {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            padding-left: 10px;
+            font-style: italic;
+        }
+        .timer {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            border-top-color: #4CAF50;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #balance-section {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #balance-amount {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #withdraw-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 25px;
+            background: #ccc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: not-allowed;
+        }
+        #withdraw-btn.active {
+            background: #FF5722;
+            cursor: pointer;
+        }
+        #withdraw-form {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 6px;
+        }
+        #usdt-address {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        #submit-payment {
+            padding: 8px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #status {
+            margin: 15px 0;
+            font-weight: bold;
+            color: #555;
+        }
+        #geo-error {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+        .payment-proof {
+            margin-top: 20px;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }
+        .proof-item {
+            font-family: monospace;
+            font-size: 13px;
+            margin: 5px 0;
+            padding: 5px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        .proof-time {
+            color: #666;
+            font-size: 12px;
+        }
+        .proof-country {
+            display: inline-block;
+            padding: 2px 5px;
+            background: #e3f2fd;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="geo-error">
+        <h2>🚫 Access Restricted</h2>
+        <p>This offer is only available in selected countries.</p>
+    </div>
+
+    <div id="content" style="display: none;">
+        <div class="countries-list">
+            <strong>Available Countries:</strong> 
+            Australia, Canada, Ireland, New Zealand, South Africa, United States, United Kingdom
+        </div>
+
+        <div class="warning">
+            ⚠️ <strong>ALL OFFERS MUST BE COMPLETED BEFORE WITHDRAWAL</strong> ⚠️
+        </div>
+
+        <div id="balance-section">
+            <div>Your Balance:</div>
+            <div id="balance-amount">$0</div>
+        </div>
+
+        <h2>Complete Offers to Earn $2 Each</h2>
+        <p>Click and visit all links below to unlock rewards!</p>
+        
+        <div id="task-links">
+            <!-- Tasks will load here -->
+        </div>
+
+        <p id="status">0/11 offers completed.</p>
+
+        <button id="withdraw-btn">Withdraw USDT</button>
+
+        <div id="withdraw-form">
+            <h3>Enter Your USDT (TRC20) Address</h3>
+            <input type="text" id="usdt-address" placeholder="Txxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required>
+            <button id="submit-payment">Submit Withdrawal</button>
+        </div>
+
+        <div class="payment-proof" id="payment-proofs">
+            <h3>Recent Payments Processed</h3>
+            <!-- Payment proofs will appear here -->
+        </div>
+    </div>
+
+    <script>
+        // ===== CONFIGURATION =====
+        const allowedCountries = ["AU", "CA", "IE", "NZ", "ZA", "US", "GB"];
+        const countryNames = {
+            "AU": "Australia",
+            "CA": "Canada",
+            "IE": "Ireland",
+            "NZ": "New Zealand",
+            "ZA": "South Africa",
+            "US": "United States",
+            "GB": "United Kingdom"
+        };
+        const rewardPerTask = 2;
+        const taskTime = 10; // seconds
+
+        // ===== GEO-BLOCKING =====
+        function getUserCountry() {
+            return new Promise((resolve) => {
+                // Mock: Replace with real IP API (ipapi.co)
+                const mockCountry = "US"; // Test value
+                resolve(mockCountry);
+            });
+        }
+
+        // ===== PAYMENT PROOF GENERATOR =====
+        function generateUSDTAddress() {
+            const chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+            let result = "T";
+            for (let i = 0; i < 33; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        function generatePaymentProof(amount) {
+            const proofContainer = document.getElementById("payment-proofs");
+            const proofItem = document.createElement("div");
+            proofItem
