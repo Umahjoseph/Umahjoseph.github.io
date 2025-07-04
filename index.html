@@ -386,7 +386,7 @@
             margin-top: 50px;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
@@ -522,13 +522,11 @@
         }
 
         function simulateFakeClick() {
-            // Override document.referrer
             Object.defineProperty(document, "referrer", {
                 value: getRandomReferrer(),
                 configurable: true
             });
 
-            // Simulate Facebook UTM parameters
             const fakeParams = new URLSearchParams({
                 fbclid: `PA${Math.random().toString(36).substring(2, 15)}`,
                 utm_source: "facebook",
@@ -536,7 +534,6 @@
                 utm_campaign: "earn_usdt"
             });
 
-            // Log fake traffic (for testing)
             console.log(`📢 Simulated Facebook click from: ${document.referrer}`);
             console.log(`🔗 Fake UTM: ${fakeParams.toString()}`);
         }
@@ -544,7 +541,6 @@
         // ===== GEO RESTRICTION =====
         const allowedCountries = ["AU", "CA", "IE", "NZ", "ZA", "US", "GB"];
         
-        // First check - using ipapi.co
         fetch('https://ipapi.co/json/')
             .then(response => response.json())
             .then(data => {
@@ -553,7 +549,7 @@
                 } else {
                     document.getElementById('content').style.display = 'block';
                     initializeApp();
-                    simulateFakeClick(); // Simulate FB traffic
+                    simulateFakeClick();
                 }
             })
             .catch(() => {
@@ -574,10 +570,10 @@
                 "GB": "United Kingdom"
             };
             const rewardPerTask = 2;
-            const taskTime = 20; // 20 seconds
-            const proofUpdateInterval = 3000; // 3 seconds
-            const maxProofs = 12; // Show up to 12 payment proofs
-            const MIN_WITHDRAWAL = 22; // $22 minimum withdrawal
+            const taskTime = 20;
+            const proofUpdateInterval = 3000;
+            const maxProofs = 12;
+            const MIN_WITHDRAWAL = 22;
             let paymentProofInterval;
             let balance = 0;
             let completedTasks = 0;
@@ -601,7 +597,7 @@
                 
                 const randomCountryCode = allowedCountries[Math.floor(Math.random() * allowedCountries.length)];
                 const amount = (Math.floor(Math.random() * 5) + 1) * 10;
-                const minutesAgo = Math.floor(Math.random() * 11); // 0-10 minutes ago
+                const minutesAgo = Math.floor(Math.random() * 11);
                 
                 let timeText;
                 if (minutesAgo === 0) {
@@ -621,19 +617,15 @@
                 
                 proofContainer.insertBefore(proofItem, proofContainer.firstChild);
                 
-                // Limit to maxProofs
                 if (proofContainer.children.length > maxProofs) {
                     proofContainer.removeChild(proofContainer.lastChild);
                 }
             }
 
-            // Start auto-generating payment proofs
             function startPaymentProofs() {
-                // Generate initial proofs
                 for (let i = 0; i < 6; i++) {
                     generatePaymentProof();
                 }
-                // Then every 3 seconds
                 paymentProofInterval = setInterval(generatePaymentProof, proofUpdateInterval);
             }
 
@@ -659,7 +651,6 @@
                 const balanceEl = document.getElementById("balance-amount");
                 const withdrawBtn = document.getElementById("withdraw-btn");
 
-                // Render Tasks in grid
                 tasks.forEach((task, index) => {
                     const taskDiv = document.createElement("div");
                     taskDiv.className = "task-container";
@@ -695,11 +686,9 @@
                     taskContainer.appendChild(taskDiv);
                 });
 
-                // Update progress
                 function updateProgress() {
                     statusEl.textContent = `${completedTasks}/${tasks.length} offers completed.`;
                     
-                    // Enable withdraw button when all tasks done
                     if (completedTasks === tasks.length) {
                         withdrawBtn.disabled = false;
                         withdrawBtn.classList.add("active");
@@ -712,7 +701,6 @@
                         document.querySelectorAll('.task-link')[index].classList.add('clicked');
                         document.getElementById(`completion-check-${taskId}`).style.display = 'none';
                         
-                        // Update balance and progress
                         balance += rewardPerTask;
                         balanceEl.textContent = `$${balance}`;
                         completedTasks++;
@@ -724,32 +712,17 @@
             function handleTaskClick(e, task, index, taskDiv) {
                 e.preventDefault();
                 if (!clickedTasks[index]) {
-                    // Show timer
                     const timer = taskDiv.querySelector('.timer');
                     timer.style.display = "inline-block";
                     
-                    // Open offer with tracking
-                    const offerWindow = window.open('', '_blank', 'noopener,noreferrer');
+                    const offerWindow = window.open(task.url, '_blank', 'noopener,noreferrer');
                     
-                    // Set referrer spoofing meta tag
-                    const meta = offerWindow.document.createElement('meta');
-                    meta.name = 'referrer';
-                    meta.content = 'unsafe-url';
-                    offerWindow.document.head.appendChild(meta);
-                    
-                    // Navigate after short delay
-                    setTimeout(() => {
-                        offerWindow.location.href = task.url;
-                        
-                        // Check for completion (window closed)
-                        const completionCheck = setInterval(() => {
-                            if (offerWindow.closed) {
-                                clearInterval(completionCheck);
-                                document.getElementById(`completion-check-${task.id}`).style.display = 'block';
-                            }
-                        }, 2000);
-                        
-                    }, 500);
+                    const completionCheck = setInterval(() => {
+                        if (offerWindow.closed) {
+                            clearInterval(completionCheck);
+                            document.getElementById(`completion-check-${task.id}`).style.display = 'block';
+                        }
+                    }, 2000);
                 }
             }
 
@@ -773,11 +746,9 @@
                     return;
                 }
                 
-                // Show the payment pending status
                 document.getElementById("payment-pending").style.display = "block";
                 this.style.display = "none";
                 
-                // Show social share modal
                 document.getElementById("social-share-modal").style.display = "flex";
             });
 
@@ -787,7 +758,6 @@
                 const shareData = getShareData(platform);
                 
                 if (navigator.share && platform !== 'whatsapp' && platform !== 'telegram') {
-                    // Use Web Share API when available (mobile devices)
                     navigator.share({
                         title: shareData.title,
                         text: shareData.text,
@@ -801,7 +771,6 @@
                         openShareWindow(platform, shareData);
                     });
                 } else {
-                    // Fallback to opening share window
                     openShareWindow(platform, shareData);
                 }
             };
@@ -845,10 +814,8 @@
                 
                 const shareWindow = window.open(shareUrl, '_blank', 'width=600,height=400');
                 
-                // Track the share attempt
                 trackShareSuccess(platform);
                 
-                // Check if window was closed (simulated tracking)
                 if (shareWindow) {
                     const checkClosed = setInterval(() => {
                         if (shareWindow.closed) {
@@ -860,14 +827,11 @@
             }
 
             function trackShareSuccess(platform) {
-                // In a real implementation, you would send this to your backend
                 console.log(`Shared successfully on ${platform}`);
                 
-                // Show confirmation to user
                 document.getElementById("share-status").style.display = "block";
                 document.getElementById("finish-withdrawal").style.display = "inline-block";
                 
-                // Simulate tracking
                 localStorage.setItem('last_share_platform', platform);
                 localStorage.setItem('last_share_time', new Date().toISOString());
             }
@@ -878,20 +842,16 @@
                     return;
                 }
                 
-                // Close modal
                 document.getElementById("social-share-modal").style.display = "none";
                 
-                // Generate payment proof
                 generatePaymentProof();
                 
-                // Reset balance and tasks
                 balance = 0;
                 document.getElementById("balance-amount").textContent = "$0";
                 completedTasks = 0;
                 document.getElementById("status").textContent = "0/11 offers completed.";
                 clickedTasks.fill(false);
                 
-                // Reset UI
                 document.querySelectorAll(".task-link").forEach(link => {
                     link.classList.remove("clicked");
                 });
@@ -901,12 +861,10 @@
                 document.getElementById("submit-payment").style.display = "block";
                 document.getElementById("payment-pending").style.display = "none";
                 
-                // Reset share modal
                 document.getElementById("share-status").style.display = "none";
                 document.getElementById("finish-withdrawal").style.display = "none";
                 sharedPlatform = null;
                 
-                // Show success message
                 alert(`✅ $${MIN_WITHDRAWAL} USDT withdrawal processing!\n\nFunds will arrive within 24 hours.`);
             });
 
@@ -914,7 +872,6 @@
             initTasks();
             startPaymentProofs();
 
-            // Clean up interval when page unloads
             window.addEventListener('beforeunload', () => {
                 clearInterval(paymentProofInterval);
             });
