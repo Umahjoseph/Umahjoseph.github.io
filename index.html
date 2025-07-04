@@ -1,10 +1,8 @@
-I don't want any errors
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TaskPays - Complete Offers to Earn USDT</title>
     <style>
         body {
@@ -80,15 +78,9 @@ I don't want any errors
         
         .task-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
-        }
-        
-        @media (min-width: 768px) {
-            .task-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
         
         .task-container {
@@ -281,15 +273,9 @@ I don't want any errors
         
         .share-platforms {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 15px;
             margin: 25px 0;
-        }
-        
-        @media (min-width: 480px) {
-            .share-platforms {
-                grid-template-columns: repeat(3, 1fr);
-            }
         }
         
         .share-btn {
@@ -400,7 +386,7 @@ I don't want any errors
             margin-top: 50px;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 </head>
 <body>
     <header>
@@ -478,8 +464,7 @@ I don't want any errors
                 <p style="font-weight: 600; margin-bottom: 10px;">🔥 Hot Opportunity! 🔥</p>
                 <p>I just earned $22 in USDT by completing simple offers on TaskPays! 💰</p>
                 <p>✅ No investment required<br>
-                ✅ Instant withdrawals<br>
-                ✅ Available worldwide</p>
+                ✅ Instant withdrawals</p>
                 <p>Join now and claim your free money: <strong>https://taskpays.netlify.app/</strong></p>
                 <p style="font-style: italic; margin-top: 10px;">#EarnOnline #FreeCrypto #MakeMoneyOnline</p>
             </div>
@@ -538,9 +523,9 @@ I don't want any errors
                 }
             })
             .catch(() => {
-                // If ipapi fails, fall back to showing content
-                document.getElementById('content').style.display = 'block';
-                initializeApp();
+                document.getElementById('geo-error').style.display = 'block';
+                document.getElementById('geo-error').innerHTML += 
+                    '<p>Unable to verify your location. Access denied.</p>';
             });
 
         function initializeApp() {
@@ -710,7 +695,7 @@ I don't want any errors
                     timer.style.display = "inline-block";
                     
                     // Open offer with tracking
-                    const offerWindow = window.open('', '_blank');
+                    const offerWindow = window.open('', '_blank', 'noopener,noreferrer');
                     
                     // Set referrer spoofing meta tag
                     const meta = offerWindow.document.createElement('meta');
@@ -744,7 +729,7 @@ I don't want any errors
             document.getElementById("submit-payment").addEventListener("click", function() {
                 const usdtAddress = document.getElementById("usdt-address").value.trim();
                 
-                if (!usdtAddress.startsWith("T") || usdtAddress.length !== 34) {
+                if (!/^T[a-zA-Z1-9]{33}$/.test(usdtAddress)) {
                     alert("❌ Please enter a valid USDT (TRC20) address starting with 'T' and 34 characters long.");
                     return;
                 }
@@ -791,8 +776,7 @@ I don't want any errors
                 const title = "🔥 Earn Free USDT with TaskPays!";
                 const text = "I just earned $22 in USDT by completing simple offers on TaskPays! 💰\n\n" +
                              "✅ No investment required\n" +
-                             "✅ Instant withdrawals\n" +
-                             "✅ Available worldwide\n\n" +
+                             "✅ Instant withdrawals\n\n" +
                              "Join now and claim your free money! #EarnOnline #FreeCrypto";
                 const url = "https://taskpays.netlify.app/";
                 
