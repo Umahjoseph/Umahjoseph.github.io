@@ -43,21 +43,19 @@
             margin-right: auto;
         }
         
-        .countries-list {
-            background: #e3f2fd;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
+        #geo-error {
             text-align: center;
-            font-size: 0.9rem;
+            padding: 50px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
         }
         
-        .warning {
-            background: #fff3e0;
-            border-left: 4px solid #ffa000;
-            padding: 15px;
-            margin-bottom: 25px;
-            border-radius: 0 8px 8px 0;
+        #geo-error h2 {
+            color: #e74c3c;
+            margin-bottom: 20px;
         }
         
         #balance-section {
@@ -83,78 +81,42 @@
             margin-bottom: 40px;
         }
         
-        @media (min-width: 768px) {
-            .task-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
         .task-container {
             background: white;
-            border: 1px solid #e1e5eb;
             border-radius: 8px;
             padding: 20px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
         }
         
         .task-container:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .task-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            text-align: center;
+        }
+        
+        .task-instruction {
+            font-size: 0.85rem;
+            color: #666;
+            text-align: center;
+            font-style: italic;
+            padding: 10px 0;
+            border-top: 1px dashed #ddd;
+            margin-top: 15px;
         }
         
         .task-link {
             display: block;
-            padding: 15px;
-            background: #f0f7ff;
-            color: #0066cc;
             text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .task-link:hover {
-            background: #d0e7ff;
-        }
-        
-        .task-link.clicked {
-            background: #e8f5e9;
-            color: #2E7D32;
-        }
-        
-        .task-link.clicked::after {
-            content: "✓";
-            position: absolute;
-            right: 15px;
-            color: #2E7D32;
-            font-weight: bold;
-        }
-        
-        .task-instruction {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 8px;
-            padding-left: 5px;
-            font-style: italic;
-        }
-        
-        .timer {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-top-color: #4CAF50;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            color: inherit;
         }
         
         #status {
@@ -255,115 +217,6 @@
             background: #27ae60;
         }
         
-        .social-share-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .share-content {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-        
-        .share-platforms {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 25px 0;
-        }
-        
-        @media (min-width: 480px) {
-            .share-platforms {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        
-        .share-btn {
-            padding: 12px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .share-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        .facebook-btn { background: #3b5998; }
-        .twitter-btn { background: #1da1f2; }
-        .whatsapp-btn { background: #25d366; }
-        .telegram-btn { background: #0088cc; }
-        .reddit-btn { background: #ff5700; }
-        .linkedin-btn { background: #0077b5; }
-        
-        .payment-pending {
-            text-align: center;
-            color: #e67e22;
-            font-weight: 600;
-            margin: 15px 0;
-        }
-        
-        .payment-proof {
-            margin: 50px 0;
-            padding: 25px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .proof-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .proof-item {
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            word-break: break-all;
-        }
-        
-        .proof-time {
-            color: #666;
-            font-size: 0.75rem;
-            margin-top: 5px;
-        }
-        
-        .proof-country {
-            display: inline-block;
-            padding: 2px 6px;
-            background: #e3f2fd;
-            border-radius: 3px;
-            font-size: 0.7rem;
-            margin-left: 5px;
-        }
-        
         .completion-check {
             display: none;
             margin-top: 15px;
@@ -397,6 +250,23 @@
             font-size: 0.9rem;
             margin-top: 50px;
         }
+        
+        .timer {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-top-color: #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -409,19 +279,10 @@
     <div class="container" id="main-content">
         <div id="geo-error" style="display: none;">
             <h2>🚫 Access Restricted</h2>
-            <p>This offer is only available in selected countries.</p>
+            <p>This website is not available in your region.</p>
         </div>
 
         <div id="content" style="display: none;">
-            <div class="countries-list">
-                <strong>Accepted Countries:</strong> 
-                Australia, Canada, Ireland, New Zealand, South Africa, United States, United Kingdom
-            </div>
-
-            <div class="warning">
-                <i class="fas fa-exclamation-triangle"></i> <strong>ALL OFFERS MUST BE COMPLETED BEFORE WITHDRAWAL</strong>
-            </div>
-
             <div id="balance-section">
                 <div>Your Current Balance:</div>
                 <div id="balance-amount">$0</div>
@@ -451,73 +312,12 @@
                 <button id="submit-payment">
                     <i class="fas fa-paper-plane"></i> Submit Withdrawal
                 </button>
-                
-                <div class="payment-pending" id="payment-pending" style="display: none;">
-                    <i class="fas fa-clock"></i> Payment Pending - Complete sharing requirement
-                </div>
             </div>
-
-            <div class="payment-proof">
-                <h3 class="section-title"><i class="fas fa-check-circle"></i> Live Payment Proofs</h3>
-                <p>Recent payments to our users:</p>
-                <div class="proof-grid" id="payment-proofs">
-                    <!-- Payment proofs will appear here -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Social Share Modal -->
-    <div class="social-share-modal" id="social-share-modal">
-        <div class="share-content">
-            <h3><i class="fas fa-share-alt"></i> Share to Complete Withdrawal</h3>
-            <p>Share this exciting opportunity with your friends:</p>
-            <div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0; text-align: left;">
-                <p style="font-weight: 600; margin-bottom: 10px;">🔥 Hot Opportunity! 🔥</p>
-                <p>I just earned $22 in USDT by completing simple offers on TaskPays! 💰</p>
-                <p>✅ No investment required<br>
-                ✅ Instant withdrawals<br>
-                ✅ Available worldwide</p>
-                <p>Join now and claim your free money: <strong>https://taskpays.netlify.app/</strong></p>
-                <p style="font-style: italic; margin-top: 10px;">#EarnOnline #FreeCrypto #MakeMoneyOnline</p>
-            </div>
-            
-            <p>Click any platform below to share:</p>
-            
-            <div class="share-platforms">
-                <div class="share-btn facebook-btn" onclick="shareOnPlatform('facebook')">
-                    <i class="fab fa-facebook-f"></i> Facebook
-                </div>
-                <div class="share-btn twitter-btn" onclick="shareOnPlatform('twitter')">
-                    <i class="fab fa-twitter"></i> Twitter
-                </div>
-                <div class="share-btn whatsapp-btn" onclick="shareOnPlatform('whatsapp')">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </div>
-                <div class="share-btn telegram-btn" onclick="shareOnPlatform('telegram')">
-                    <i class="fab fa-telegram-plane"></i> Telegram
-                </div>
-                <div class="share-btn reddit-btn" onclick="shareOnPlatform('reddit')">
-                    <i class="fab fa-reddit-alien"></i> Reddit
-                </div>
-                <div class="share-btn linkedin-btn" onclick="shareOnPlatform('linkedin')">
-                    <i class="fab fa-linkedin-in"></i> LinkedIn
-                </div>
-            </div>
-            
-            <p id="share-status" style="font-weight: 600; color: #27ae60; display: none;">
-                <i class="fas fa-check-circle"></i> Thank you for sharing!
-            </p>
-            
-            <button class="confirmation-btn" id="finish-withdrawal" style="display: none;">
-                <i class="fas fa-check"></i> Complete Withdrawal
-            </button>
         </div>
     </div>
 
     <footer>
         <p>© 2023 TaskPays. All rights reserved.</p>
-        <p><a href="#" style="color: #3498db;">Terms of Service</a> | <a href="#" style="color: #3498db;">Privacy Policy</a></p>
     </footer>
 
     <script>
@@ -530,6 +330,7 @@
             .then(data => {
                 if (!allowedCountries.includes(data.country)) {
                     document.getElementById('geo-error').style.display = 'block';
+                    document.getElementById('content').style.display = 'none';
                 } else {
                     document.getElementById('content').style.display = 'block';
                     initializeApp();
@@ -543,93 +344,27 @@
 
         function initializeApp() {
             // ===== CONFIGURATION =====
-            const countryNames = {
-                "AU": "Australia",
-                "CA": "Canada",
-                "IE": "Ireland",
-                "NZ": "New Zealand",
-                "ZA": "South Africa",
-                "US": "United States",
-                "GB": "United Kingdom"
-            };
             const rewardPerTask = 2;
             const taskTime = 20; // 20 seconds
-            const proofUpdateInterval = 3000; // 3 seconds
-            const maxProofs = 12; // Show up to 12 payment proofs
             const MIN_WITHDRAWAL = 22; // $22 minimum withdrawal
-            let paymentProofInterval;
             let balance = 0;
             let completedTasks = 0;
             let clickedTasks = [];
-            let sharedPlatform = null;
-
-            // ===== PAYMENT PROOF GENERATOR =====
-            function generateUSDTAddress() {
-                const chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-                let result = "T";
-                for (let i = 0; i < 33; i++) {
-                    result += chars.charAt(Math.floor(Math.random() * chars.length));
-                }
-                return result;
-            }
-
-            function generatePaymentProof() {
-                const proofContainer = document.getElementById("payment-proofs");
-                const proofItem = document.createElement("div");
-                proofItem.className = "proof-item";
-                
-                const randomCountryCode = allowedCountries[Math.floor(Math.random() * allowedCountries.length)];
-                const amount = (Math.floor(Math.random() * 5) + 1) * 10;
-                const minutesAgo = Math.floor(Math.random() * 11); // 0-10 minutes ago
-                
-                let timeText;
-                if (minutesAgo === 0) {
-                    timeText = "Just now";
-                } else if (minutesAgo === 1) {
-                    timeText = "1 minute ago";
-                } else {
-                    timeText = `${minutesAgo} minutes ago`;
-                }
-                
-                proofItem.innerHTML = `
-                    Sent ${amount} USDT to:<br>
-                    <strong>${generateUSDTAddress()}</strong>
-                    <span class="proof-country">${countryNames[randomCountryCode]}</span>
-                    <div class="proof-time">${timeText}</div>
-                `;
-                
-                proofContainer.insertBefore(proofItem, proofContainer.firstChild);
-                
-                // Limit to maxProofs
-                if (proofContainer.children.length > maxProofs) {
-                    proofContainer.removeChild(proofContainer.lastChild);
-                }
-            }
-
-            // Start auto-generating payment proofs
-            function startPaymentProofs() {
-                // Generate initial proofs
-                for (let i = 0; i < 6; i++) {
-                    generatePaymentProof();
-                }
-                // Then every 3 seconds
-                paymentProofInterval = setInterval(generatePaymentProof, proofUpdateInterval);
-            }
 
             // ===== TASK SYSTEM =====
             function initTasks() {
                 const tasks = [
-                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", url: "https://t.ancdu.link/140699/7164?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", url: "https://t.ancdu.link/140699/9071/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 3, name: "💎 Premium Access Unlocked", url: "https://t.ancdu.link/140699/9070/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 4, name: "🛒 Your Special Discount Awaits", url: "https://t.ancdu.link/140699/7246?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 5, name: "📱 VIP Tech Offer Inside", url: "https://t.ancdu.link/140699/9067/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 6, name: "🤑 Cash Reward: Click to Claim", url: "https://t.ancdu.link/140699/7162?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 7, name: "🏆 Elite Members Only", url: "https://t.ancdu.link/140699/9062/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 8, name: "🚀 Boost Your Earnings Now", url: "https://t.ancdu.link/140699/7163?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 9, name: "🎯 Limited Slots Available!", url: "https://t.ancdu.link/140699/9064/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 10, name: "💳 Exclusive Credit Offer", url: "https://t.ancdu.link/140699/7161?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 11, name: "🛎️ Personal Concierge Access", url: "https://t.ancdu.link/140699/7809/0?aff_sub5=SF_006OG000004lmDN" }
+                    { id: 1, name: "Exclusive Deal: Claim Your Free Gift", url: "https://example.com/offer1" },
+                    { id: 2, name: "Limited-Time Bonus Inside!", url: "https://example.com/offer2" },
+                    { id: 3, name: "Premium Access Unlocked", url: "https://example.com/offer3" },
+                    { id: 4, name: "Your Special Discount Awaits", url: "https://example.com/offer4" },
+                    { id: 5, name: "VIP Tech Offer Inside", url: "https://example.com/offer5" },
+                    { id: 6, name: "Cash Reward: Click to Claim", url: "https://example.com/offer6" },
+                    { id: 7, name: "Elite Members Only", url: "https://example.com/offer7" },
+                    { id: 8, name: "Boost Your Earnings Now", url: "https://example.com/offer8" },
+                    { id: 9, name: "Limited Slots Available!", url: "https://example.com/offer9" },
+                    { id: 10, name: "Exclusive Credit Offer", url: "https://example.com/offer10" },
+                    { id: 11, name: "Personal Concierge Access", url: "https://example.com/offer11" }
                 ];
 
                 clickedTasks = new Array(tasks.length).fill(false);
@@ -646,12 +381,10 @@
                     const taskLink = document.createElement("a");
                     taskLink.href = "#";
                     taskLink.className = "task-link";
-                    taskLink.textContent = task.name;
-                    taskLink.onclick = (e) => handleTaskClick(e, task, index, taskDiv);
                     
-                    const timerSpan = document.createElement("span");
-                    timerSpan.className = "timer";
-                    timerSpan.style.display = "none";
+                    const taskTitle = document.createElement("div");
+                    taskTitle.className = "task-title";
+                    taskTitle.textContent = task.name;
                     
                     const instruction = document.createElement("div");
                     instruction.className = "task-instruction";
@@ -667,11 +400,14 @@
                         </button>
                     `;
                     
+                    taskLink.appendChild(taskTitle);
+                    taskLink.appendChild(instruction);
                     taskDiv.appendChild(taskLink);
-                    taskDiv.appendChild(timerSpan);
-                    taskDiv.appendChild(instruction);
                     taskDiv.appendChild(completionCheck);
                     taskContainer.appendChild(taskDiv);
+                    
+                    // Add click handler
+                    taskLink.onclick = (e) => handleTaskClick(e, task, index, taskDiv);
                 });
 
                 // Update progress
@@ -703,10 +439,6 @@
             function handleTaskClick(e, task, index, taskDiv) {
                 e.preventDefault();
                 if (!clickedTasks[index]) {
-                    // Show timer
-                    const timer = taskDiv.querySelector('.timer');
-                    timer.style.display = "inline-block";
-                    
                     // Open offer with tracking
                     const offerWindow = window.open('', '_blank');
                     
@@ -727,7 +459,6 @@
                                 document.getElementById(`completion-check-${task.id}`).style.display = 'block';
                             }
                         }, 2000);
-                        
                     }, 500);
                 }
             }
@@ -752,152 +483,26 @@
                     return;
                 }
                 
-                // Show the payment pending status
-                document.getElementById("payment-pending").style.display = "block";
-                this.style.display = "none";
+                // Process withdrawal (simulated)
+                alert(`✅ $${MIN_WITHDRAWAL} USDT withdrawal processing!\n\nFunds will arrive within 24 hours.`);
                 
-                // Show social share modal
-                document.getElementById("social-share-modal").style.display = "flex";
-            });
-
-            // ===== SOCIAL SHARING =====
-            window.shareOnPlatform = function(platform) {
-                sharedPlatform = platform;
-                const shareData = getShareData(platform);
-                
-                if (navigator.share && platform !== 'whatsapp' && platform !== 'telegram') {
-                    // Use Web Share API when available (mobile devices)
-                    navigator.share({
-                        title: shareData.title,
-                        text: shareData.text,
-                        url: shareData.url
-                    })
-                    .then(() => {
-                        trackShareSuccess(platform);
-                    })
-                    .catch(err => {
-                        console.log('Error sharing:', err);
-                        openShareWindow(platform, shareData);
-                    });
-                } else {
-                    // Fallback to opening share window
-                    openShareWindow(platform, shareData);
-                }
-            };
-
-            function getShareData(platform) {
-                const title = "🔥 Earn Free USDT with TaskPays!";
-                const text = "I just earned $22 in USDT by completing simple offers on TaskPays! 💰\n\n" +
-                             "✅ No investment required\n" +
-                             "✅ Instant withdrawals\n" +
-                             "✅ Available worldwide\n\n" +
-                             "Join now and claim your free money! #EarnOnline #FreeCrypto";
-                const url = "https://taskpays.netlify.app/";
-                
-                return { title, text, url };
-            }
-
-            function openShareWindow(platform, shareData) {
-                let shareUrl;
-                
-                switch(platform) {
-                    case 'facebook':
-                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodeURIComponent(shareData.text)}`;
-                        break;
-                    case 'twitter':
-                        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
-                        break;
-                    case 'whatsapp':
-                        shareUrl = `https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
-                        break;
-                    case 'telegram':
-                        shareUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareData.text)}`;
-                        break;
-                    case 'reddit':
-                        shareUrl = `https://www.reddit.com/submit?url=${encodeURIComponent(shareData.url)}&title=${encodeURIComponent(shareData.title)}`;
-                        break;
-                    case 'linkedin':
-                        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareData.url)}`;
-                        break;
-                    default:
-                        shareUrl = shareData.url;
-                }
-                
-                const shareWindow = window.open(shareUrl, '_blank', 'width=600,height=400');
-                
-                // Track the share attempt
-                trackShareSuccess(platform);
-                
-                // Check if window was closed (simulated tracking)
-                if (shareWindow) {
-                    const checkClosed = setInterval(() => {
-                        if (shareWindow.closed) {
-                            clearInterval(checkClosed);
-                            console.log(`Shared on ${platform}`);
-                        }
-                    }, 1000);
-                }
-            }
-
-            function trackShareSuccess(platform) {
-                // In a real implementation, you would send this to your backend
-                console.log(`Shared successfully on ${platform}`);
-                
-                // Show confirmation to user
-                document.getElementById("share-status").style.display = "block";
-                document.getElementById("finish-withdrawal").style.display = "inline-block";
-                
-                // Simulate tracking
-                localStorage.setItem('last_share_platform', platform);
-                localStorage.setItem('last_share_time', new Date().toISOString());
-            }
-
-            document.getElementById("finish-withdrawal").addEventListener("click", function() {
-                if (!sharedPlatform) {
-                    alert("Please share on at least one platform");
-                    return;
-                }
-                
-                // Close modal
-                document.getElementById("social-share-modal").style.display = "none";
-                
-                // Generate payment proof
-                generatePaymentProof();
-                
-                // Reset balance and tasks
+                // Reset UI
                 balance = 0;
                 document.getElementById("balance-amount").textContent = "$0";
                 completedTasks = 0;
                 document.getElementById("status").textContent = "0/11 offers completed.";
                 clickedTasks.fill(false);
-                
-                // Reset UI
                 document.querySelectorAll(".task-link").forEach(link => {
                     link.classList.remove("clicked");
                 });
                 document.getElementById("withdraw-btn").disabled = true;
                 document.getElementById("withdraw-btn").classList.remove("active");
                 document.getElementById("withdraw-form").style.display = "none";
-                document.getElementById("submit-payment").style.display = "block";
-                document.getElementById("payment-pending").style.display = "none";
-                
-                // Reset share modal
-                document.getElementById("share-status").style.display = "none";
-                document.getElementById("finish-withdrawal").style.display = "none";
-                sharedPlatform = null;
-                
-                // Show success message
-                alert(`✅ $${MIN_WITHDRAWAL} USDT withdrawal processing!\n\nFunds will arrive within 24 hours.`);
+                document.getElementById("usdt-address").value = "";
             });
 
             // Initialize the app
             initTasks();
-            startPaymentProofs();
-
-            // Clean up interval when page unloads
-            window.addEventListener('beforeunload', () => {
-                clearInterval(paymentProofInterval);
-            });
         }
     </script>
 </body>
