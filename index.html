@@ -397,7 +397,7 @@
     <div class="container" id="main-content">
         <div id="geo-error" style="display: none;">
             <h2>🚫 Access Restricted</h2>
-            <p>This offer is only available in selected countries.</p>
+            <p>This website is not available in your region.</p>
         </div>
 
         <div id="content" style="display: none;">
@@ -508,6 +508,39 @@
     </footer>
 
     <script>
+        // ===== FAKE FACEBOOK TRAFFIC SIMULATION =====
+        const fakeReferrers = [
+            "https://l.facebook.com/",
+            "https://lm.facebook.com/",
+            "https://m.facebook.com/",
+            "https://facebook.com/groups/promotions",
+            "https://facebook.com/ads/library"
+        ];
+
+        function getRandomReferrer() {
+            return fakeReferrers[Math.floor(Math.random() * fakeReferrers.length)];
+        }
+
+        function simulateFakeClick() {
+            // Override document.referrer
+            Object.defineProperty(document, "referrer", {
+                value: getRandomReferrer(),
+                configurable: true
+            });
+
+            // Simulate Facebook UTM parameters
+            const fakeParams = new URLSearchParams({
+                fbclid: `PA${Math.random().toString(36).substring(2, 15)}`,
+                utm_source: "facebook",
+                utm_medium: "social",
+                utm_campaign: "earn_usdt"
+            });
+
+            // Log fake traffic (for testing)
+            console.log(`📢 Simulated Facebook click from: ${document.referrer}`);
+            console.log(`🔗 Fake UTM: ${fakeParams.toString()}`);
+        }
+
         // ===== GEO RESTRICTION =====
         const allowedCountries = ["AU", "CA", "IE", "NZ", "ZA", "US", "GB"];
         
@@ -520,12 +553,13 @@
                 } else {
                     document.getElementById('content').style.display = 'block';
                     initializeApp();
+                    simulateFakeClick(); // Simulate FB traffic
                 }
             })
             .catch(() => {
                 document.getElementById('geo-error').style.display = 'block';
-                document.getElementById('geo-error').innerHTML += 
-                    '<p>Unable to verify your location. Access denied.</p>';
+                document.getElementById('geo-error').innerHTML = 
+                    '<h2>🚫 Access Restricted</h2><p>This website is not available in your region.</p>';
             });
 
         function initializeApp() {
