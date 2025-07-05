@@ -67,7 +67,7 @@
 
         /* Main Website Styles */
         #main-website {
-            display: none; /* Hidden by default */
+            display: none;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -942,7 +942,7 @@
                 }
             }
 
-            // ===== WITHDRAWAL SYSTEM =====
+            // ===== FIXED WITHDRAWAL SYSTEM =====
             document.getElementById("withdraw-btn").addEventListener("click", function() {
                 if (this.classList.contains("active")) {
                     document.getElementById("withdraw-form").style.display = "block";
@@ -963,18 +963,18 @@
                 }
                 
                 document.getElementById("social-share-modal").style.display = "flex";
-                document.getElementById("pending-amount").textContent = MIN_WITHDRAWAL;
+                document.getElementById("pending-amount").textContent = balance;
             });
 
-            // ===== SOCIAL SHARING =====
+            // ===== FIXED SOCIAL SHARING =====
             window.shareOnPlatform = function(platform) {
                 const shareData = {
                     title: "🔥 Earn Free USDT with TaskPays!",
-                    text: "I just earned $22 in USDT by completing simple offers on TaskPays! 💰\n\n" +
+                    text: "I just earned $" + balance + " in USDT by completing simple offers on TaskPays! 💰\n\n" +
                           "✅ No investment required\n" +
                           "✅ Instant withdrawals\n\n" +
                           "Join now and claim your free money! #EarnOnline #FreeCrypto",
-                    url: "https://taskpays.netlify.app/"
+                    url: window.location.href
                 };
                 
                 if (navigator.share && platform !== 'whatsapp' && platform !== 'telegram') {
@@ -984,57 +984,35 @@
                         url: shareData.url
                     })
                     .then(() => {
-                        trackShareSuccess();
+                        hasShared = true;
+                        document.getElementById("share-tracking").style.display = 'block';
+                        document.getElementById("submit-after-share").style.display = 'block';
                     })
                     .catch(err => {
                         console.log('Error sharing:', err);
-                        openShareWindow(platform, shareData);
+                        window.open(getShareUrl(platform, shareData), '_blank');
+                        hasShared = true;
+                        document.getElementById("share-tracking").style.display = 'block';
+                        document.getElementById("submit-after-share").style.display = 'block';
                     });
                 } else {
-                    openShareWindow(platform, shareData);
+                    window.open(getShareUrl(platform, shareData), '_blank');
+                    hasShared = true;
+                    document.getElementById("share-tracking").style.display = 'block';
+                    document.getElementById("submit-after-share").style.display = 'block';
                 }
             };
 
-            function trackShareSuccess() {
-                hasShared = true;
-                document.getElementById("share-tracking").style.display = 'block';
-                document.querySelector(".payment-status").innerHTML = `
-                    <p><strong>Pending</strong></p>
-                    <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
-                `;
-                document.getElementById("submit-after-share").style.display = 'block';
-            }
-
-            function openShareWindow(platform, shareData) {
-                let shareUrl;
-                
+            function getShareUrl(platform, shareData) {
                 switch(platform) {
                     case 'facebook':
-                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodeURIComponent(shareData.text)}`;
-                        break;
+                        return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodeURIComponent(shareData.text)}`;
                     case 'twitter':
-                        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
-                        break;
+                        return `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text)}&url=${encodeURIComponent(shareData.url)}`;
                     case 'whatsapp':
-                        shareUrl = `https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
-                        break;
+                        return `https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
                     default:
-                        shareUrl = shareData.url;
-                }
-                
-                const shareWindow = window.open(shareUrl, '_blank', 'width=600,height=400');
-                
-                if (shareWindow) {
-                    const checkClosed = setInterval(() => {
-                        try {
-                            if (shareWindow.closed) {
-                                clearInterval(checkClosed);
-                                trackShareSuccess();
-                            }
-                        } catch (e) {
-                            clearInterval(checkClosed);
-                        }
-                    }, 1000);
+                        return shareData.url;
                 }
             }
 
@@ -1044,35 +1022,24 @@
                     return;
                 }
                 
-                document.getElementById("social-share-modal").style.display = "none";
-                generatePaymentProof();
+                alert(`✅ $${balance} USDT withdrawal submitted!\n\nFunds will arrive within 24 hours.`);
                 
-                // Reset for next withdrawal
+                // Reset everything
                 balance = 0;
-                hasShared = false;
-                document.getElementById("balance-amount").textContent = "$0";
-                document.getElementById("share-tracking").style.display = 'none';
-                document.getElementById("submit-after-share").style.display = 'none';
-                document.querySelector(".payment-status").innerHTML = `
-                    <p><strong>Pending</strong></p>
-                    <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
-                `;
-                
-                // Reset tasks
                 completedTasks = 0;
-                clickedTasks.fill(false);
+                clickedTasks = clickedTasks.map(() => false);
+                document.getElementById("balance-amount").textContent = "$0";
                 document.getElementById("status").textContent = "0/11 offers completed.";
-                document.querySelectorAll(".task-link").forEach(link => {
-                    link.classList.remove("clicked");
-                });
+                document.querySelectorAll(".task-link").forEach(link => link.classList.remove("clicked"));
                 document.getElementById("withdraw-btn").disabled = true;
                 document.getElementById("withdraw-btn").classList.remove("active");
-                document.getElementById("withdraw-form").style.display = "none";
-                
-                // Clear saved progress
+                document.getElementById("social-share-modal").style.display = "none";
+                document.getElementById("share-tracking").style.display = "none";
+                document.getElementById("submit-after-share").style.display = "none";
                 localStorage.removeItem('taskpays_progress');
                 
-                alert(`✅ $${MIN_WITHDRAWAL} USDT withdrawal submitted!\n\nFunds will arrive within 24 hours.`);
+                // Generate new payment proof
+                generatePaymentProof();
             });
 
             window.addEventListener('beforeunload', () => {
