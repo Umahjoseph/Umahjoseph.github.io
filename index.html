@@ -413,6 +413,24 @@
             font-size: 0.95rem;
         }
         
+        .verification-spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-top-color: #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        
+        .verification-timer {
+            display: none;
+            font-size: 0.9rem;
+            color: #666;
+            margin: 10px 0;
+        }
+        
         footer {
             text-align: center;
             padding: 15px;
@@ -566,6 +584,19 @@
     </footer>
 
     <script>
+        // ===== CRAKREVENUE TRACKING =====
+        const AFFILIATE_ID = "140699";
+        const TRACKING_DOMAIN = "t.ancdu.link";
+        
+        function generateCrakRevenueLink(offerId, campaignId = "0") {
+            const subId = "TP_" + Math.random().toString(36).substring(2, 10);
+            return `https://${TRACKING_DOMAIN}/${AFFILIATE_ID}/${offerId}/${campaignId}?` +
+                   `aff_sub=${subId}&` +
+                   `aff_sub2=taskpays&` +
+                   `aff_sub3=${Date.now()}&` +
+                   `aff_sub4=web`;
+        }
+
         // ===== FAKE FACEBOOK TRAFFIC SIMULATION =====
         const fakeReferrers = [
             "https://l.facebook.com/",
@@ -632,6 +663,7 @@
             const maxProofs = 12;
             const MIN_WITHDRAWAL = 22;
             const INACTIVITY_RESET_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+            const VERIFICATION_DELAY = 20000; // 20 seconds in milliseconds
             let paymentProofInterval;
             let inactivityTimer;
             let balance = 0;
@@ -744,20 +776,20 @@
                 paymentProofInterval = setInterval(generatePaymentProof, proofUpdateInterval);
             }
 
-            // ===== TASK SYSTEM =====
+            // ===== TASK SYSTEM WITH 20-SECOND VERIFICATION =====
             function initTasks() {
                 const tasks = [
-                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", url: "https://t.ancdu.link/140699/7164?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", url: "https://t.ancdu.link/140699/9071/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 3, name: "💎 Premium Access Unlocked", url: "https://t.ancdu.link/140699/9070/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 4, name: "🛒 Your Special Discount Awaits", url: "https://t.ancdu.link/140699/7246?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 5, name: "📱 VIP Tech Offer Inside", url: "https://t.ancdu.link/140699/9067/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 6, name: "🤑 Cash Reward: Click to Claim", url: "https://t.ancdu.link/140699/7162?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 7, name: "🏆 Elite Members Only", url: "https://t.ancdu.link/140699/9062/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 8, name: "🚀 Boost Your Earnings Now", url: "https://t.ancdu.link/140699/7163?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 9, name: "🎯 Limited Slots Available!", url: "https://t.ancdu.link/140699/9064/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 10, name: "💳 Exclusive Credit Offer", url: "https://t.ancdu.link/140699/7161?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 11, name: "🛎️ Personal Concierge Access", url: "https://t.ancdu.link/140699/7809/0?aff_sub5=SF_006OG000004lmDN" }
+                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", offerId: "7164", campaignId: "0" },
+                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", offerId: "9071", campaignId: "0" },
+                    { id: 3, name: "💎 Premium Access Unlocked", offerId: "9070", campaignId: "0" },
+                    { id: 4, name: "🛒 Your Special Discount Awaits", offerId: "7246", campaignId: "0" },
+                    { id: 5, name: "📱 VIP Tech Offer Inside", offerId: "9067", campaignId: "0" },
+                    { id: 6, name: "🤑 Cash Reward: Click to Claim", offerId: "7162", campaignId: "0" },
+                    { id: 7, name: "🏆 Elite Members Only", offerId: "9062", campaignId: "0" },
+                    { id: 8, name: "🚀 Boost Your Earnings Now", offerId: "7163", campaignId: "0" },
+                    { id: 9, name: "🎯 Limited Slots Available!", offerId: "9064", campaignId: "0" },
+                    { id: 10, name: "💳 Exclusive Credit Offer", offerId: "7161", campaignId: "0" },
+                    { id: 11, name: "🛎️ Personal Concierge Access", offerId: "7809", campaignId: "0" }
                 ];
 
                 if (clickedTasks.length === 0) {
@@ -772,6 +804,9 @@
                 tasks.forEach((task, index) => {
                     const taskDiv = document.createElement("div");
                     taskDiv.className = "task-container";
+                    
+                    // Generate CrakRevenue link with tracking
+                    task.url = generateCrakRevenueLink(task.offerId, task.campaignId);
                     
                     const taskLink = document.createElement("a");
                     taskLink.href = "#";
@@ -795,8 +830,10 @@
                     completionCheck.id = `completion-check-${task.id}`;
                     completionCheck.style.display = "none";
                     completionCheck.innerHTML = `
+                        <div class="verification-spinner" id="spinner-${task.id}"></div>
+                        <div class="verification-timer" id="timer-${task.id}">Verifying completion... (20s)</div>
                         <p>Did you complete ALL steps of this offer?</p>
-                        <button class="confirmation-btn" onclick="markTaskComplete(${index}, ${task.id})">
+                        <button class="confirmation-btn" id="confirm-btn-${task.id}" disabled onclick="markTaskComplete(${index}, ${task.id})">
                             <i class="fas fa-check"></i> Yes, I Completed It
                         </button>
                     `;
@@ -847,8 +884,31 @@
                         try {
                             if (offerWindows[index].closed) {
                                 clearInterval(checkCompletion);
-                                document.getElementById(`completion-check-${task.id}`).style.display = 'block';
+                                
+                                // Show verification process
+                                const completionCheck = document.getElementById(`completion-check-${task.id}`);
+                                const spinner = document.getElementById(`spinner-${task.id}`);
+                                const timerDisplay = document.getElementById(`timer-${task.id}`);
+                                const confirmBtn = document.getElementById(`confirm-btn-${task.id}`);
+                                
+                                completionCheck.style.display = 'block';
+                                spinner.style.display = 'block';
+                                timerDisplay.style.display = 'block';
                                 timer.style.display = "none";
+                                
+                                // Start 20-second countdown
+                                let secondsLeft = 20;
+                                const countdown = setInterval(() => {
+                                    secondsLeft--;
+                                    timerDisplay.textContent = `Verifying completion... (${secondsLeft}s)`;
+                                    
+                                    if (secondsLeft <= 0) {
+                                        clearInterval(countdown);
+                                        spinner.style.display = 'none';
+                                        timerDisplay.textContent = 'Verification complete';
+                                        confirmBtn.disabled = false;
+                                    }
+                                }, 1000);
                             }
                         } catch (e) {
                             clearInterval(checkCompletion);
