@@ -5,6 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TaskPays - Complete Offers to Earn USDT</title>
     <style>
+        /* Welcome Screen Styles */
+        #welcome-screen {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 10000;
+            background: white;
+        }
+        .welcome-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        .sparkle-icon {
+            font-size: 50px;
+            color: #3498db;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        #welcome-screen h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        #welcome-screen p {
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        #incognito-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        #incognito-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        #normal-mode-btn {
+            background: transparent;
+            border: none;
+            color: #7f8c8d;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Original TaskPays Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -13,6 +86,7 @@
             margin: 0;
             padding: 10px;
             background-color: #f5f7fa;
+            display: none; /* Hidden until welcome screen completes */
         }
         
         header {
@@ -457,166 +531,218 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="logo">Task<span>Pays</span></div>
-        <p>Complete offers and withdraw USDT instantly</p>
-    </header>
-
-    <div class="container" id="main-content">
-        <div id="geo-error" style="display: none;">
-            <h2>🚫 Access Restricted</h2>
-            <p>This website is not available in your region.</p>
-        </div>
-
-        <div id="content" style="display: none;">
-            <div class="countries-list">
-                <strong>Accepted Countries:</strong> 
-                Australia, Canada, Ireland, New Zealand, South Africa, United States, United Kingdom
-            </div>
-
-            <div class="warning">
-                <i class="fas fa-exclamation-triangle"></i> <strong>ALL OFFERS MUST BE COMPLETED BEFORE WITHDRAWAL</strong>
-            </div>
-
-            <div id="balance-section">
-                <div>Your Current Balance:</div>
-                <div id="balance-amount">$0</div>
-                <small>Minimum withdrawal: $22 USDT</small>
-            </div>
-
-            <h2 class="section-title">Complete Offers to Earn $2 Each</h2>
-            
-            <div class="task-grid" id="task-links">
-                <!-- Tasks will be loaded here by JavaScript -->
-            </div>
-
-            <div id="status">0/11 offers completed.</div>
-
-            <div class="action-buttons">
-                <button id="withdraw-btn" disabled>
-                    <i class="fas fa-wallet"></i> Withdraw USDT
-                </button>
-            </div>
-
-            <div id="withdraw-form">
-                <h3 class="section-title">Enter Your USDT (TRC20) Address</h3>
-                <div class="form-group">
-                    <label for="usdt-address">Your USDT Wallet Address:</label>
-                    <input type="text" id="usdt-address" placeholder="Txxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required>
-                </div>
-                <button id="submit-payment">
-                    <i class="fas fa-paper-plane"></i> Submit Withdrawal
-                </button>
-            </div>
-
-            <div class="payment-proof">
-                <h3 class="section-title"><i class="fas fa-check-circle"></i> Live Payment Proofs</h3>
-                <p>Recent payments to our users:</p>
-                <div class="proof-grid" id="payment-proofs">
-                    <!-- Payment proofs will appear here -->
-                </div>
-            </div>
+    <!-- Welcome Screen (Shows First) -->
+    <div id="welcome-screen">
+        <div class="welcome-container">
+            <div class="sparkle-icon">✨</div>
+            <h1>Better Experience in Incognito</h1>
+            <p>For the smoothest TaskPays experience, we recommend using <strong>Incognito Mode</strong>.</p>
+            <p>It helps prevent browser extensions from interfering with offer completions.</p>
+            <button id="incognito-btn">I'm Using Incognito</button>
+            <button id="normal-mode-btn">Continue in normal mode</button>
         </div>
     </div>
 
-    <!-- Updated Social Share Modal -->
-    <div class="social-share-modal" id="social-share-modal">
-        <div class="share-content">
-            <h3><i class="fas fa-share-alt"></i> Complete Your Withdrawal</h3>
-            
-            <div class="share-instructions">
-                <p><strong>To complete your withdrawal:</strong></p>
-                <ol>
-                    <li>Click any share button below</li>
-                    <li>The post will be prepared automatically</li>
-                    <li>Return here after sharing</li>
-                </ol>
-            </div>
-            
-            <div class="share-platforms">
-                <div class="share-btn facebook-btn" onclick="shareOnPlatform('facebook')">
-                    <i class="fab fa-facebook-f"></i> Facebook
-                </div>
-                <div class="share-btn twitter-btn" onclick="shareOnPlatform('twitter')">
-                    <i class="fab fa-twitter"></i> Twitter
-                </div>
-                <div class="share-btn whatsapp-btn" onclick="shareOnPlatform('whatsapp')">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </div>
-            </div>
-            
-            <div id="share-tracking">
-                <p><i class="fas fa-check-circle" style="color: #27ae60;"></i> Successfully shared!</p>
-            </div>
-            
-            <div class="payment-status">
-                <p><strong>Pending</strong></p>
-                <p>Amount: $<span id="pending-amount">22</span> USDT</p>
-            </div>
-            
-            <button class="confirmation-btn" id="submit-after-share">
-                <i class="fas fa-check-circle"></i> Submit After Sharing
-            </button>
-        </div>
-    </div>
+    <!-- Main Website Content (Hidden Initially) -->
+    <div id="main-website" style="display: none;">
+        <header>
+            <div class="logo">Task<span>Pays</span></div>
+            <p>Complete offers and withdraw USDT instantly</p>
+        </header>
 
-    <footer>
-        <p>© 2023 TaskPays. All rights reserved.</p>
-        <p><a href="#" style="color: #3498db;">Terms of Service</a> | <a href="#" style="color: #3498db;">Privacy Policy</a></p>
-    </footer>
+        <div class="container" id="main-content">
+            <div id="geo-error" style="display: none;">
+                <h2>🚫 Access Restricted</h2>
+                <p>This website is not available in your region.</p>
+            </div>
+
+            <div id="content" style="display: none;">
+                <div class="countries-list">
+                    <strong>Accepted Countries:</strong> 
+                    Australia, Canada, Ireland, New Zealand, South Africa, United States, United Kingdom
+                </div>
+
+                <div class="warning">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>ALL OFFERS MUST BE COMPLETED BEFORE WITHDRAWAL</strong>
+                </div>
+
+                <div id="balance-section">
+                    <div>Your Current Balance:</div>
+                    <div id="balance-amount">$0</div>
+                    <small>Minimum withdrawal: $22 USDT</small>
+                </div>
+
+                <h2 class="section-title">Complete Offers to Earn $2 Each</h2>
+                
+                <div class="task-grid" id="task-links">
+                    <!-- Tasks will be loaded here by JavaScript -->
+                </div>
+
+                <div id="status">0/11 offers completed.</div>
+
+                <div class="action-buttons">
+                    <button id="withdraw-btn" disabled>
+                        <i class="fas fa-wallet"></i> Withdraw USDT
+                    </button>
+                </div>
+
+                <div id="withdraw-form">
+                    <h3 class="section-title">Enter Your USDT (TRC20) Address</h3>
+                    <div class="form-group">
+                        <label for="usdt-address">Your USDT Wallet Address:</label>
+                        <input type="text" id="usdt-address" placeholder="Txxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required>
+                    </div>
+                    <button id="submit-payment">
+                        <i class="fas fa-paper-plane"></i> Submit Withdrawal
+                    </button>
+                </div>
+
+                <div class="payment-proof">
+                    <h3 class="section-title"><i class="fas fa-check-circle"></i> Live Payment Proofs</h3>
+                    <p>Recent payments to our users:</p>
+                    <div class="proof-grid" id="payment-proofs">
+                        <!-- Payment proofs will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Updated Social Share Modal -->
+        <div class="social-share-modal" id="social-share-modal">
+            <div class="share-content">
+                <h3><i class="fas fa-share-alt"></i> Complete Your Withdrawal</h3>
+                
+                <div class="share-instructions">
+                    <p><strong>To complete your withdrawal:</strong></p>
+                    <ol>
+                        <li>Click any share button below</li>
+                        <li>The post will be prepared automatically</li>
+                        <li>Return here after sharing</li>
+                    </ol>
+                </div>
+                
+                <div class="share-platforms">
+                    <div class="share-btn facebook-btn" onclick="shareOnPlatform('facebook')">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </div>
+                    <div class="share-btn twitter-btn" onclick="shareOnPlatform('twitter')">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </div>
+                    <div class="share-btn whatsapp-btn" onclick="shareOnPlatform('whatsapp')">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </div>
+                </div>
+                
+                <div id="share-tracking">
+                    <p><i class="fas fa-check-circle" style="color: #27ae60;"></i> Successfully shared!</p>
+                </div>
+                
+                <div class="payment-status">
+                    <p><strong>Pending</strong></p>
+                    <p>Amount: $<span id="pending-amount">22</span> USDT</p>
+                </div>
+                
+                <button class="confirmation-btn" id="submit-after-share">
+                    <i class="fas fa-check-circle"></i> Submit After Sharing
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 TaskPays. All rights reserved.</p>
+            <p><a href="#" style="color: #3498db;">Terms of Service</a> | <a href="#" style="color: #3498db;">Privacy Policy</a></p>
+        </footer>
+    </div>
 
     <script>
-        // ===== FAKE FACEBOOK TRAFFIC SIMULATION =====
-        const fakeReferrers = [
-            "https://l.facebook.com/",
-            "https://lm.facebook.com/",
-            "https://m.facebook.com/",
-            "https://facebook.com/groups/promotions",
-            "https://facebook.com/ads/library"
-        ];
+        // ===== WELCOME SCREEN HANDLING =====
+        document.getElementById('incognito-btn').addEventListener('click', function() {
+            // Set flag that user has seen the message
+            sessionStorage.setItem('incognitoSuggestionSeen', 'true');
+            
+            // Hide welcome screen and show main website
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-website').style.display = 'block';
+            document.body.style.display = 'block';
+            
+            // Initialize the main app
+            initializeApp();
+        });
 
-        function getRandomReferrer() {
-            return fakeReferrers[Math.floor(Math.random() * fakeReferrers.length)];
+        document.getElementById('normal-mode-btn').addEventListener('click', function() {
+            // Set flag that user has seen the message
+            sessionStorage.setItem('incognitoSuggestionSeen', 'true');
+            
+            // Hide welcome screen and show main website
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-website').style.display = 'block';
+            document.body.style.display = 'block';
+            
+            // Initialize the main app
+            initializeApp();
+        });
+
+        // Check if user has already seen the welcome message
+        if (sessionStorage.getItem('incognitoSuggestionSeen') === 'true') {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('main-website').style.display = 'block';
+            document.body.style.display = 'block';
+            initializeApp();
         }
 
-        function simulateFakeClick() {
-            Object.defineProperty(document, "referrer", {
-                value: getRandomReferrer(),
-                configurable: true
-            });
-
-            const fakeParams = new URLSearchParams({
-                fbclid: `PA${Math.random().toString(36).substring(2, 15)}`,
-                utm_source: "facebook",
-                utm_medium: "social",
-                utm_campaign: "earn_usdt"
-            });
-
-            console.log(`📢 Simulated Facebook click from: ${document.referrer}`);
-            console.log(`🔗 Fake UTM: ${fakeParams.toString()}`);
-        }
-
-        // ===== GEO RESTRICTION =====
-        const allowedCountries = ["AU", "CA", "IE", "NZ", "ZA", "US", "GB"];
-        
-        fetch('https://ipapi.co/json/')
-            .then(response => response.json())
-            .then(data => {
-                if (!allowedCountries.includes(data.country)) {
-                    document.getElementById('geo-error').style.display = 'block';
-                } else {
-                    document.getElementById('content').style.display = 'block';
-                    initializeApp();
-                    simulateFakeClick();
-                }
-            })
-            .catch(() => {
-                document.getElementById('geo-error').style.display = 'block';
-                document.getElementById('geo-error').innerHTML = 
-                    '<h2>🚫 Access Restricted</h2><p>This website is not available in your region.</p>';
-            });
-
+        // ===== MAIN APP FUNCTIONALITY =====
         function initializeApp() {
+            // ===== FAKE FACEBOOK TRAFFIC SIMULATION =====
+            const fakeReferrers = [
+                "https://l.facebook.com/",
+                "https://lm.facebook.com/",
+                "https://m.facebook.com/",
+                "https://facebook.com/groups/promotions",
+                "https://facebook.com/ads/library"
+            ];
+
+            function getRandomReferrer() {
+                return fakeReferrers[Math.floor(Math.random() * fakeReferrers.length)];
+            }
+
+            function simulateFakeClick() {
+                Object.defineProperty(document, "referrer", {
+                    value: getRandomReferrer(),
+                    configurable: true
+                });
+
+                const fakeParams = new URLSearchParams({
+                    fbclid: `PA${Math.random().toString(36).substring(2, 15)}`,
+                    utm_source: "facebook",
+                    utm_medium: "social",
+                    utm_campaign: "earn_usdt"
+                });
+
+                console.log(`📢 Simulated Facebook click from: ${document.referrer}`);
+                console.log(`🔗 Fake UTM: ${fakeParams.toString()}`);
+            }
+
+            // ===== GEO RESTRICTION =====
+            const allowedCountries = ["AU", "CA", "IE", "NZ", "ZA", "US", "GB"];
+            
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (!allowedCountries.includes(data.country)) {
+                        document.getElementById('geo-error').style.display = 'block';
+                    } else {
+                        document.getElementById('content').style.display = 'block';
+                        initTasks();
+                        startPaymentProofs();
+                        simulateFakeClick();
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('geo-error').style.display = 'block';
+                    document.getElementById('geo-error').innerHTML = 
+                        '<h2>🚫 Access Restricted</h2><p>This website is not available in your region.</p>';
+                });
+
             // ===== CONFIGURATION =====
             const countryNames = {
                 "AU": "Australia",
@@ -969,13 +1095,6 @@
                 
                 alert(`✅ $${MIN_WITHDRAWAL} USDT withdrawal submitted!\n\nFunds will arrive within 24 hours.`);
             });
-
-            // Initialize the app
-            initTasks();
-            startPaymentProofs();
-            document.getElementById("pending-amount").textContent = MIN_WITHDRAWAL;
-            document.getElementById("submit-after-share").style.display = 'none';
-            document.getElementById("share-tracking").style.display = 'none';
 
             window.addEventListener('beforeunload', () => {
                 clearInterval(paymentProofInterval);
