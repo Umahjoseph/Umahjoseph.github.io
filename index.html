@@ -9,20 +9,17 @@
         #welcome-screen {
             font-family: 'Arial', sans-serif;
             background-color: #f5f7fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
             z-index: 10000;
-            background: white;
+            padding: 20px;
         }
         .welcome-container {
             background: white;
@@ -42,15 +39,6 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
-        }
-        #welcome-screen h1 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-        #welcome-screen p {
-            color: #7f8c8d;
-            margin-bottom: 25px;
-            line-height: 1.6;
         }
         #incognito-btn {
             background: #3498db;
@@ -77,7 +65,10 @@
             font-size: 14px;
         }
 
-        /* Original TaskPays Styles */
+        /* Main Website Styles */
+        #main-website {
+            display: none; /* Hidden by default */
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -86,7 +77,6 @@
             margin: 0;
             padding: 10px;
             background-color: #f5f7fa;
-            display: none; /* Hidden until welcome screen completes */
         }
         
         header {
@@ -544,7 +534,7 @@
     </div>
 
     <!-- Main Website Content (Hidden Initially) -->
-    <div id="main-website" style="display: none;">
+    <div id="main-website">
         <header>
             <div class="logo">Task<span>Pays</span></div>
             <p>Complete offers and withdraw USDT instantly</p>
@@ -656,39 +646,28 @@
 
     <script>
         // ===== WELCOME SCREEN HANDLING =====
-        document.getElementById('incognito-btn').addEventListener('click', function() {
-            // Set flag that user has seen the message
-            sessionStorage.setItem('incognitoSuggestionSeen', 'true');
-            
-            // Hide welcome screen and show main website
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('main-website').style.display = 'block';
-            document.body.style.display = 'block';
-            
-            // Initialize the main app
-            initializeApp();
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user has already seen the message
+            if (sessionStorage.getItem('incognitoSuggestionSeen') === 'true') {
+                document.getElementById('welcome-screen').style.display = 'none';
+                document.getElementById('main-website').style.display = 'block';
+                initializeApp();
+            }
 
-        document.getElementById('normal-mode-btn').addEventListener('click', function() {
-            // Set flag that user has seen the message
-            sessionStorage.setItem('incognitoSuggestionSeen', 'true');
-            
-            // Hide welcome screen and show main website
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('main-website').style.display = 'block';
-            document.body.style.display = 'block';
-            
-            // Initialize the main app
-            initializeApp();
-        });
+            document.getElementById('incognito-btn').addEventListener('click', function() {
+                sessionStorage.setItem('incognitoSuggestionSeen', 'true');
+                document.getElementById('welcome-screen').style.display = 'none';
+                document.getElementById('main-website').style.display = 'block';
+                initializeApp();
+            });
 
-        // Check if user has already seen the welcome message
-        if (sessionStorage.getItem('incognitoSuggestionSeen') === 'true') {
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('main-website').style.display = 'block';
-            document.body.style.display = 'block';
-            initializeApp();
-        }
+            document.getElementById('normal-mode-btn').addEventListener('click', function() {
+                sessionStorage.setItem('incognitoSuggestionSeen', 'true');
+                document.getElementById('welcome-screen').style.display = 'none';
+                document.getElementById('main-website').style.display = 'block';
+                initializeApp();
+            });
+        });
 
         // ===== MAIN APP FUNCTIONALITY =====
         function initializeApp() {
