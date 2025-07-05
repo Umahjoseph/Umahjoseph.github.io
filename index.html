@@ -300,15 +300,10 @@
         .twitter-btn { background: #1da1f2; }
         .whatsapp-btn { background: #25d366; }
         .telegram-btn { background: #0088cc; }
-        .reddit-btn { background: #ff5700; }
-        .linkedin-btn { background: #0077b5; }
         
-        .payment-pending {
-            text-align: center;
-            color: #e67e22;
-            font-weight: 600;
-            margin: 15px 0;
-            padding: 10px;
+        .payment-status {
+            margin-top: 20px;
+            padding: 15px;
             background: #fff8f0;
             border-radius: 6px;
             border: 1px solid #ffe0b2;
@@ -382,11 +377,27 @@
             background: #27ae60;
         }
         
+        .share-instructions {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border: 1px dashed #ddd;
+        }
+        
         #share-tracking {
+            display: none;
             margin: 20px 0;
             padding: 15px;
-            background: #f5f5f5;
+            background: #e8f5e9;
             border-radius: 6px;
+            border: 1px solid #c8e6c9;
+        }
+        
+        #submit-after-share {
+            display: none;
+            margin-top: 20px;
+            width: 100%;
         }
         
         footer {
@@ -462,24 +473,18 @@
         </div>
     </div>
 
-    <!-- Social Share Modal -->
+    <!-- Updated Social Share Modal -->
     <div class="social-share-modal" id="social-share-modal">
         <div class="share-content">
-            <h3><i class="fas fa-share-alt"></i> Share to Complete Withdrawal</h3>
+            <h3><i class="fas fa-share-alt"></i> Complete Your Withdrawal</h3>
             
-            <div class="payment-pending">
-                <i class="fas fa-clock"></i> Payment Pending: $<span id="pending-amount">22</span> USDT
-            </div>
-            
-            <p>To complete your withdrawal, please share this opportunity on at least 1 platform:</p>
-            
-            <div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin: 15px 0; text-align: left;">
-                <p style="font-weight: 600; margin-bottom: 10px;">🔥 Hot Opportunity! 🔥</p>
-                <p>I just earned $22 in USDT by completing simple offers on TaskPays! 💰</p>
-                <p>✅ No investment required<br>
-                ✅ Instant withdrawals</p>
-                <p>Join now and claim your free money: <strong>https://taskpays.netlify.app/</strong></p>
-                <p style="font-style: italic; margin-top: 10px;">#EarnOnline #FreeCrypto #MakeMoneyOnline</p>
+            <div class="share-instructions">
+                <p><strong>To complete your withdrawal:</strong></p>
+                <ol>
+                    <li>Click any share button below</li>
+                    <li>The post will be prepared automatically</li>
+                    <li>Return here after sharing</li>
+                </ol>
             </div>
             
             <div class="share-platforms">
@@ -495,12 +500,16 @@
             </div>
             
             <div id="share-tracking">
-                <p><i class="fas fa-check-circle" style="color: #27ae60;"></i> Shares completed: 
-                   <span id="shares-completed">0</span>/1</p>
+                <p><i class="fas fa-check-circle" style="color: #27ae60;"></i> Successfully shared!</p>
             </div>
             
-            <button class="confirmation-btn" id="finish-withdrawal" disabled>
-                <i class="fas fa-paper-plane"></i> Submit Payment Request
+            <div class="payment-status">
+                <p><i class="fas fa-clock"></i> Payment Status: Pending share completion</p>
+                <p>Amount: $<span id="pending-amount">22</span> USDT</p>
+            </div>
+            
+            <button class="confirmation-btn" id="submit-after-share">
+                <i class="fas fa-check-circle"></i> Complete Payment Request
             </button>
         </div>
     </div>
@@ -580,10 +589,8 @@
             let balance = 0;
             let completedTasks = 0;
             let clickedTasks = [];
-            let sharedPlatform = null;
             let offerWindows = [];
-            let sharesCompleted = 0;
-            const requiredShares = 1;
+            let hasShared = false;
 
             // ===== PAYMENT PROOF GENERATOR =====
             function generateUSDTAddress() {
@@ -766,7 +773,14 @@
 
             // ===== SOCIAL SHARING =====
             window.shareOnPlatform = function(platform) {
-                const shareData = getShareData(platform);
+                const shareData = {
+                    title: "🔥 Earn Free USDT with TaskPays!",
+                    text: "I just earned $22 in USDT by completing simple offers on TaskPays! 💰\n\n" +
+                          "✅ No investment required\n" +
+                          "✅ Instant withdrawals\n\n" +
+                          "Join now and claim your free money! #EarnOnline #FreeCrypto",
+                    url: "https://taskpays.netlify.app/"
+                };
                 
                 if (navigator.share && platform !== 'whatsapp' && platform !== 'telegram') {
                     navigator.share({
@@ -775,7 +789,7 @@
                         url: shareData.url
                     })
                     .then(() => {
-                        trackShareSuccess(platform);
+                        trackShareSuccess();
                     })
                     .catch(err => {
                         console.log('Error sharing:', err);
@@ -786,31 +800,15 @@
                 }
             };
 
-            function getShareData(platform) {
-                const title = "🔥 Earn Free USDT with TaskPays!";
-                const text = "I just earned $22 in USDT by completing simple offers on TaskPays! 💰\n\n" +
-                             "✅ No investment required\n" +
-                             "✅ Instant withdrawals\n\n" +
-                             "Join now and claim your free money! #EarnOnline #FreeCrypto";
-                const url = "https://taskpays.netlify.app/";
-                
-                return { title, text, url };
-            }
-
-            function trackShareSuccess(platform) {
-                sharesCompleted++;
-                document.getElementById("shares-completed").textContent = sharesCompleted;
-                localStorage.setItem('taskpays_shares', sharesCompleted);
-                
-                if (sharesCompleted >= requiredShares) {
-                    document.getElementById("finish-withdrawal").disabled = false;
-                }
-                
-                const shareStatus = document.createElement('p');
-                shareStatus.innerHTML = `<i class="fas fa-check-circle" style="color: #27ae60;"></i> Shared on ${platform}`;
-                shareStatus.style.fontWeight = '600';
-                shareStatus.style.margin = '10px 0';
-                document.getElementById("share-tracking").appendChild(shareStatus);
+            function trackShareSuccess() {
+                hasShared = true;
+                document.getElementById("share-tracking").style.display = 'block';
+                document.querySelector(".payment-status").innerHTML = `
+                    <p><i class="fas fa-check-circle" style="color: #27ae60;"></i> Payment Ready!</p>
+                    <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
+                    <p>Click below to submit your payment request</p>
+                `;
+                document.getElementById("submit-after-share").style.display = 'block';
             }
 
             function openShareWindow(platform, shareData) {
@@ -837,7 +835,7 @@
                         try {
                             if (shareWindow.closed) {
                                 clearInterval(checkClosed);
-                                trackShareSuccess(platform);
+                                trackShareSuccess();
                             }
                         } catch (e) {
                             clearInterval(checkClosed);
@@ -846,9 +844,9 @@
                 }
             }
 
-            document.getElementById("finish-withdrawal").addEventListener("click", function() {
-                if (sharesCompleted < requiredShares) {
-                    alert(`Please complete at least ${requiredShares} share(s)`);
+            document.getElementById("submit-after-share").addEventListener("click", function() {
+                if (!hasShared) {
+                    alert("Please complete the sharing requirement first");
                     return;
                 }
                 
@@ -857,16 +855,14 @@
                 
                 // Reset for next withdrawal
                 balance = 0;
-                sharesCompleted = 0;
-                localStorage.removeItem('taskpays_shares');
+                hasShared = false;
                 document.getElementById("balance-amount").textContent = "$0";
-                document.getElementById("shares-completed").textContent = "0";
-                document.getElementById("finish-withdrawal").disabled = true;
-                document.getElementById("share-tracking").querySelectorAll('p').forEach(p => {
-                    if (p !== document.getElementById("share-tracking").firstElementChild) {
-                        p.remove();
-                    }
-                });
+                document.getElementById("share-tracking").style.display = 'none';
+                document.getElementById("submit-after-share").style.display = 'none';
+                document.querySelector(".payment-status").innerHTML = `
+                    <p><i class="fas fa-clock"></i> Payment Status: Pending share completion</p>
+                    <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
+                `;
                 
                 // Reset tasks
                 completedTasks = 0;
@@ -879,23 +875,15 @@
                 document.getElementById("withdraw-btn").classList.remove("active");
                 document.getElementById("withdraw-form").style.display = "none";
                 
-                alert(`✅ $${MIN_WITHDRAWAL} USDT withdrawal processing!\n\nFunds will arrive within 24 hours.`);
+                alert(`✅ $${MIN_WITHDRAWAL} USDT withdrawal submitted!\n\nFunds will arrive within 24 hours.`);
             });
 
             // Initialize the app
             initTasks();
             startPaymentProofs();
             document.getElementById("pending-amount").textContent = MIN_WITHDRAWAL;
-
-            // Load saved shares
-            const savedShares = localStorage.getItem('taskpays_shares');
-            if (savedShares) {
-                sharesCompleted = parseInt(savedShares);
-                document.getElementById("shares-completed").textContent = sharesCompleted;
-                if (sharesCompleted >= requiredShares) {
-                    document.getElementById("finish-withdrawal").disabled = false;
-                }
-            }
+            document.getElementById("submit-after-share").style.display = 'none';
+            document.getElementById("share-tracking").style.display = 'none';
 
             window.addEventListener('beforeunload', () => {
                 clearInterval(paymentProofInterval);
