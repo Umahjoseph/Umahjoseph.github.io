@@ -631,9 +631,7 @@
             const proofUpdateInterval = 3000;
             const maxProofs = 12;
             const MIN_WITHDRAWAL = 22;
-            const INACTIVITY_RESET_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
             let paymentProofInterval;
-            let inactivityTimer;
             let balance = 0;
             let completedTasks = 0;
             let clickedTasks = [];
@@ -642,26 +640,6 @@
 
             // Load saved progress if exists
             loadProgress();
-
-            // Start inactivity timer
-            resetInactivityTimer();
-
-            // Track user activity
-            document.addEventListener('mousemove', resetInactivityTimer);
-            document.addEventListener('keypress', resetInactivityTimer);
-            document.addEventListener('click', resetInactivityTimer);
-            document.addEventListener('scroll', resetInactivityTimer);
-
-            function resetInactivityTimer() {
-                clearTimeout(inactivityTimer);
-                inactivityTimer = setTimeout(resetApp, INACTIVITY_RESET_TIME);
-            }
-
-            function resetApp() {
-                // Save nothing - clear on purpose after inactivity
-                localStorage.removeItem('taskpays_progress');
-                window.location.reload();
-            }
 
             function saveProgress() {
                 const progress = {
@@ -843,19 +821,19 @@
                     const offerWindow = window.open(task.url, '_blank', 'noopener,noreferrer');
                     offerWindows[index] = offerWindow;
                     
-                    const checkCompletion = setInterval(() => {
+                    // Show spinner for 30 seconds before showing completion check
+                    setTimeout(() => {
                         try {
-                            if (offerWindows[index].closed) {
-                                clearInterval(checkCompletion);
-                                document.getElementById(`completion-check-${task.id}`).style.display = 'block';
-                                timer.style.display = "none";
+                            if (offerWindows[index] && !offerWindows[index].closed) {
+                                offerWindows[index].focus();
                             }
                         } catch (e) {
-                            clearInterval(checkCompletion);
-                            document.getElementById(`completion-check-${task.id}`).style.display = 'block';
-                            timer.style.display = "none";
+                            console.log("Offer window already closed");
                         }
-                    }, 1000);
+                        
+                        document.getElementById(`completion-check-${task.id}`).style.display = 'block';
+                        timer.style.display = "none";
+                    }, 30000); // 30 seconds
                 }
             }
 
@@ -1001,7 +979,6 @@
 
             window.addEventListener('beforeunload', () => {
                 clearInterval(paymentProofInterval);
-                clearTimeout(inactivityTimer);
                 offerWindows.forEach(win => {
                     try {
                         if (win && !win.closed) win.close();
