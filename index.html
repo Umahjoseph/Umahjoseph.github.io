@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TaskPays - Complete Offers to Earn USDT</title>
     <style>
-        /* Incognito Enforcement Styles */
+        /* Incognito Requirement Styles */
         #incognito-requirement {
             position: fixed;
             top: 0;
@@ -56,7 +56,10 @@
             margin: 0;
             padding: 10px;
             background-color: #f5f7fa;
+            display: none; /* Hidden until incognito verified */
         }
+
+        /* [All other existing TaskPays styles remain exactly the same] */
         header {
             text-align: center;
             padding: 15px 0;
@@ -443,7 +446,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Incognito Requirement Screen -->
+    <!-- Incognito Requirement Screen (shown by default) -->
     <div id="incognito-requirement">
         <h1>🔒 Incognito Mode Required</h1>
         <p>This website requires private browsing mode.</p>
@@ -570,35 +573,8 @@
     </div>
 
     <script>
-        // ===== SAFE INCOGNITO ENFORCEMENT =====
+        // ===== INCOGNITO ENFORCEMENT =====
         (function() {
-            // Check if we've already prompted for incognito
-            const incognitoPrompted = sessionStorage.getItem('incognitoPrompted');
-            
-            // Only attempt automatic redirection once per session
-            if (!incognitoPrompted) {
-                sessionStorage.setItem('incognitoPrompted', 'true');
-                
-                // Try to open in incognito (single attempt)
-                try {
-                    const newWindow = window.open(
-                        window.location.href,
-                        '_blank',
-                        'noreferrer,noopener'
-                    );
-                    
-                    if (newWindow) {
-                        // Close current window after short delay
-                        setTimeout(() => {
-                            try { window.close(); } catch(e) {}
-                        }, 300);
-                        return;
-                    }
-                } catch(e) {
-                    console.log("Incognito redirect blocked");
-                }
-            }
-            
             // Check if we're likely in incognito
             async function checkIncognito() {
                 return new Promise(resolve => {
