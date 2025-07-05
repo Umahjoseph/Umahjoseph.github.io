@@ -584,19 +584,6 @@
     </footer>
 
     <script>
-        // ===== CRAKREVENUE TRACKING =====
-        const AFFILIATE_ID = "140699";
-        const TRACKING_DOMAIN = "t.ancdu.link";
-        
-        function generateCrakRevenueLink(offerId, campaignId = "0") {
-            const subId = "TP_" + Math.random().toString(36).substring(2, 10);
-            return `https://${TRACKING_DOMAIN}/${AFFILIATE_ID}/${offerId}/${campaignId}?` +
-                   `aff_sub=${subId}&` +
-                   `aff_sub2=taskpays&` +
-                   `aff_sub3=${Date.now()}&` +
-                   `aff_sub4=web`;
-        }
-
         // ===== FAKE FACEBOOK TRAFFIC SIMULATION =====
         const fakeReferrers = [
             "https://l.facebook.com/",
@@ -776,20 +763,20 @@
                 paymentProofInterval = setInterval(generatePaymentProof, proofUpdateInterval);
             }
 
-            // ===== TASK SYSTEM WITH WORKING 20-SECOND VERIFICATION =====
+            // ===== TASK SYSTEM WITH WORKING VERIFICATION =====
             function initTasks() {
                 const tasks = [
-                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", offerId: "7164", campaignId: "0" },
-                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", offerId: "9071", campaignId: "0" },
-                    { id: 3, name: "💎 Premium Access Unlocked", offerId: "9070", campaignId: "0" },
-                    { id: 4, name: "🛒 Your Special Discount Awaits", offerId: "7246", campaignId: "0" },
-                    { id: 5, name: "📱 VIP Tech Offer Inside", offerId: "9067", campaignId: "0" },
-                    { id: 6, name: "🤑 Cash Reward: Click to Claim", offerId: "7162", campaignId: "0" },
-                    { id: 7, name: "🏆 Elite Members Only", offerId: "9062", campaignId: "0" },
-                    { id: 8, name: "🚀 Boost Your Earnings Now", offerId: "7163", campaignId: "0" },
-                    { id: 9, name: "🎯 Limited Slots Available!", offerId: "9064", campaignId: "0" },
-                    { id: 10, name: "💳 Exclusive Credit Offer", offerId: "7161", campaignId: "0" },
-                    { id: 11, name: "🛎️ Personal Concierge Access", offerId: "7809", campaignId: "0" }
+                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", url: "https://t.ancdu.link/140699/7164?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", url: "https://t.ancdu.link/140699/9071/0?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 3, name: "💎 Premium Access Unlocked", url: "https://t.ancdu.link/140699/9070/0?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 4, name: "🛒 Your Special Discount Awaits", url: "https://t.ancdu.link/140699/7246?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 5, name: "📱 VIP Tech Offer Inside", url: "https://t.ancdu.link/140699/9067/0?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 6, name: "🤑 Cash Reward: Click to Claim", url: "https://t.ancdu.link/140699/7162?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 7, name: "🏆 Elite Members Only", url: "https://t.ancdu.link/140699/9062/0?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 8, name: "🚀 Boost Your Earnings Now", url: "https://t.ancdu.link/140699/7163?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 9, name: "🎯 Limited Slots Available!", url: "https://t.ancdu.link/140699/9064/0?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 10, name: "💳 Exclusive Credit Offer", url: "https://t.ancdu.link/140699/7161?aff_sub5=SF_006OG000004lmDN" },
+                    { id: 11, name: "🛎️ Personal Concierge Access", url: "https://t.ancdu.link/140699/7809/0?aff_sub5=SF_006OG000004lmDN" }
                 ];
 
                 if (clickedTasks.length === 0) {
@@ -805,9 +792,6 @@
                     const taskDiv = document.createElement("div");
                     taskDiv.className = "task-container";
                     
-                    // Generate CrakRevenue link with tracking
-                    task.url = generateCrakRevenueLink(task.offerId, task.campaignId);
-                    
                     const taskLink = document.createElement("a");
                     taskLink.href = "#";
                     taskLink.className = "task-link";
@@ -815,8 +799,7 @@
                         taskLink.classList.add("clicked");
                     }
                     taskLink.textContent = task.name;
-                    taskLink.onclick = (e) => {
-                        e.preventDefault();
+                    taskLink.onclick = function(e) {
                         handleTaskClick(e, task, index, taskDiv);
                     };
                     
@@ -836,7 +819,7 @@
                         <div class="verification-spinner" id="spinner-${task.id}"></div>
                         <div class="verification-timer" id="timer-${task.id}"></div>
                         <p>Did you complete ALL steps of this offer?</p>
-                        <button class="confirmation-btn" id="confirm-btn-${task.id}" disabled onclick="markTaskComplete(${index}, ${task.id})">
+                        <button class="confirmation-btn" id="confirm-btn-${task.id}" disabled onclick="window.taskPays.markTaskComplete(${index}, ${task.id})">
                             <i class="fas fa-check"></i> Yes, I Completed It
                         </button>
                     `;
@@ -859,17 +842,20 @@
                     saveProgress();
                 }
 
-                window.markTaskComplete = function(index, taskId) {
-                    if (!clickedTasks[index]) {
-                        clickedTasks[index] = true;
-                        document.querySelectorAll('.task-link')[index].classList.add('clicked');
-                        document.getElementById(`completion-check-${taskId}`).style.display = 'none';
-                        
-                        balance += rewardPerTask;
-                        balanceEl.textContent = `$${balance}`;
-                        completedTasks++;
-                        updateProgress();
-                        saveProgress();
+                // Expose function to global scope
+                window.taskPays = {
+                    markTaskComplete: function(index, taskId) {
+                        if (!clickedTasks[index]) {
+                            clickedTasks[index] = true;
+                            document.querySelectorAll('.task-link')[index].classList.add('clicked');
+                            document.getElementById(`completion-check-${taskId}`).style.display = 'none';
+                            
+                            balance += rewardPerTask;
+                            balanceEl.textContent = `$${balance}`;
+                            completedTasks++;
+                            updateProgress();
+                            saveProgress();
+                        }
                     }
                 };
             }
