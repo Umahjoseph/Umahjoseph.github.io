@@ -442,6 +442,16 @@
             .share-btn {
                 padding: 12px;
             }
+            
+            .payment-status {
+                padding: 10px;
+                font-size: 0.8rem;
+                text-align: center;
+            }
+            
+            .payment-status p {
+                margin: 5px 0;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -540,12 +550,12 @@
             </div>
             
             <div class="payment-status">
-                <p><i class="fas fa-clock"></i> Payment Status: Pending share completion</p>
+                <p><strong>Pending</strong></p>
                 <p>Amount: $<span id="pending-amount">22</span> USDT</p>
             </div>
             
             <button class="confirmation-btn" id="submit-after-share">
-                <i class="fas fa-check-circle"></i> Complete Payment Request
+                <i class="fas fa-check-circle"></i> Submit After Sharing
             </button>
         </div>
     </div>
@@ -906,9 +916,8 @@
                 hasShared = true;
                 document.getElementById("share-tracking").style.display = 'block';
                 document.querySelector(".payment-status").innerHTML = `
-                    <p><i class="fas fa-check-circle" style="color: #27ae60;"></i> Payment Ready!</p>
+                    <p><strong>Pending</strong></p>
                     <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
-                    <p>Click below to submit your payment request</p>
                 `;
                 document.getElementById("submit-after-share").style.display = 'block';
             }
@@ -962,7 +971,7 @@
                 document.getElementById("share-tracking").style.display = 'none';
                 document.getElementById("submit-after-share").style.display = 'none';
                 document.querySelector(".payment-status").innerHTML = `
-                    <p><i class="fas fa-clock"></i> Payment Status: Pending share completion</p>
+                    <p><strong>Pending</strong></p>
                     <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
                 `;
                 
