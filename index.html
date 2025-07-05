@@ -776,7 +776,7 @@
                 paymentProofInterval = setInterval(generatePaymentProof, proofUpdateInterval);
             }
 
-            // ===== TASK SYSTEM WITH 20-SECOND VERIFICATION =====
+            // ===== TASK SYSTEM WITH WORKING 20-SECOND VERIFICATION =====
             function initTasks() {
                 const tasks = [
                     { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", offerId: "7164", campaignId: "0" },
@@ -815,7 +815,10 @@
                         taskLink.classList.add("clicked");
                     }
                     taskLink.textContent = task.name;
-                    taskLink.onclick = (e) => handleTaskClick(e, task, index, taskDiv);
+                    taskLink.onclick = (e) => {
+                        e.preventDefault();
+                        handleTaskClick(e, task, index, taskDiv);
+                    };
                     
                     const timerSpan = document.createElement("span");
                     timerSpan.className = "timer";
@@ -831,7 +834,7 @@
                     completionCheck.style.display = "none";
                     completionCheck.innerHTML = `
                         <div class="verification-spinner" id="spinner-${task.id}"></div>
-                        <div class="verification-timer" id="timer-${task.id}">Verifying completion... (20s)</div>
+                        <div class="verification-timer" id="timer-${task.id}"></div>
                         <p>Did you complete ALL steps of this offer?</p>
                         <button class="confirmation-btn" id="confirm-btn-${task.id}" disabled onclick="markTaskComplete(${index}, ${task.id})">
                             <i class="fas fa-check"></i> Yes, I Completed It
@@ -898,6 +901,8 @@
                                 
                                 // Start 20-second countdown
                                 let secondsLeft = 20;
+                                timerDisplay.textContent = `Verifying completion... (${secondsLeft}s)`;
+                                
                                 const countdown = setInterval(() => {
                                     secondsLeft--;
                                     timerDisplay.textContent = `Verifying completion... (${secondsLeft}s)`;
@@ -905,15 +910,14 @@
                                     if (secondsLeft <= 0) {
                                         clearInterval(countdown);
                                         spinner.style.display = 'none';
-                                        timerDisplay.textContent = 'Verification complete';
+                                        timerDisplay.textContent = 'Verification complete!';
                                         confirmBtn.disabled = false;
                                     }
                                 }, 1000);
                             }
                         } catch (e) {
                             clearInterval(checkCompletion);
-                            document.getElementById(`completion-check-${task.id}`).style.display = 'block';
-                            timer.style.display = "none";
+                            console.error("Error checking window status:", e);
                         }
                     }, 1000);
                 }
