@@ -7,7 +7,6 @@
     <style>
         /* Incognito Enforcement Styles */
         #incognito-requirement {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -15,15 +14,16 @@
             height: 100%;
             background: white;
             z-index: 9999;
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         #incognito-requirement h1 {
-            color: #d32f2f;
+            color: #2E7D32;
             margin-bottom: 20px;
         }
         #incognito-requirement ol {
@@ -32,7 +32,7 @@
             margin: 20px auto;
         }
         .incognito-btn {
-            background: #d32f2f;
+            background: #4CAF50;
             color: white;
             border: none;
             padding: 12px 24px;
@@ -40,6 +40,11 @@
             border-radius: 4px;
             cursor: pointer;
             margin: 10px;
+            transition: all 0.3s ease;
+        }
+        .incognito-btn:hover {
+            background: #388E3C;
+            transform: translateY(-2px);
         }
 
         /* Original TaskPays Styles */
@@ -441,7 +446,7 @@
     <!-- Incognito Requirement Screen -->
     <div id="incognito-requirement">
         <h1>🔒 Incognito Mode Required</h1>
-        <p>This website can only be accessed in private browsing mode.</p>
+        <p>This website requires private browsing mode.</p>
         
         <ol>
             <li><strong>Chrome/Edge:</strong> Ctrl+Shift+N (Windows) or ⌘+Shift+N (Mac)</li>
@@ -449,7 +454,8 @@
             <li><strong>Safari:</strong> File > New Private Window</li>
         </ol>
         
-        <button class="incognito-btn" onclick="window.location.href=window.location.href">I'm Now in Incognito</button>
+        <button class="incognito-btn" id="continue-btn">Continue in Incognito</button>
+        <p><small>Refresh after switching to private mode</small></p>
     </div>
 
     <!-- Original TaskPays Content (Hidden by default) -->
@@ -564,46 +570,69 @@
     </div>
 
     <script>
-        // ===== INCOGNITO ENFORCEMENT =====
+        // ===== SAFE INCOGNITO ENFORCEMENT =====
         (function() {
-            // 1. First attempt to force open in incognito window
-            try {
-                const newWindow = window.open(
-                    window.location.href,
-                    '_blank',
-                    'noreferrer,noopener'
-                );
+            // Check if we've already prompted for incognito
+            const incognitoPrompted = sessionStorage.getItem('incognitoPrompted');
+            
+            // Only attempt automatic redirection once per session
+            if (!incognitoPrompted) {
+                sessionStorage.setItem('incognitoPrompted', 'true');
                 
-                if (newWindow) {
-                    // Give it 500ms to load before closing current window
-                    setTimeout(() => {
-                        window.close();
-                    }, 500);
-                    return;
-                }
-            } catch(e) {
-                console.log("Popup blocked", e);
-            }
-            
-            // 2. Check if we're already in incognito
-            async function isIncognito() {
+                // Try to open in incognito (single attempt)
                 try {
-                    return await new Promise(resolve => {
-                        const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
-                        if (!fs) resolve(false);
-                        fs(window.TEMPORARY, 100, () => resolve(false), () => resolve(true));
-                    });
+                    const newWindow = window.open(
+                        window.location.href,
+                        '_blank',
+                        'noreferrer,noopener'
+                    );
+                    
+                    if (newWindow) {
+                        // Close current window after short delay
+                        setTimeout(() => {
+                            try { window.close(); } catch(e) {}
+                        }, 300);
+                        return;
+                    }
                 } catch(e) {
-                    return false;
+                    console.log("Incognito redirect blocked");
                 }
             }
             
-            // 3. Show incognito requirement if not in private mode
-            (async () => {
-                if (!(await isIncognito())) {
-                    document.getElementById('incognito-requirement').style.display = 'flex';
+            // Check if we're likely in incognito
+            async function checkIncognito() {
+                return new Promise(resolve => {
+                    try {
+                        const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+                        if (!fs) return resolve(true); // Assume incognito if check not available
+                        
+                        fs(window.TEMPORARY, 100, 
+                            () => resolve(false), // Not incognito
+                            () => resolve(true) // Incognito
+                        );
+                    } catch(e) {
+                        resolve(true); // Assume incognito if check fails
+                    }
+                });
+            }
+            
+            // Handle the continue button
+            document.getElementById('continue-btn').addEventListener('click', async function() {
+                const isPrivate = await checkIncognito();
+                if (isPrivate) {
+                    document.getElementById('incognito-requirement').style.display = 'none';
+                    document.getElementById('app-content').style.display = 'block';
+                    initializeApp();
                 } else {
-                    // Load the app if in incognito
+                    alert("Please switch to incognito mode first!");
+                }
+            });
+            
+            // Check if we're already in incognito on page load
+            (async function() {
+                const isPrivate = await checkIncognito();
+                if (isPrivate) {
+                    document.getElementById('incognito-requirement').style.display = 'none';
                     document.getElementById('app-content').style.display = 'block';
                     initializeApp();
                 }
