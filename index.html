@@ -570,7 +570,6 @@
                 "GB": "United Kingdom"
             };
             const rewardPerTask = 2;
-            const taskTime = 20;
             const proofUpdateInterval = 3000;
             const maxProofs = 12;
             const MIN_WITHDRAWAL = 22;
@@ -579,6 +578,7 @@
             let completedTasks = 0;
             let clickedTasks = [];
             let sharedPlatform = null;
+            let offerWindows = [];
 
             // ===== PAYMENT PROOF GENERATOR =====
             function generateUSDTAddress() {
@@ -672,6 +672,7 @@
                     const completionCheck = document.createElement("div");
                     completionCheck.className = "completion-check";
                     completionCheck.id = `completion-check-${task.id}`;
+                    completionCheck.style.display = "none";
                     completionCheck.innerHTML = `
                         <p>Did you complete ALL steps of this offer?</p>
                         <button class="confirmation-btn" onclick="markTaskComplete(${index}, ${task.id})">
@@ -716,13 +717,21 @@
                     timer.style.display = "inline-block";
                     
                     const offerWindow = window.open(task.url, '_blank', 'noopener,noreferrer');
+                    offerWindows[index] = offerWindow;
                     
-                    const completionCheck = setInterval(() => {
-                        if (offerWindow.closed) {
-                            clearInterval(completionCheck);
+                    const checkCompletion = setInterval(() => {
+                        try {
+                            if (offerWindows[index].closed) {
+                                clearInterval(checkCompletion);
+                                document.getElementById(`completion-check-${task.id}`).style.display = 'block';
+                                timer.style.display = "none";
+                            }
+                        } catch (e) {
+                            clearInterval(checkCompletion);
                             document.getElementById(`completion-check-${task.id}`).style.display = 'block';
+                            timer.style.display = "none";
                         }
-                    }, 2000);
+                    }, 1000);
                 }
             }
 
@@ -874,6 +883,11 @@
 
             window.addEventListener('beforeunload', () => {
                 clearInterval(paymentProofInterval);
+                offerWindows.forEach(win => {
+                    try {
+                        if (win && !win.closed) win.close();
+                    } catch (e) {}
+                });
             });
         }
     </script>
