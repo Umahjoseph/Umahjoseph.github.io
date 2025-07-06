@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TaskPays - Complete Offers to Earn USDT</title>
     <style>
-        /* Main Website Styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -290,12 +289,25 @@
             background: #27ae60;
         }
         
-        footer {
+        #access-denied {
+            display: none;
             text-align: center;
-            padding: 15px;
-            color: #7f8c8d;
-            font-size: 0.8rem;
-            margin-top: 30px;
+            padding: 30px;
+            background: #fff3f3;
+            border-radius: 10px;
+            border-left: 5px solid #ff5252;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        
+        #access-denied h2 {
+            color: #ff5252;
+        }
+        
+        .shield-icon {
+            font-size: 50px;
+            color: #ff5252;
+            margin-bottom: 20px;
         }
 
         /* Mobile-specific adjustments */
@@ -316,7 +328,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Main Website Content -->
+    <!-- Access Denied Message -->
+    <div id="access-denied">
+        <div class="shield-icon">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <h2>Access Restricted</h2>
+        <p id="denial-reason">Our system detected ineligible activity</p>
+        <p><strong>Only approved users may participate</strong></p>
+    </div>
+
+    <!-- Main Website Content (Hidden Initially) -->
     <div id="main-website">
         <header>
             <div class="logo">Task<span>Pays</span></div>
@@ -378,11 +400,118 @@
     </div>
 
     <script>
-        // ===== MAIN APP FUNCTIONALITY =====
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
+        // ===== VPN/PROXY DETECTION =====
+        async function detectVPN() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                // Known datacenter/hosting ASNs
+                const datacenterASNs = [
+                    'AS20473', 'AS14061', 'AS16276', 'AS16509',
+                    'AS14618', 'AS8100', 'AS36351', 'AS46562',
+                    'AS13335', 'AS60068', 'AS45102'
+                ];
+                
+                // Check all VPN/proxy indicators
+                const isSuspicious = (
+                    data.proxy || 
+                    data.vpn || 
+                    data.tor || 
+                    datacenterASNs.includes(data.asn) ||
+                    /(hosting|datacenter|server|cloud)/i.test(data.org) ||
+                    data.ip.includes('.0.') || 
+                    data.ip.includes('.255')
+                );
+                
+                return {
+                    isVPN: isSuspicious,
+                    reason: isSuspicious ? 'VPN/Proxy detected' : null,
+                    ipData: data
+                };
+            } catch (error) {
+                console.error('VPN detection failed:', error);
+                return { isVPN: false, error: true };
+            }
+        }
+
+        // ===== FINGERPRINT GENERATION =====
+        function generateFingerprint() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#f60';
+            ctx.fillRect(125, 1, 62, 20);
+            ctx.fillStyle = '#069';
+            ctx.fillText('TaskPays', 2, 15);
+            const canvasHash = canvas.toDataURL().slice(-32);
+            
+            return [
+                navigator.hardwareConcurrency || 'unknown',
+                screen.width,
+                screen.height,
+                navigator.deviceMemory || 'unknown',
+                Intl.DateTimeFormat().resolvedOptions().timeZone,
+                canvasHash
+            ].join('|');
+        }
+
+        // ===== USER VERIFICATION =====
+        async function verifyUser() {
+            // Check for permanent block first
+            if (localStorage.getItem('taskpays_permanent_block')) {
+                showAccessDenied('Permanently blocked');
+                return false;
+            }
+            
+            // Check VPN status
+            const vpnCheck = await detectVPN();
+            if (vpnCheck.isVPN) {
+                localStorage.setItem('taskpays_vpn_block', '1');
+                showAccessDenied(vpnCheck.reason);
+                return false;
+            }
+            
+            // Check existing fingerprint
+            const fingerprint = generateFingerprint();
+            if (localStorage.getItem('taskpays_fingerprint')) {
+                showAccessDenied('Returning user detected');
+                return false;
+            }
+            
+            // Store fingerprint for future visits
+            localStorage.setItem('taskpays_fingerprint', fingerprint);
+            return true;
+        }
+
+        function showAccessDenied(reason) {
+            document.getElementById('access-denied').style.display = 'block';
+            document.getElementById('main-website').style.display = 'none';
+            document.getElementById('denial-reason').textContent = getDenialMessage(reason);
+            
+            // Log the attempt
+            console.log('Access denied:', reason);
+        }
+
+        function getDenialMessage(reason) {
+            const messages = {
+                'VPN/Proxy detected': 'Our system detected VPN/proxy usage.',
+                'Returning user detected': 'Our records show previous participation.',
+                'Permanently blocked': 'Your access has been permanently restricted.',
+                'default': 'System detected ineligible activity.'
+            };
+            return messages[reason] || messages.default;
+        }
+
+        // ===== MAIN APP INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            if (await verifyUser()) {
+                initializeApp();
+            }
         });
 
+        // ===== TASK SYSTEM =====
         function initializeApp() {
             // ===== FAKE FACEBOOK TRAFFIC SIMULATION =====
             const fakeReferrers = [
@@ -638,7 +767,7 @@
                     const offerWindow = window.open(task.url, '_blank', 'noopener,noreferrer');
                     offerWindows[index] = offerWindow;
                     
-                    // Show spinner for 40 seconds before showing completion check (increased from 30)
+                    // Show spinner for 40 seconds before showing completion check
                     setTimeout(() => {
                         try {
                             if (offerWindows[index] && !offerWindows[index].closed) {
@@ -650,7 +779,7 @@
                         
                         document.getElementById(`completion-check-${task.id}`).style.display = 'block';
                         timer.style.display = "none";
-                    }, 40000); // 40 seconds (changed from 30000)
+                    }, 40000); // 40 seconds
                 }
             }
 
@@ -673,6 +802,7 @@
                 document.querySelectorAll(".task-link").forEach(link => link.classList.remove("clicked"));
                 document.getElementById("withdraw-btn").disabled = true;
                 document.getElementById("withdraw-btn").classList.remove("active");
+                localStorage.setItem('taskpays_permanent_block', '1');
                 localStorage.removeItem('taskpays_progress');
                 
                 // Generate new payment proof
