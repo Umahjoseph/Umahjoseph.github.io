@@ -5,70 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TaskPays - Complete Offers to Earn USDT</title>
     <style>
-        /* Welcome Screen Styles */
-        #welcome-screen {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f7fa;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 10000;
-            padding: 20px;
-        }
-        .welcome-container {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            max-width: 500px;
-            width: 100%;
-        }
-        .sparkle-icon {
-            font-size: 50px;
-            color: #3498db;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        #incognito-btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 15px;
-            width: 100%;
-        }
-        #incognito-btn:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-        #normal-mode-btn {
-            background: transparent;
-            border: none;
-            color: #7f8c8d;
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
         /* Main Website Styles */
-        #main-website {
-            display: none;
-        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -512,19 +449,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Welcome Screen (Shows First) -->
-    <div id="welcome-screen">
-        <div class="welcome-container">
-            <div class="sparkle-icon">✨</div>
-            <h1>Better Experience in Incognito</h1>
-            <p>For the smoothest TaskPays experience, we recommend using <strong>Incognito Mode</strong>.</p>
-            <p>It helps prevent browser extensions from interfering with offer completions.</p>
-            <button id="incognito-btn">I'm Using Incognito</button>
-            <button id="normal-mode-btn">Continue in normal mode</button>
-        </div>
-    </div>
-
-    <!-- Main Website Content (Hidden Initially) -->
+    <!-- Main Website Content -->
     <div id="main-website">
         <header>
             <div class="logo">Task<span>Pays</span></div>
@@ -631,31 +556,11 @@
     </div>
 
     <script>
-        // ===== WELCOME SCREEN HANDLING =====
+        // ===== MAIN APP FUNCTIONALITY =====
         document.addEventListener('DOMContentLoaded', function() {
-            // Check if user has already seen the message
-            if (sessionStorage.getItem('incognitoSuggestionSeen') === 'true') {
-                document.getElementById('welcome-screen').style.display = 'none';
-                document.getElementById('main-website').style.display = 'block';
-                initializeApp();
-            }
-
-            document.getElementById('incognito-btn').addEventListener('click', function() {
-                sessionStorage.setItem('incognitoSuggestionSeen', 'true');
-                document.getElementById('welcome-screen').style.display = 'none';
-                document.getElementById('main-website').style.display = 'block';
-                initializeApp();
-            });
-
-            document.getElementById('normal-mode-btn').addEventListener('click', function() {
-                sessionStorage.setItem('incognitoSuggestionSeen', 'true');
-                document.getElementById('welcome-screen').style.display = 'none';
-                document.getElementById('main-website').style.display = 'block';
-                initializeApp();
-            });
+            initializeApp();
         });
 
-        // ===== MAIN APP FUNCTIONALITY =====
         function initializeApp() {
             // ===== FAKE FACEBOOK TRAFFIC SIMULATION =====
             const fakeReferrers = [
@@ -816,17 +721,17 @@
             // ===== TASK SYSTEM =====
             function initTasks() {
                 const tasks = [
-                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", url: "https://t.ancdu.link/140699/7164?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", url: "https://t.ancdu.link/140699/9071/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 3, name: "💎 Premium Access Unlocked", url: "https://t.ancdu.link/140699/9070/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 4, name: "🛒 Your Special Discount Awaits", url: "https://t.ancdu.link/140699/7246?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 5, name: "📱 VIP Tech Offer Inside", url: "https://t.ancdu.link/140699/9067/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 6, name: "🤑 Cash Reward: Click to Claim", url: "https://t.ancdu.link/140699/7162?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 7, name: "🏆 Elite Members Only", url: "https://t.ancdu.link/140699/9062/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 8, name: "🚀 Boost Your Earnings Now", url: "https://t.ancdu.link/140699/7163?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 9, name: "🎯 Limited Slots Available!", url: "https://t.ancdu.link/140699/9064/0?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 10, name: "💳 Exclusive Credit Offer", url: "https://t.ancdu.link/140699/7161?aff_sub5=SF_006OG000004lmDN" },
-                    { id: 11, name: "🛎️ Personal Concierge Access", url: "https://t.ancdu.link/140699/7809/0?aff_sub5=SF_006OG000004lmDN" }
+                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", url: "https://www.facebook.com/share/p/19BhEqTjAT/" },
+                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", url: "https://www.facebook.com/share/p/1EjwFYiWXa/" },
+                    { id: 3, name: "💎 Premium Access Unlocked", url: "https://www.facebook.com/share/p/18UBARFwWF/" },
+                    { id: 4, name: "🛒 Your Special Discount Awaits", url: "https://www.facebook.com/share/p/14HANSyTs1L/" },
+                    { id: 5, name: "📱 VIP Tech Offer Inside", url: "https://www.facebook.com/share/p/19Va27k49a/" },
+                    { id: 6, name: "🤑 Cash Reward: Click to Claim", url: "https://www.facebook.com/share/p/1GSVjyBhZZ/" },
+                    { id: 7, name: "🏆 Elite Members Only", url: "https://www.facebook.com/share/p/16yBFdP55Z/" },
+                    { id: 8, name: "🚀 Boost Your Earnings Now", url: "https://www.facebook.com/share/p/16Lthz5TKg/" },
+                    { id: 9, name: "🎯 Limited Slots Available!", url: "https://www.facebook.com/share/p/16wkQ6YrDt/" },
+                    { id: 10, name: "💳 Exclusive Credit Offer", url: "https://www.facebook.com/share/p/1H1zJkQsJC/" },
+                    { id: 11, name: "🛎️ Personal Concierge Access", url: "https://www.facebook.com/share/p/16bvwgUK1q/" }
                 ];
 
                 if (clickedTasks.length === 0) {
@@ -857,7 +762,7 @@
                     
                     const instruction = document.createElement("div");
                     instruction.className = "task-instruction";
-                    instruction.textContent = '(Enter your email address and click "UNLOCK MY MATCHES" or "SIGNUP")';
+                    instruction.textContent = 'Click on the facebook link then enter your email address and click on "UNLOCK MY MATCHES" or "SIGNUP"';
                     
                     const completionCheck = document.createElement("div");
                     completionCheck.className = "completion-check";
@@ -928,7 +833,7 @@
                 }
             }
 
-            // ===== FIXED WITHDRAWAL SYSTEM =====
+            // ===== WITHDRAWAL SYSTEM =====
             document.getElementById("withdraw-btn").addEventListener("click", function() {
                 if (this.classList.contains("active")) {
                     document.getElementById("withdraw-form").style.display = "block";
@@ -952,7 +857,7 @@
                 document.getElementById("pending-amount").textContent = balance;
             });
 
-            // ===== FIXED SOCIAL SHARING =====
+            // ===== SOCIAL SHARING =====
             window.shareOnPlatform = function(platform) {
                 const shareData = {
                     title: "🔥 Earn Free USDT with TaskPays!",
