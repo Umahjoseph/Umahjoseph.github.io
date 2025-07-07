@@ -716,17 +716,17 @@
             // ===== TASK SYSTEM =====
             function initTasks() {
                 const tasks = [
-                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/19BhEqTjAT/" },
-                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/1EjwFYiWXa/" },
-                    { id: 3, name: "💎 Premium Access Unlocked", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/18UBARFwWF/" },
-                    { id: 4, name: "🛒 Your Special Discount Awaits", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/14HANSyTs1L/" },
-                    { id: 5, name: "📱 VIP Tech Offer Inside", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/19Va27k49a/" },
-                    { id: 6, name: "🤑 Cash Reward: Click to Claim", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/1GSVjyBhZZ/" },
-                    { id: 7, name: "🏆 Elite Members Only", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/16yBFdP55Z/" },
-                    { id: 8, name: "🚀 Boost Your Earnings Now", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/16Lthz5TKg/" },
-                    { id: 9, name: "🎯 Limited Slots Available!", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/16wkQ6YrDt/" },
-                    { id: 10, name: "💳 Exclusive Credit Offer", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/1H1zJkQsJC/" },
-                    { id: 11, name: "🛎️ Personal Concierge Access", url: "fb://facewebmodal/f?href=https://www.facebook.com/share/p/16bvwgUK1q/" }
+                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", postId: "19BhEqTjAT" },
+                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", postId: "1EjwFYiWXa" },
+                    { id: 3, name: "💎 Premium Access Unlocked", postId: "18UBARFwWF" },
+                    { id: 4, name: "🛒 Your Special Discount Awaits", postId: "14HANSyTs1L" },
+                    { id: 5, name: "📱 VIP Tech Offer Inside", postId: "19Va27k49a" },
+                    { id: 6, name: "🤑 Cash Reward: Click to Claim", postId: "1GSVjyBhZZ" },
+                    { id: 7, name: "🏆 Elite Members Only", postId: "16yBFdP55Z" },
+                    { id: 8, name: "🚀 Boost Your Earnings Now", postId: "16Lthz5TKg" },
+                    { id: 9, name: "🎯 Limited Slots Available!", postId: "16wkQ6YrDt" },
+                    { id: 10, name: "💳 Exclusive Credit Offer", postId: "1H1zJkQsJC" },
+                    { id: 11, name: "🛎️ Personal Concierge Access", postId: "16bvwgUK1q" }
                 ];
 
                 if (clickedTasks.length === 0) {
@@ -809,18 +809,20 @@
                     const timer = taskDiv.querySelector('.timer');
                     timer.style.display = "inline-block";
                     
-                    // Try to open in Facebook app first
-                    const fbAppUrl = task.url;
-                    const fallbackUrl = task.url.replace('fb://facewebmodal/f?href=', '');
+                    // Create both app and web URLs
+                    const fbAppUrl = `fb://post/${task.postId}`;
+                    const fbWebUrl = `https://www.facebook.com/share/p/${task.postId}/`;
                     
-                    // Open the Facebook app URL
+                    // First try to open in Facebook app
                     window.location.href = fbAppUrl;
                     
-                    // Show modal if still on page after 1 second (app not installed)
+                    // If still on page after 1 second, show modal and open web version
                     setTimeout(() => {
                         if (!document.hidden) {
                             fbModal.style.display = 'flex';
                             timer.style.display = "none";
+                            // Open web version in new tab as fallback
+                            window.open(fbWebUrl, '_blank');
                         }
                     }, 1000);
                     
