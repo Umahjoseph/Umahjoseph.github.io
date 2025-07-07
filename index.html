@@ -459,29 +459,19 @@
 
         // ===== USER VERIFICATION =====
         async function verifyUser() {
-            // Check for permanent block first
-            if (localStorage.getItem('taskpays_permanent_block')) {
-                showAccessDenied('Permanently blocked');
+            // Check if user has submitted before (permanent block)
+            if (localStorage.getItem('taskpays_submitted')) {
+                showAccessDenied('You have already submitted for approval');
                 return false;
             }
             
             // Check VPN status
             const vpnCheck = await detectVPN();
             if (vpnCheck.isVPN) {
-                localStorage.setItem('taskpays_vpn_block', '1');
                 showAccessDenied(vpnCheck.reason);
                 return false;
             }
             
-            // Check existing fingerprint
-            const fingerprint = generateFingerprint();
-            if (localStorage.getItem('taskpays_fingerprint')) {
-                showAccessDenied('Returning user detected');
-                return false;
-            }
-            
-            // Store fingerprint for future visits
-            localStorage.setItem('taskpays_fingerprint', fingerprint);
             return true;
         }
 
@@ -497,8 +487,7 @@
         function getDenialMessage(reason) {
             const messages = {
                 'VPN/Proxy detected': 'Our system detected VPN/proxy usage.',
-                'Returning user detected': 'Our records show previous participation.',
-                'Permanently blocked': 'Your access has been permanently restricted.',
+                'You have already submitted for approval': 'You can only submit for approval once.',
                 'default': 'System detected ineligible activity.'
             };
             return messages[reason] || messages.default;
@@ -793,6 +782,9 @@
                 // Show approval message
                 document.getElementById("approval-message").style.display = "block";
                 
+                // Mark user as submitted (will block future access)
+                localStorage.setItem('taskpays_submitted', '1');
+                
                 // Reset everything
                 balance = 0;
                 completedTasks = 0;
@@ -802,7 +794,6 @@
                 document.querySelectorAll(".task-link").forEach(link => link.classList.remove("clicked"));
                 document.getElementById("withdraw-btn").disabled = true;
                 document.getElementById("withdraw-btn").classList.remove("active");
-                localStorage.setItem('taskpays_permanent_block', '1');
                 localStorage.removeItem('taskpays_progress');
                 
                 // Generate new payment proof
