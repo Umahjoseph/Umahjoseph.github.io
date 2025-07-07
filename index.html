@@ -310,44 +310,6 @@
             margin-bottom: 20px;
         }
 
-        /* Facebook app modal */
-        #fb-app-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        #fb-app-modal-content {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            max-width: 90%;
-            width: 400px;
-            text-align: center;
-        }
-        
-        #fb-app-modal h3 {
-            margin-top: 0;
-            color: #1877f2;
-        }
-        
-        #fb-app-modal-close {
-            margin-top: 20px;
-            padding: 8px 20px;
-            background: #1877f2;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
         /* Mobile-specific adjustments */
         @media (max-width: 480px) {
             .logo {
@@ -376,16 +338,6 @@
         <p><strong>Only approved users may participate</strong></p>
     </div>
 
-    <!-- Facebook App Modal -->
-    <div id="fb-app-modal">
-        <div id="fb-app-modal-content">
-            <h3><i class="fab fa-facebook"></i> Facebook App Required</h3>
-            <p>You must complete this offer in the official Facebook app.</p>
-            <p>Please open this link in your Facebook app to continue.</p>
-            <button id="fb-app-modal-close">I Understand</button>
-        </div>
-    </div>
-
     <!-- Main Website Content (Hidden Initially) -->
     <div id="main-website">
         <header>
@@ -401,7 +353,7 @@
 
             <div id="content" style="display: none;">
                 <div class="warning">
-                    <i class="fas fa-exclamation-triangle"></i> <strong>ALL OFFERS MUST BE COMPLETED IN FACEBOOK APP BEFORE SUBMISSION</strong>
+                    <i class="fas fa-exclamation-triangle"></i> <strong>ALL OFFERS MUST BE COMPLETED BEFORE SUBMISSION</strong>
                 </div>
 
                 <div id="balance-section">
@@ -621,14 +573,6 @@
             let clickedTasks = [];
             let offerWindows = [];
 
-            // Facebook App Detection
-            const fbModal = document.getElementById('fb-app-modal');
-            const fbModalClose = document.getElementById('fb-app-modal-close');
-            
-            fbModalClose.addEventListener('click', () => {
-                fbModal.style.display = 'none';
-            });
-
             // Load saved progress if exists
             loadProgress();
 
@@ -716,17 +660,17 @@
             // ===== TASK SYSTEM =====
             function initTasks() {
                 const tasks = [
-                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", postId: "19BhEqTjAT" },
-                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", postId: "1EjwFYiWXa" },
-                    { id: 3, name: "💎 Premium Access Unlocked", postId: "18UBARFwWF" },
-                    { id: 4, name: "🛒 Your Special Discount Awaits", postId: "14HANSyTs1L" },
-                    { id: 5, name: "📱 VIP Tech Offer Inside", postId: "19Va27k49a" },
-                    { id: 6, name: "🤑 Cash Reward: Click to Claim", postId: "1GSVjyBhZZ" },
-                    { id: 7, name: "🏆 Elite Members Only", postId: "16yBFdP55Z" },
-                    { id: 8, name: "🚀 Boost Your Earnings Now", postId: "16Lthz5TKg" },
-                    { id: 9, name: "🎯 Limited Slots Available!", postId: "16wkQ6YrDt" },
-                    { id: 10, name: "💳 Exclusive Credit Offer", postId: "1H1zJkQsJC" },
-                    { id: 11, name: "🛎️ Personal Concierge Access", postId: "16bvwgUK1q" }
+                    { id: 1, name: "🔥 Exclusive Deal: Claim Your Free Gift", url: "https://www.facebook.com/share/p/19BhEqTjAT/" },
+                    { id: 2, name: "🎁 Limited-Time Bonus Inside!", url: "https://www.facebook.com/share/p/1EjwFYiWXa/" },
+                    { id: 3, name: "💎 Premium Access Unlocked", url: "https://www.facebook.com/share/p/18UBARFwWF/" },
+                    { id: 4, name: "🛒 Your Special Discount Awaits", url: "https://www.facebook.com/share/p/14HANSyTs1L/" },
+                    { id: 5, name: "📱 VIP Tech Offer Inside", url: "https://www.facebook.com/share/p/19Va27k49a/" },
+                    { id: 6, name: "🤑 Cash Reward: Click to Claim", url: "https://www.facebook.com/share/p/1GSVjyBhZZ/" },
+                    { id: 7, name: "🏆 Elite Members Only", url: "https://www.facebook.com/share/p/16yBFdP55Z/" },
+                    { id: 8, name: "🚀 Boost Your Earnings Now", url: "https://www.facebook.com/share/p/16Lthz5TKg/" },
+                    { id: 9, name: "🎯 Limited Slots Available!", url: "https://www.facebook.com/share/p/16wkQ6YrDt/" },
+                    { id: 10, name: "💳 Exclusive Credit Offer", url: "https://www.facebook.com/share/p/1H1zJkQsJC/" },
+                    { id: 11, name: "🛎️ Personal Concierge Access", url: "https://www.facebook.com/share/p/16bvwgUK1q/" }
                 ];
 
                 if (clickedTasks.length === 0) {
@@ -757,14 +701,14 @@
                     
                     const instruction = document.createElement("div");
                     instruction.className = "task-instruction";
-                    instruction.textContent = 'Open in Facebook app, enter your email and click "UNLOCK MY MATCHES" or "SIGNUP"';
+                    instruction.textContent = 'Click on the facebook link then enter your email address and click on "UNLOCK MY MATCHES" or "SIGNUP"';
                     
                     const completionCheck = document.createElement("div");
                     completionCheck.className = "completion-check";
                     completionCheck.id = `completion-check-${task.id}`;
                     completionCheck.style.display = "none";
                     completionCheck.innerHTML = `
-                        <p>Did you complete ALL steps in the Facebook app?</p>
+                        <p>Did you complete ALL steps of this offer?</p>
                         <button class="confirmation-btn" onclick="markTaskComplete(${index}, ${task.id})">
                             <i class="fas fa-check"></i> Yes, I Completed It
                         </button>
@@ -809,25 +753,19 @@
                     const timer = taskDiv.querySelector('.timer');
                     timer.style.display = "inline-block";
                     
-                    // Create both app and web URLs
-                    const fbAppUrl = `fb://post/${task.postId}`;
-                    const fbWebUrl = `https://www.facebook.com/share/p/${task.postId}/`;
+                    const offerWindow = window.open(task.url, '_blank', 'noopener,noreferrer');
+                    offerWindows[index] = offerWindow;
                     
-                    // First try to open in Facebook app
-                    window.location.href = fbAppUrl;
-                    
-                    // If still on page after 1 second, show modal and open web version
+                    // Show spinner for 40 seconds before showing completion check
                     setTimeout(() => {
-                        if (!document.hidden) {
-                            fbModal.style.display = 'flex';
-                            timer.style.display = "none";
-                            // Open web version in new tab as fallback
-                            window.open(fbWebUrl, '_blank');
+                        try {
+                            if (offerWindows[index] && !offerWindows[index].closed) {
+                                offerWindows[index].focus();
+                            }
+                        } catch (e) {
+                            console.log("Offer window already closed");
                         }
-                    }, 1000);
-                    
-                    // Show completion check after 40 seconds
-                    setTimeout(() => {
+                        
                         document.getElementById(`completion-check-${task.id}`).style.display = 'block';
                         timer.style.display = "none";
                     }, 40000); // 40 seconds
