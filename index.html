@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TaskPays - Complete Offers to Earn USDT</title>
+    <title>TaskPays - Complete Offers to Earn Points</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -232,33 +232,43 @@
         
         .proof-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
             margin-top: 15px;
         }
         
         .proof-item {
-            padding: 12px;
+            padding: 15px;
             background: #f9f9f9;
             border-radius: 6px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            word-break: break-all;
+            border-left: 3px solid #4CAF50;
+        }
+        
+        .proof-header {
+            font-weight: 600;
+            color: #2E7D32;
+            margin-bottom: 8px;
+        }
+        
+        .proof-comment {
+            font-size: 0.9rem;
+            color: #555;
+            padding: 8px;
+            background: #fff;
+            border-radius: 4px;
+            margin-top: 8px;
+            border: 1px solid #eee;
+        }
+        
+        .proof-user {
+            font-weight: 600;
+            color: #3498db;
         }
         
         .proof-time {
             color: #666;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             margin-top: 5px;
-        }
-        
-        .proof-country {
-            display: inline-block;
-            padding: 2px 5px;
-            background: #e3f2fd;
-            border-radius: 3px;
-            font-size: 0.65rem;
-            margin-left: 5px;
         }
         
         .completion-check {
@@ -342,7 +352,7 @@
     <div id="main-website">
         <header>
             <div class="logo">Task<span>Pays</span></div>
-            <p>Complete offers and earn rewards</p>
+            <p>Complete offers and earn Points</p>
         </header>
 
         <div class="container" id="main-content">
@@ -358,11 +368,11 @@
 
                 <div id="balance-section">
                     <div>Your Current Balance:</div>
-                    <div id="balance-amount">$0</div>
-                    <small>Minimum submission: $22</small>
+                    <div id="balance-amount">0 Points</div>
+                    <small>Minimum submission: 22 Points</small>
                 </div>
 
-                <h2 class="section-title">Complete Offers to Earn $2 Each</h2>
+                <h2 class="section-title">Complete Offers to Earn 2 Points Each</h2>
                 
                 <div class="task-grid" id="task-links">
                     <!-- Tasks will be loaded here by JavaScript -->
@@ -384,10 +394,10 @@
                 </div>
 
                 <div class="payment-proof">
-                    <h3 class="section-title"><i class="fas fa-check-circle"></i> Recent Approvals</h3>
-                    <p>Recent approvals for our users:</p>
+                    <h3 class="section-title"><i class="fas fa-comments"></i> Recent User Feedback</h3>
+                    <p>What our users say after completing offers:</p>
                     <div class="proof-grid" id="payment-proofs">
-                        <!-- Payment proofs will appear here -->
+                        <!-- Positive discussions will appear here -->
                     </div>
                 </div>
             </div>
@@ -525,7 +535,7 @@
                     fbclid: `PA${Math.random().toString(36).substring(2, 15)}`,
                     utm_source: "facebook",
                     utm_medium: "social",
-                    utm_campaign: "earn_usdt"
+                    utm_campaign: "earn_points"
                 });
 
                 console.log(`📢 Simulated Facebook click from: ${document.referrer}`);
@@ -543,7 +553,7 @@
                     } else {
                         document.getElementById('content').style.display = 'block';
                         initTasks();
-                        startPaymentProofs();
+                        startDiscussionProofs();
                         simulateFakeClick();
                     }
                 })
@@ -554,20 +564,25 @@
                 });
 
             // ===== CONFIGURATION =====
-            const countryNames = {
-                "AU": "Australia",
-                "CA": "Canada",
-                "IE": "Ireland",
-                "NZ": "New Zealand",
-                "ZA": "South Africa",
-                "US": "United States",
-                "GB": "United Kingdom"
-            };
+            const firstNames = ["John", "Sarah", "Mike", "Emily", "David", "Jessica", "Chris", "Amanda", "James", "Jennifer"];
+            const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson"];
+            const positiveComments = [
+                "This is a good offer to complete and I have received my Points from the Advertiser because I never cheated on the offers.",
+                "I enjoyed completing these tasks, best of its kind and I didn't cheat.",
+                "Legit way to earn Points if you follow the instructions properly!",
+                "Completed all offers honestly and got my Points, thank you!",
+                "At first I was skeptical but it really works if you don't try to cheat.",
+                "Simple tasks that pay well if you're patient and honest.",
+                "My Points arrived exactly as promised after completing all offers.",
+                "Follow the instructions carefully and you'll get your Points.",
+                "I recommend this to anyone looking to earn extra Points online.",
+                "The offers were easy to complete and I got my Points quickly."
+            ];
             const rewardPerTask = 2;
-            const proofUpdateInterval = 3000;
-            const maxProofs = 12;
+            const proofUpdateInterval = 5000;
+            const maxProofs = 8;
             const MIN_WITHDRAWAL = 22;
-            let paymentProofInterval;
+            let discussionInterval;
             let balance = 0;
             let completedTasks = 0;
             let clickedTasks = [];
@@ -593,7 +608,7 @@
                     completedTasks = progress.completedTasks || 0;
                     clickedTasks = progress.clickedTasks || [];
                     
-                    document.getElementById("balance-amount").textContent = `$${balance}`;
+                    document.getElementById("balance-amount").textContent = `${balance} Points`;
                     updateProgress();
                     
                     // Mark completed tasks visually
@@ -608,24 +623,26 @@
                 }
             }
 
-            // ===== PAYMENT PROOF GENERATOR =====
-            function generateUSDTAddress() {
-                const chars = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-                let result = "T";
-                for (let i = 0; i < 33; i++) {
-                    result += chars.charAt(Math.floor(Math.random() * chars.length));
-                }
-                return result;
+            // ===== POSITIVE DISCUSSION GENERATOR =====
+            function generateRandomName() {
+                const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                return `${firstName} ${lastName}`;
             }
 
-            function generatePaymentProof() {
+            function generateRandomComment() {
+                return positiveComments[Math.floor(Math.random() * positiveComments.length)];
+            }
+
+            function generateDiscussionProof() {
                 const proofContainer = document.getElementById("payment-proofs");
                 const proofItem = document.createElement("div");
                 proofItem.className = "proof-item";
                 
-                const randomCountryCode = allowedCountries[Math.floor(Math.random() * allowedCountries.length)];
-                const amount = (Math.floor(Math.random() * 5) + 1) * 10;
+                const points = (Math.floor(Math.random() * 5) + 1) * 10 + 2;
                 const minutesAgo = Math.floor(Math.random() * 11);
+                const userName = generateRandomName();
+                const userComment = generateRandomComment();
                 
                 let timeText;
                 if (minutesAgo === 0) {
@@ -637,10 +654,9 @@
                 }
                 
                 proofItem.innerHTML = `
-                    Approved $${amount} for:<br>
-                    <strong>User_${Math.floor(Math.random() * 10000)}</strong>
-                    <span class="proof-country">${countryNames[randomCountryCode]}</span>
+                    <div class="proof-header">Received ${points} Points</div>
                     <div class="proof-time">${timeText}</div>
+                    <div class="proof-comment"><span class="proof-user">${userName}:</span> ${userComment}</div>
                 `;
                 
                 proofContainer.insertBefore(proofItem, proofContainer.firstChild);
@@ -650,11 +666,11 @@
                 }
             }
 
-            function startPaymentProofs() {
-                for (let i = 0; i < 6; i++) {
-                    generatePaymentProof();
+            function startDiscussionProofs() {
+                for (let i = 0; i < 4; i++) {
+                    generateDiscussionProof();
                 }
-                paymentProofInterval = setInterval(generatePaymentProof, proofUpdateInterval);
+                discussionInterval = setInterval(generateDiscussionProof, proofUpdateInterval);
             }
 
             // ===== TASK SYSTEM =====
@@ -739,7 +755,7 @@
                         document.getElementById(`completion-check-${taskId}`).style.display = 'none';
                         
                         balance += rewardPerTask;
-                        balanceEl.textContent = `$${balance}`;
+                        balanceEl.textContent = `${balance} Points`;
                         completedTasks++;
                         updateProgress();
                         saveProgress();
@@ -775,7 +791,7 @@
             // ===== SUBMISSION SYSTEM =====
             document.getElementById("withdraw-btn").addEventListener("click", function() {
                 if (balance < MIN_WITHDRAWAL) {
-                    alert(`❌ Minimum submission is $${MIN_WITHDRAWAL}. Your balance: $${balance}`);
+                    alert(`❌ Minimum submission is ${MIN_WITHDRAWAL} Points. Your balance: ${balance} Points`);
                     return;
                 }
                 
@@ -789,19 +805,19 @@
                 balance = 0;
                 completedTasks = 0;
                 clickedTasks = clickedTasks.map(() => false);
-                document.getElementById("balance-amount").textContent = "$0";
+                document.getElementById("balance-amount").textContent = "0 Points";
                 document.getElementById("status").textContent = "0/11 offers completed.";
                 document.querySelectorAll(".task-link").forEach(link => link.classList.remove("clicked"));
                 document.getElementById("withdraw-btn").disabled = true;
                 document.getElementById("withdraw-btn").classList.remove("active");
                 localStorage.removeItem('taskpays_progress');
                 
-                // Generate new payment proof
-                generatePaymentProof();
+                // Generate new discussion proof
+                generateDiscussionProof();
             });
 
             window.addEventListener('beforeunload', () => {
-                clearInterval(paymentProofInterval);
+                clearInterval(discussionInterval);
                 offerWindows.forEach(win => {
                     try {
                         if (win && !win.closed) win.close();
