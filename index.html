@@ -258,11 +258,22 @@
             border-radius: 4px;
             margin-top: 8px;
             border: 1px solid #eee;
+            font-style: italic;
         }
         
         .proof-user {
             font-weight: 600;
             color: #3498db;
+        }
+        
+        .proof-country {
+            display: inline-block;
+            padding: 2px 6px;
+            background: #e3f2fd;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 6px;
+            color: #1a73e8;
         }
         
         .proof-time {
@@ -544,6 +555,15 @@
 
             // ===== GEO RESTRICTION =====
             const allowedCountries = ["AU", "CA", "IE", "NZ", "ZA", "US", "GB"];
+            const countryNames = {
+                "AU": "Australia",
+                "CA": "Canada",
+                "IE": "Ireland",
+                "NZ": "New Zealand",
+                "ZA": "South Africa",
+                "US": "USA",
+                "GB": "UK"
+            };
             
             fetch('https://ipapi.co/json/')
                 .then(response => response.json())
@@ -565,19 +585,43 @@
 
             // ===== CONFIGURATION =====
             const firstNames = ["John", "Sarah", "Mike", "Emily", "David", "Jessica", "Chris", "Amanda", "James", "Jennifer"];
-            const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson"];
-            const positiveComments = [
-                "This is a good offer to complete and I have received my Points from the Advertiser because I never cheated on the offers.",
-                "I enjoyed completing these tasks, best of its kind and I didn't cheat.",
-                "Legit way to earn Points if you follow the instructions properly!",
-                "Completed all offers honestly and got my Points, thank you!",
-                "At first I was skeptical but it really works if you don't try to cheat.",
-                "Simple tasks that pay well if you're patient and honest.",
-                "My Points arrived exactly as promised after completing all offers.",
-                "Follow the instructions carefully and you'll get your Points.",
-                "I recommend this to anyone looking to earn extra Points online.",
-                "The offers were easy to complete and I got my Points quickly."
-            ];
+            const countryComments = {
+                "AU": [
+                    "Fair dinkum! Did all the offers proper like and got my 22 Points, no worries mate!",
+                    "Stoked! The advertisers verified my screenshots and the Points came through beaut!",
+                    "No mucking about - did it all legit and got paid, good as gold!"
+                ],
+                "CA": [
+                    "Eh! Completed everything and sent my screenshots, got my 22 Points right quick!",
+                    "Legit surprised how fast the Points came after verification, beauty!",
+                    "No funny business, just honest work and got my Points, hoser!"
+                ],
+                "IE": [
+                    "Grand so! Did the lot and the advertisers gave me my 22 Points, fair play!",
+                    "Deadly! Got my Points after they checked my screenshots, sound!",
+                    "No messing, did it all proper and the Points came through, brilliant!"
+                ],
+                "NZ": [
+                    "Choice bro! Did the offers proper and got my 22 Points, sweet as!",
+                    "Mean! Sent my screenshots and the Points arrived, good on ya!",
+                    "No. 8 wire approach - did it right and got paid, chur!"
+                ],
+                "ZA": [
+                    "Lekker! Did all the offers and got my 22 Points, no hassles!",
+                    "Howzit! The verification was quick and my Points came through, sharp!",
+                    "No funny business, just did the work and got paid, yebo!"
+                ],
+                "US": [
+                    "Awesome! Completed all offers, sent screenshots, and bam - 22 Points!",
+                    "No cap! Did everything right and the Points hit my account, let's go!",
+                    "For real though, followed the rules and got paid, easy peasy!"
+                ],
+                "GB": [
+                    "Brilliant! Did the lot properly and got my 22 Points, proper job!",
+                    "Bloody hell! Verification was quick and the Points came through, lovely!",
+                    "No dodgy business, just honest work and got paid, spot on!"
+                ]
+            };
             const rewardPerTask = 2;
             const proofUpdateInterval = 5000;
             const maxProofs = 8;
@@ -625,13 +669,12 @@
 
             // ===== POSITIVE DISCUSSION GENERATOR =====
             function generateRandomName() {
-                const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-                const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-                return `${firstName} ${lastName}`;
+                return firstNames[Math.floor(Math.random() * firstNames.length)];
             }
 
-            function generateRandomComment() {
-                return positiveComments[Math.floor(Math.random() * positiveComments.length)];
+            function generateCountryComment(country) {
+                const comments = countryComments[country];
+                return comments[Math.floor(Math.random() * comments.length)];
             }
 
             function generateDiscussionProof() {
@@ -639,10 +682,11 @@
                 const proofItem = document.createElement("div");
                 proofItem.className = "proof-item";
                 
-                const points = (Math.floor(Math.random() * 5) + 1) * 10 + 2;
-                const minutesAgo = Math.floor(Math.random() * 11);
+                const countryCode = allowedCountries[Math.floor(Math.random() * allowedCountries.length)];
+                const countryName = countryNames[countryCode];
                 const userName = generateRandomName();
-                const userComment = generateRandomComment();
+                const userComment = generateCountryComment(countryCode);
+                const minutesAgo = Math.floor(Math.random() * 11);
                 
                 let timeText;
                 if (minutesAgo === 0) {
@@ -654,7 +698,7 @@
                 }
                 
                 proofItem.innerHTML = `
-                    <div class="proof-header">Received ${points} Points</div>
+                    <div class="proof-header">Received 22 Points <span class="proof-country">${countryName}</span></div>
                     <div class="proof-time">${timeText}</div>
                     <div class="proof-comment"><span class="proof-user">${userName}:</span> ${userComment}</div>
                 `;
@@ -725,7 +769,7 @@
                     completionCheck.style.display = "none";
                     completionCheck.innerHTML = `
                         <p>Did you complete ALL steps of this offer?</p>
-                        <button class="confirmation-btn" onclick="markTaskComplete(${index}, ${task.id})">
+                        <button class="confirmation-btn" data-index="${index}" data-taskid="${task.id}">
                             <i class="fas fa-check"></i> Yes, I Completed It
                         </button>
                     `;
@@ -735,6 +779,15 @@
                     taskDiv.appendChild(instruction);
                     taskDiv.appendChild(completionCheck);
                     taskContainer.appendChild(taskDiv);
+                });
+
+                // Fixed confirmation button event listeners
+                document.querySelectorAll('.confirmation-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        const taskId = this.getAttribute('data-taskid');
+                        markTaskComplete(index, taskId);
+                    });
                 });
 
                 function updateProgress() {
@@ -748,7 +801,7 @@
                     saveProgress();
                 }
 
-                window.markTaskComplete = function(index, taskId) {
+                function markTaskComplete(index, taskId) {
                     if (!clickedTasks[index]) {
                         clickedTasks[index] = true;
                         document.querySelectorAll('.task-link')[index].classList.add('clicked');
@@ -760,7 +813,10 @@
                         updateProgress();
                         saveProgress();
                     }
-                };
+                }
+
+                // Make function available globally
+                window.markTaskComplete = markTaskComplete;
             }
 
             function handleTaskClick(e, task, index, taskDiv) {
