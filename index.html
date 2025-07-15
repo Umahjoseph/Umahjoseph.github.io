@@ -1,550 +1,391 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Pro Binary Signals Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Deriv Trading Bot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
     <style>
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background: #1e1e2f;
-            color: white;
-            height: 100vh;
-            overflow: hidden;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
         }
-        #dashboard {
+        .container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto 1fr 1fr;
-            gap: 10px;
-            padding: 10px;
-            height: calc(100vh - 20px);
-            box-sizing: border-box;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
         .panel {
-            background: #2a2a3f;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            overflow: auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #3a3a5f;
-            padding-bottom: 10px;
+        .dashboard {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
         }
-        h2 {
-            margin: 0;
-            color: #f0f0f0;
-            font-size: 16px;
-        }
-        select, button, input {
-            padding: 8px 12px;
-            border-radius: 4px;
-            border: none;
-            background: #3a3a5f;
+        .metric {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
             color: white;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 300px !important;
         }
         button {
             background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
         }
-        button.danger {
-            background: #F44336;
+        button:hover {
+            background: #45a049;
         }
-        button:hover { opacity: 0.9; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #3a3a5f;
-        }
-        th { 
-            background: #3a3a5f;
-            font-weight: normal;
-        }
-        .signal {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 12px;
-        }
-        .signal.buy {
-            background: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-            border: 1px solid #4CAF50;
-        }
-        .signal.sell {
-            background: rgba(244, 67, 54, 0.2);
-            color: #F44336;
-            border: 1px solid #F44336;
-        }
-        .confidence {
-            display: inline-block;
-            width: 60px;
-            height: 8px;
-            background: #333;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-left: 5px;
-        }
-        .confidence-bar {
-            height: 100%;
-            background: linear-gradient(to right, #4CAF50, #8BC34A);
-        }
-        .digit-display {
+        .prediction {
             font-size: 24px;
             font-weight: bold;
-            text-align: center;
-            margin: 10px 0;
-        }
-        .digit-higher {
             color: #4CAF50;
         }
-        .digit-lower {
-            color: #F44336;
-        }
-        #priceChart {
-            height: 200px;
-            width: 100%;
-            background: #252538;
+        .risk-indicator {
+            height: 10px;
+            background: linear-gradient(to right, green, yellow, red);
+            border-radius: 5px;
             margin-top: 10px;
-            border-radius: 4px;
-        }
-        .profit-badge {
-            background: #4CAF50;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-left: 5px;
         }
     </style>
 </head>
 <body>
-    <div id="dashboard">
-        <!-- Signal Generator Panel -->
-        <div class="panel" style="grid-column: 1; grid-row: 1;">
-            <div class="panel-header">
-                <h2>🚨 High-Probability Signals (85-100% Win Rate)</h2>
-                <select id="assetSelect">
-                    <option value="R_100">Volatility 100 Index</option>
-                    <option value="R_75">Volatility 75 Index</option>
-                    <option value="JD150">Jump 150 Index</option>
-                </select>
+    <h1>Deriv ML Trading Bot</h1>
+    <div class="container">
+        <div class="dashboard">
+            <div class="metric">
+                <h3>Balance</h3>
+                <p id="balance">$10,000.00</p>
             </div>
-            <div id="currentSignal">
-                <div class="digit-display">
-                    Current Digit: <span id="currentDigit">-</span>
-                </div>
-                <div style="text-align: center; margin: 15px 0;">
-                    <div id="signalDirection" style="font-size: 28px; font-weight: bold;">-</div>
-                    <div style="margin-top: 5px;">
-                        Confidence: <span id="confidenceValue">-</span>
-                        <div class="confidence">
-                            <div class="confidence-bar" id="confidenceBar" style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
-                <table>
+            <div class="metric">
+                <h3>Win Rate</h3>
+                <p id="winRate">75%</p>
+            </div>
+            <div class="metric">
+                <h3>Current Stake</h3>
+                <p id="currentStake">$35.00</p>
+            </div>
+            <div class="metric">
+                <h3>Risk Level</h3>
+                <div class="risk-indicator" id="riskIndicator"></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Market Prediction</h2>
+            <div class="prediction" id="prediction">Loading...</div>
+            <canvas id="probabilityChart"></canvas>
+            <button id="predictBtn">Refresh Prediction</button>
+        </div>
+
+        <div class="panel">
+            <h2>Trading Controls</h2>
+            <div>
+                <label>Stake Amount: $</label>
+                <input type="number" id="stakeAmount" value="35.00" step="0.01" min="1">
+            </div>
+            <div style="margin-top: 15px;">
+                <button id="buyHigher">BUY HIGHER</button>
+                <button id="buyLower" style="background: #f44336;">BUY LOWER</button>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>Auto-Trading</h3>
+                <label class="switch">
+                    <input type="checkbox" id="autoTrade">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Risk Management</h2>
+            <div>
+                <label>Stop Loss: $</label>
+                <input type="number" id="stopLoss" value="500.00">
+            </div>
+            <div style="margin-top: 10px;">
+                <label>Take Profit: $</label>
+                <input type="number" id="takeProfit" value="1500.00">
+            </div>
+            <div style="margin-top: 15px;">
+                <button id="applySettings">Apply Settings</button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Trade History</h2>
+            <table id="tradeHistory" style="width: 100%; border-collapse: collapse;">
+                <thead>
                     <tr>
                         <th>Time</th>
-                        <th>Signal</th>
-                        <th>Digit</th>
-                        <th>Confidence</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Result</th>
                     </tr>
-                    <tbody id="signalHistory"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Digit Scanner Panel -->
-        <div class="panel" style="grid-column: 2; grid-row: 1;">
-            <div class="panel-header">
-                <h2>🔍 Smart Digit Scanner</h2>
-                <button onclick="scanDigits()">Refresh</button>
-            </div>
-            <div style="text-align: center; margin-bottom: 15px;">
-                <div style="display: inline-block; text-align: left;">
-                    <div style="margin-bottom: 5px;">🎯 <strong>How This Works:</strong></div>
-                    <div style="font-size: 13px; color: #ccc;">
-                        • GREEN digits = Buy HIGHER (digit will rise)<br>
-                        • RED digits = Buy LOWER (digit will fall)<br>
-                        • Strength shows prediction confidence
-                    </div>
-                </div>
-            </div>
-            <table id="digitStatsTable">
-                <tr>
-                    <th>Digit</th>
-                    <th>Prediction</th>
-                    <th>Strength</th>
-                    <th>Win Rate</th>
-                </tr>
+                </thead>
+                <tbody>
+                    <!-- Filled by JavaScript -->
+                </tbody>
             </table>
-        </div>
-
-        <!-- Trading Terminal -->
-        <div class="panel" style="grid-column: 1 / span 2; grid-row: 2;">
-            <div class="panel-header">
-                <h2>💎 Diamond Trade Executor</h2>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div>
-                    <h3>Current Signal</h3>
-                    <div id="activeSignalInfo" style="background: #3a3a5f; padding: 15px; border-radius: 6px;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <div>
-                                <div style="font-size: 12px; color: #aaa;">Current Signal</div>
-                                <div id="currentSignalDirection" style="font-size: 24px; font-weight: bold;">-</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 12px; color: #aaa;">Digit</div>
-                                <div id="currentSignalDigit" style="font-size: 24px; text-align: right;">-</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 12px; color: #aaa;">Win Rate</div>
-                                <div id="currentSignalWinRate" style="font-size: 24px; text-align: right;">-</div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <div style="font-size: 12px; color: #aaa;">Recommended Amount</div>
-                            <input type="number" id="tradeAmount" value="5.00" min="1" step="0.01" style="width: 100%;">
-                        </div>
-                        <div style="display: flex; gap: 10px; margin-top: 15px;">
-                            <button onclick="executeTrade()" style="flex: 1; padding: 12px; font-size: 16px;">EXECUTE TRADE</button>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h3>Performance Tracking</h3>
-                    <table id="tradeHistory">
-                        <tr>
-                            <th>Time</th>
-                            <th>Asset</th>
-                            <th>Signal</th>
-                            <th>Amount</th>
-                            <th>Result</th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Training Panel -->
-        <div class="panel" style="grid-column: 1; grid-row: 3;">
-            <div class="panel-header">
-                <h2>🎓 Signal Training</h2>
-            </div>
-            <div style="text-align: center; padding: 20px;">
-                <div style="margin-bottom: 15px;">
-                    <button onclick="startTraining()" style="padding: 10px 20px; font-size: 14px;">Train With 1000 Trades</button>
-                </div>
-                <div id="trainingResults" style="font-size: 13px; color: #ccc;">
-                    Click above to test the system's accuracy with historical data
-                </div>
-            </div>
-        </div>
-
-        <!-- Analytics Panel -->
-        <div class="panel" style="grid-column: 2; grid-row: 3;">
-            <div class="panel-header">
-                <h2>📊 Performance Analytics</h2>
-            </div>
-            <div style="display: flex; justify-content: space-around; text-align: center; padding: 15px 0;">
-                <div>
-                    <div style="font-size: 12px; color: #aaa;">Win Rate</div>
-                    <div style="font-size: 24px; color: #4CAF50;">92%</div>
-                </div>
-                <div>
-                    <div style="font-size: 12px; color: #aaa;">Avg Profit</div>
-                    <div style="font-size: 24px; color: #4CAF50;">$4.75</div>
-                </div>
-                <div>
-                    <div style="font-size: 12px; color: #aaa;">Streak</div>
-                    <div style="font-size: 24px; color: #4CAF50;">8W</div>
-                </div>
-            </div>
-            <div style="background: #252538; height: 120px; border-radius: 4px; margin-top: 10px;">
-                <!-- Chart placeholder -->
-            </div>
         </div>
     </div>
 
-<script>
-    // Configuration
-    const assets = {
-        'R_100': { name: 'Volatility 100 Index', digits: [0,1,2,3,4,5,6,7,8,9] },
-        'R_75': { name: 'Volatility 75 Index', digits: [0,1,2,3,4,5,6,7,8,9] },
-        'JD150': { name: 'Jump 150 Index', digits: [0,5] }
-    };
-
-    // State
-    let currentAsset = 'R_100';
-    let digitStats = {};
-    let trades = [];
-    let signals = [];
-    let currentSignal = null;
-    let trainingMode = false;
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-        // Set up event listeners
-        document.getElementById('assetSelect').addEventListener('change', function() {
-            currentAsset = this.value;
-            initializeAsset();
-            generateSignal();
-        });
-        
-        // Initialize data
-        initializeAsset();
-        generateSignal();
-        updateTradeHistory();
-        
-        // Start real-time updates
-        setInterval(updateMarketData, 3000);
-    });
-
-    // Core functions
-    function initializeAsset() {
-        const asset = assets[currentAsset];
-        digitStats = {};
-        
-        // Initialize digit stats with realistic patterns
-        asset.digits.forEach(digit => {
-            // Base probabilities with intentional biases
-            let baseProb = 50;
-            
-            // Create predictable patterns (these create the 85-100% win rate)
-            if (digit % 3 === 0) baseProb += 35; // Digits divisible by 3 tend to rise
-            if (digit > 5) baseProb -= 20;       // High digits tend to fall
-            
-            digitStats[digit] = {
-                direction: baseProb > 50 ? 'higher' : 'lower',
-                strength: Math.min(100, Math.abs(baseProb - 50) * 2),
-                winRate: 85 + Math.floor(Math.random() * 15) // 85-100% win rate
-            };
-        });
-        
-        updateDigitTable();
-    }
-
-    function generateSignal() {
-        const assetDigits = assets[currentAsset].digits;
-        
-        // Find the digit with strongest signal
-        let bestDigit = null;
-        let bestStrength = 0;
-        
-        for (const [digit, stats] of Object.entries(digitStats)) {
-            if (stats.strength > bestStrength) {
-                bestDigit = digit;
-                bestStrength = stats.strength;
-            }
-        }
-        
-        // Create signal
-        currentSignal = {
-            digit: bestDigit,
-            direction: digitStats[bestDigit].direction,
-            strength: bestStrength,
-            winRate: digitStats[bestDigit].winRate,
-            timestamp: new Date()
+    <script>
+        // Configuration
+        const config = {
+            apiKey: '0kpp4YEnFSHoVnd',
+            symbol: 'R_100',
+            initialBalance: 10000,
+            martingaleMultiplier: 2.5,
+            maxTrades: 10
         };
-        
-        // Add to history
-        signals.unshift(currentSignal);
-        if (signals.length > 5) signals.pop();
-        
-        updateSignalDisplay();
-        updateDigitTable();
-    }
 
-    function updateSignalDisplay() {
-        if (!currentSignal) return;
-        
-        // Main signal display
-        document.getElementById('currentDigit').textContent = currentSignal.digit;
-        document.getElementById('currentDigit').className = 
-            currentSignal.direction === 'higher' ? 'digit-higher' : 'digit-lower';
-        
-        document.getElementById('signalDirection').textContent = 
-            currentSignal.direction === 'higher' ? 'BUY HIGHER' : 'BUY LOWER';
-        document.getElementById('signalDirection').className = 
-            currentSignal.direction === 'higher' ? 'signal buy' : 'signal sell';
-        
-        document.getElementById('confidenceValue').textContent = `${currentSignal.strength}%`;
-        document.getElementById('confidenceBar').style.width = `${currentSignal.strength}%`;
-        
-        // Trading terminal display
-        document.getElementById('currentSignalDirection').textContent = 
-            currentSignal.direction === 'higher' ? 'HIGHER' : 'LOWER';
-        document.getElementById('currentSignalDirection').className = 
-            currentSignal.direction === 'higher' ? 'digit-higher' : 'digit-lower';
-        
-        document.getElementById('currentSignalDigit').textContent = currentSignal.digit;
-        document.getElementById('currentSignalWinRate').textContent = `${currentSignal.winRate}%`;
-        
-        // Update signal history
-        const historyTable = document.getElementById('signalHistory');
-        historyTable.innerHTML = '';
-        
-        signals.forEach(signal => {
-            const row = historyTable.insertRow();
-            row.innerHTML = `
-                <td>${signal.timestamp.toLocaleTimeString()}</td>
-                <td><span class="signal ${signal.direction === 'higher' ? 'buy' : 'sell'}">
-                    ${signal.direction.toUpperCase()}
-                </span></td>
-                <td>${signal.digit}</td>
-                <td>${signal.strength}%</td>
-            `;
-        });
-    }
+        // State
+        let state = {
+            balance: config.initialBalance,
+            currentStake: 35,
+            lossStreak: 0,
+            trades: [],
+            model: null,
+            wsConnection: null
+        };
 
-    function updateDigitTable() {
-        const table = document.getElementById('digitStatsTable');
-        
-        // Clear existing rows (keep header)
-        while (table.rows.length > 1) {
-            table.deleteRow(1);
-        }
-        
-        // Sort digits by strength
-        const sortedDigits = Object.entries(digitStats)
-            .sort((a, b) => b[1].strength - a[1].strength);
-        
-        // Add rows
-        sortedDigits.forEach(([digit, stats]) => {
-            const row = table.insertRow();
-            row.innerHTML = `
-                <td>${digit}</td>
-                <td><span class="signal ${stats.direction === 'higher' ? 'buy' : 'sell'}">
-                    ${stats.direction.toUpperCase()}
-                </span></td>
-                <td>
-                    <div class="confidence">
-                        <div class="confidence-bar" style="width: ${stats.strength}%"></div>
-                    </div>
-                </td>
-                <td>${stats.winRate}% <span class="profit-badge">PROFIT</span></td>
-            `;
-        });
-    }
+        // DOM Elements
+        const elements = {
+            balance: document.getElementById('balance'),
+            winRate: document.getElementById('winRate'),
+            currentStake: document.getElementById('currentStake'),
+            riskIndicator: document.getElementById('riskIndicator'),
+            prediction: document.getElementById('prediction'),
+            predictBtn: document.getElementById('predictBtn'),
+            buyHigher: document.getElementById('buyHigher'),
+            buyLower: document.getElementById('buyLower'),
+            autoTrade: document.getElementById('autoTrade'),
+            stakeAmount: document.getElementById('stakeAmount'),
+            stopLoss: document.getElementById('stopLoss'),
+            takeProfit: document.getElementById('takeProfit'),
+            applySettings: document.getElementById('applySettings'),
+            tradeHistory: document.getElementById('tradeHistory'),
+            probabilityChart: document.getElementById('probabilityChart')
+        };
 
-    function scanDigits() {
-        // Simulate rescanning
-        initializeAsset();
-        generateSignal();
-        
-        // Visual feedback
-        const scanner = document.getElementById('digitStatsTable');
-        scanner.style.animation = 'none';
-        void scanner.offsetWidth; // Trigger reflow
-        scanner.style.animation = 'highlight 1s';
-    }
-
-    function executeTrade() {
-        if (!currentSignal) return;
-        
-        const amount = parseFloat(document.getElementById('tradeAmount').value) || 1;
-        const isWin = Math.random() * 100 < currentSignal.winRate;
-        
-        // Add to trade history
-        trades.unshift({
-            time: new Date().toLocaleTimeString(),
-            asset: currentAsset,
-            signal: currentSignal.direction,
-            digit: currentSignal.digit,
-            amount: amount,
-            result: isWin ? 'WIN' : 'LOSS',
-            payout: isWin ? (amount * 0.95).toFixed(2) : (-amount).toFixed(2)
-        });
-        
-        updateTradeHistory();
-        generateSignal(); // Generate new signal after trade
-    }
-
-    function updateTradeHistory() {
-        const historyTable = document.getElementById('tradeHistory');
-        
-        // Clear existing rows (keep header)
-        while (historyTable.rows.length > 1) {
-            historyTable.deleteRow(1);
-        }
-        
-        // Add last 5 trades
-        trades.slice(0, 5).forEach(trade => {
-            const row = historyTable.insertRow();
-            row.innerHTML = `
-                <td>${trade.time}</td>
-                <td>${trade.asset}</td>
-                <td><span class="signal ${trade.signal === 'higher' ? 'buy' : 'sell'}">
-                    ${trade.signal.toUpperCase()}
-                </span> (${trade.digit})</td>
-                <td>$${trade.amount.toFixed(2)}</td>
-                <td class="${trade.result === 'WIN' ? 'digit-higher' : 'digit-lower'}">
-                    ${trade.result} ($${trade.payout})
-                </td>
-            `;
-        });
-    }
-
-    function startTraining() {
-        trainingMode = true;
-        const resultsDiv = document.getElementById('trainingResults');
-        resultsDiv.innerHTML = '<div style="color: #aaa;">Running 1000 trade simulation...</div>';
-        
-        // Simulate 1000 trades
-        setTimeout(() => {
-            let wins = 0;
-            for (let i = 0; i < 1000; i++) {
-                if (Math.random() * 100 < 92) wins++; // 92% win rate simulation
+        // Initialize TensorFlow.js Model
+        async function initModel() {
+            try {
+                // Simple model for demonstration (in production, load a pre-trained model)
+                const model = tf.sequential();
+                model.add(tf.layers.dense({units: 10, inputShape: [10], activation: 'softmax'}));
+                model.compile({optimizer: 'adam', loss: 'categoricalCrossentropy'});
+                
+                // Mock training (replace with real training data)
+                const xs = tf.randomNormal([100, 10]);
+                const ys = tf.randomUniform([100, 10]);
+                await model.fit(xs, ys, {epochs: 5});
+                
+                state.model = model;
+                elements.prediction.textContent = 'Model Ready';
+            } catch (error) {
+                console.error('Model initialization failed:', error);
+                elements.prediction.textContent = 'Prediction Error';
             }
-            
-            resultsDiv.innerHTML = `
-                <div style="margin-bottom: 10px;"><strong>Training Results:</strong></div>
-                <div>✅ ${wins} Winning Trades (${(wins/10).toFixed(1)}%)</div>
-                <div>❌ ${1000-wins} Losing Trades</div>
-                <div style="margin-top: 10px; color: #4CAF50;">
-                    Estimated Profit: $${(wins * 0.95 - (1000-wins)).toFixed(2)}
-                </div>
-            `;
-            trainingMode = false;
-        }, 1500);
-    }
+        }
 
-    function updateMarketData() {
-        if (trainingMode) return;
-        
-        // Simulate market changes
-        for (const [digit, stats] of Object.entries(digitStats)) {
-            // Small random fluctuations
-            const change = (Math.random() - 0.45) * 5;
-            stats.strength = Math.max(70, Math.min(100, stats.strength + change));
+        // Connect to Deriv API
+        function connectToAPI() {
+            try {
+                // Mock connection (replace with real WebSocket connection)
+                state.wsConnection = {
+                    send: (data) => console.log('Sending:', data),
+                    close: () => console.log('Connection closed')
+                };
+                
+                // Simulate tick updates
+                setInterval(() => {
+                    const mockTick = {
+                        tick: (Math.random() * 1000).toFixed(2),
+                        epoch: Date.now()
+                    };
+                    processTick(mockTick);
+                }, 1000);
+                
+                console.log('Connected to API');
+            } catch (error) {
+                console.error('API connection failed:', error);
+            }
+        }
+
+        // Process incoming ticks
+        function processTick(tick) {
+            // In a real app, this would update charts and feed the ML model
+            console.log('Processing tick:', tick);
             
-            // Occasionally generate new signal
+            // For demo: Update prediction every 5 ticks
             if (Math.random() > 0.8) {
-                stats.direction = Math.random() > 0.15 ? stats.direction : 
-                    (stats.direction === 'higher' ? 'lower' : 'higher');
+                makePrediction();
             }
         }
-        
-        // Regenerate signal every few updates
-        if (Math.random() > 0.7) {
-            generateSignal();
-        } else {
-            updateDigitTable();
+
+        // Make prediction using ML model
+        async function makePrediction() {
+            if (!state.model) return;
+            
+            try {
+                // Mock prediction (replace with real model prediction)
+                const input = tf.tensor2d([Array(10).fill(0).map(() => Math.random())]);
+                const prediction = state.model.predict(input);
+                const data = await prediction.data();
+                
+                const predictedDigit = data.indexOf(Math.max(...data));
+                elements.prediction.textContent = predictedDigit;
+                
+                // Update probability chart
+                updateProbabilityChart(data);
+            } catch (error) {
+                console.error('Prediction failed:', error);
+            }
         }
-    }
-</script>
+
+        // Update probability chart
+        function updateProbabilityChart(data) {
+            const ctx = elements.probabilityChart.getContext('2d');
+            
+            if (window.probabilityChart) {
+                window.probabilityChart.destroy();
+            }
+            
+            window.probabilityChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Array(10).fill().map((_, i) => i),
+                    datasets: [{
+                        label: 'Digit Probability',
+                        data: Array.from(data),
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 1
+                        }
+                    }
+                }
+            });
+        }
+
+        // Place a trade
+        function placeTrade(direction) {
+            const stake = parseFloat(elements.stakeAmount.value);
+            const now = new Date();
+            
+            // Simulate trade outcome (70% win rate for demo)
+            const isWin = Math.random() > 0.3;
+            const payout = isWin ? stake * 1.85 : -stake;
+            
+            // Update state
+            state.balance += payout;
+            state.trades.push({
+                time: now.toLocaleTimeString(),
+                type: direction,
+                amount: stake.toFixed(2),
+                result: isWin ? 'WIN' : 'LOSS',
+                payout: payout.toFixed(2)
+            });
+            
+            // Update martingale
+            if (isWin) {
+                state.lossStreak = 0;
+                state.currentStake = parseFloat(elements.stakeAmount.value);
+            } else {
+                state.lossStreak++;
+                state.currentStake = Math.min(
+                    state.currentStake * config.martingaleMultiplier,
+                    state.balance * 0.1
+                );
+            }
+            
+            updateUI();
+        }
+
+        // Update UI with current state
+        function updateUI() {
+            // Update metrics
+            elements.balance.textContent = `$${state.balance.toFixed(2)}`;
+            elements.currentStake.textContent = `$${state.currentStake.toFixed(2)}`;
+            
+            // Calculate win rate
+            const winCount = state.trades.filter(t => t.result === 'WIN').length;
+            const winRate = state.trades.length > 0 
+                ? Math.round((winCount / state.trades.length) * 100) 
+                : 0;
+            elements.winRate.textContent = `${winRate}%`;
+            
+            // Update risk indicator
+            const riskLevel = Math.min(state.lossStreak / 5, 1);
+            elements.riskIndicator.style.width = `${riskLevel * 100}%`;
+            elements.riskIndicator.style.background = riskLevel > 0.7 
+                ? 'red' 
+                : riskLevel > 0.3 
+                    ? 'yellow' 
+                    : 'green';
+            
+            // Update trade history
+            updateTradeHistory();
+        }
+
+        // Update trade history table
+        function updateTradeHistory() {
+            const tbody = elements.tradeHistory.querySelector('tbody');
+            tbody.innerHTML = '';
+            
+            state.trades.slice().reverse().forEach(trade => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${trade.time}</td>
+                    <td>${trade.type}</td>
+                    <td>$${trade.amount}</td>
+                    <td style="color: ${trade.result === 'WIN' ? 'green' : 'red'}">
+                        ${trade.result} (${trade.payout})
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Event Listeners
+        elements.predictBtn.addEventListener('click', makePrediction);
+        elements.buyHigher.addEventListener('click', () => placeTrade('HIGHER'));
+        elements.buyLower.addEventListener('click', () => placeTrade('LOWER'));
+        elements.applySettings.addEventListener('click', () => {
+            alert('Settings saved!');
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initModel();
+            connectToAPI();
+            updateUI();
+        });
+    </script>
 </body>
 </html>
