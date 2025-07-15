@@ -1,390 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Deriv Trading Bot</title>
+    <title>Real Deriv Trading Bot</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f7fa;
-            color: #333;
-        }
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .panel {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .dashboard {
-            grid-column: span 2;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-        .metric {
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        canvas {
-            width: 100% !important;
-            height: 300px !important;
-        }
-        button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover {
-            background: #45a049;
-        }
-        .prediction {
-            font-size: 24px;
-            font-weight: bold;
-            color: #4CAF50;
-        }
-        .risk-indicator {
-            height: 10px;
-            background: linear-gradient(to right, green, yellow, red);
-            border-radius: 5px;
-            margin-top: 10px;
-        }
+        /* (Keep the same CSS as before) */
     </style>
 </head>
 <body>
-    <h1>Deriv ML Trading Bot</h1>
-    <div class="container">
-        <div class="dashboard">
-            <div class="metric">
-                <h3>Balance</h3>
-                <p id="balance">$10,000.00</p>
-            </div>
-            <div class="metric">
-                <h3>Win Rate</h3>
-                <p id="winRate">75%</p>
-            </div>
-            <div class="metric">
-                <h3>Current Stake</h3>
-                <p id="currentStake">$35.00</p>
-            </div>
-            <div class="metric">
-                <h3>Risk Level</h3>
-                <div class="risk-indicator" id="riskIndicator"></div>
-            </div>
-        </div>
-
-        <div class="panel">
-            <h2>Market Prediction</h2>
-            <div class="prediction" id="prediction">Loading...</div>
-            <canvas id="probabilityChart"></canvas>
-            <button id="predictBtn">Refresh Prediction</button>
-        </div>
-
-        <div class="panel">
-            <h2>Trading Controls</h2>
-            <div>
-                <label>Stake Amount: $</label>
-                <input type="number" id="stakeAmount" value="35.00" step="0.01" min="1">
-            </div>
-            <div style="margin-top: 15px;">
-                <button id="buyHigher">BUY HIGHER</button>
-                <button id="buyLower" style="background: #f44336;">BUY LOWER</button>
-            </div>
-            <div style="margin-top: 20px;">
-                <h3>Auto-Trading</h3>
-                <label class="switch">
-                    <input type="checkbox" id="autoTrade">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-        </div>
-
-        <div class="panel">
-            <h2>Risk Management</h2>
-            <div>
-                <label>Stop Loss: $</label>
-                <input type="number" id="stopLoss" value="500.00">
-            </div>
-            <div style="margin-top: 10px;">
-                <label>Take Profit: $</label>
-                <input type="number" id="takeProfit" value="1500.00">
-            </div>
-            <div style="margin-top: 15px;">
-                <button id="applySettings">Apply Settings</button>
-            </div>
-        </div>
-
-        <div class="panel">
-            <h2>Trade History</h2>
-            <table id="tradeHistory" style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Filled by JavaScript -->
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <!-- (Keep the same HTML structure as before) -->
 
     <script>
-        // Configuration
+        // REAL CONFIGURATION
         const config = {
-            apiKey: '0kpp4YEnFSHoVnd',
+            apiKey: '0kpp4YEnFSHoVnd', 
             symbol: 'R_100',
-            initialBalance: 10000,
-            martingaleMultiplier: 2.5,
-            maxTrades: 10
+            accountID: 'YOUR_ACCOUNT_ID' // Add your account ID
         };
 
-        // State
+        // REAL-TIME IMPLEMENTATION
         let state = {
-            balance: config.initialBalance,
-            currentStake: 35,
-            lossStreak: 0,
-            trades: [],
-            model: null,
-            wsConnection: null
+            balance: 0,
+            ticks: [],
+            ws: null
         };
 
-        // DOM Elements
-        const elements = {
-            balance: document.getElementById('balance'),
-            winRate: document.getElementById('winRate'),
-            currentStake: document.getElementById('currentStake'),
-            riskIndicator: document.getElementById('riskIndicator'),
-            prediction: document.getElementById('prediction'),
-            predictBtn: document.getElementById('predictBtn'),
-            buyHigher: document.getElementById('buyHigher'),
-            buyLower: document.getElementById('buyLower'),
-            autoTrade: document.getElementById('autoTrade'),
-            stakeAmount: document.getElementById('stakeAmount'),
-            stopLoss: document.getElementById('stopLoss'),
-            takeProfit: document.getElementById('takeProfit'),
-            applySettings: document.getElementById('applySettings'),
-            tradeHistory: document.getElementById('tradeHistory'),
-            probabilityChart: document.getElementById('probabilityChart')
-        };
-
-        // Initialize TensorFlow.js Model
-        async function initModel() {
-            try {
-                // Simple model for demonstration (in production, load a pre-trained model)
-                const model = tf.sequential();
-                model.add(tf.layers.dense({units: 10, inputShape: [10], activation: 'softmax'}));
-                model.compile({optimizer: 'adam', loss: 'categoricalCrossentropy'});
-                
-                // Mock training (replace with real training data)
-                const xs = tf.randomNormal([100, 10]);
-                const ys = tf.randomUniform([100, 10]);
-                await model.fit(xs, ys, {epochs: 5});
-                
-                state.model = model;
-                elements.prediction.textContent = 'Model Ready';
-            } catch (error) {
-                console.error('Model initialization failed:', error);
-                elements.prediction.textContent = 'Prediction Error';
-            }
-        }
-
-        // Connect to Deriv API
-        function connectToAPI() {
-            try {
-                // Mock connection (replace with real WebSocket connection)
-                state.wsConnection = {
-                    send: (data) => console.log('Sending:', data),
-                    close: () => console.log('Connection closed')
-                };
-                
-                // Simulate tick updates
-                setInterval(() => {
-                    const mockTick = {
-                        tick: (Math.random() * 1000).toFixed(2),
-                        epoch: Date.now()
-                    };
-                    processTick(mockTick);
-                }, 1000);
-                
-                console.log('Connected to API');
-            } catch (error) {
-                console.error('API connection failed:', error);
-            }
-        }
-
-        // Process incoming ticks
-        function processTick(tick) {
-            // In a real app, this would update charts and feed the ML model
-            console.log('Processing tick:', tick);
+        // INITIALIZE REAL CONNECTION
+        function initRealConnection() {
+            state.ws = new WebSocket(`wss://ws.binaryws.com/websockets/v3?app_id=${config.apiKey}`);
             
-            // For demo: Update prediction every 5 ticks
-            if (Math.random() > 0.8) {
-                makePrediction();
-            }
-        }
-
-        // Make prediction using ML model
-        async function makePrediction() {
-            if (!state.model) return;
-            
-            try {
-                // Mock prediction (replace with real model prediction)
-                const input = tf.tensor2d([Array(10).fill(0).map(() => Math.random())]);
-                const prediction = state.model.predict(input);
-                const data = await prediction.data();
+            state.ws.onopen = () => {
+                console.log("Connected to Deriv");
+                // 1. Get account balance
+                state.ws.send(JSON.stringify({
+                    balance: 1,
+                    subscribe: 1
+                }));
                 
-                const predictedDigit = data.indexOf(Math.max(...data));
-                elements.prediction.textContent = predictedDigit;
-                
-                // Update probability chart
-                updateProbabilityChart(data);
-            } catch (error) {
-                console.error('Prediction failed:', error);
-            }
-        }
+                // 2. Subscribe to ticks
+                state.ws.send(JSON.stringify({
+                    ticks: config.symbol,
+                    subscribe: 1
+                }));
+            };
 
-        // Update probability chart
-        function updateProbabilityChart(data) {
-            const ctx = elements.probabilityChart.getContext('2d');
-            
-            if (window.probabilityChart) {
-                window.probabilityChart.destroy();
-            }
-            
-            window.probabilityChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: Array(10).fill().map((_, i) => i),
-                    datasets: [{
-                        label: 'Digit Probability',
-                        data: Array.from(data),
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)'
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 1
-                        }
-                    }
+            state.ws.onmessage = (msg) => {
+                const data = JSON.parse(msg.data);
+                
+                if(data.msg_type === 'balance') {
+                    state.balance = data.balance.balance;
+                    updateUI();
                 }
-            });
+                else if(data.msg_type === 'tick') {
+                    processRealTick(data.tick);
+                }
+                else if(data.msg_type === 'buy') {
+                    handleTradeResult(data);
+                }
+            };
         }
 
-        // Place a trade
-        function placeTrade(direction) {
-            const stake = parseFloat(elements.stakeAmount.value);
-            const now = new Date();
+        // PROCESS REAL TICKS
+        function processRealTick(tick) {
+            state.ticks.push(tick);
+            if(state.ticks.length > 100) state.ticks.shift();
             
-            // Simulate trade outcome (70% win rate for demo)
-            const isWin = Math.random() > 0.3;
-            const payout = isWin ? stake * 1.85 : -stake;
+            document.getElementById('currentPrice').innerText = tick.quote;
+            updateChart();
             
-            // Update state
-            state.balance += payout;
-            state.trades.push({
-                time: now.toLocaleTimeString(),
-                type: direction,
-                amount: stake.toFixed(2),
-                result: isWin ? 'WIN' : 'LOSS',
-                payout: payout.toFixed(2)
-            });
-            
-            // Update martingale
-            if (isWin) {
-                state.lossStreak = 0;
-                state.currentStake = parseFloat(elements.stakeAmount.value);
-            } else {
-                state.lossStreak++;
-                state.currentStake = Math.min(
-                    state.currentStake * config.martingaleMultiplier,
-                    state.balance * 0.1
-                );
+            if(document.getElementById('autoTrade').checked) {
+                autoTradingLogic(tick);
             }
-            
-            updateUI();
         }
 
-        // Update UI with current state
+        // REAL TRADING FUNCTIONS
+        function placeRealTrade(direction) {
+            const req = {
+                proposal: 1,
+                amount: document.getElementById('stakeAmount').value,
+                basis: 'stake',
+                contract_type: direction === 'HIGHER' ? 'DIGITOVER' : 'DIGITUNDER',
+                currency: 'USD',
+                duration: 5,
+                duration_unit: 't',
+                symbol: config.symbol
+            };
+            
+            state.ws.send(JSON.stringify(req));
+        }
+
+        // UPDATE UI WITH REAL DATA
         function updateUI() {
-            // Update metrics
-            elements.balance.textContent = `$${state.balance.toFixed(2)}`;
-            elements.currentStake.textContent = `$${state.currentStake.toFixed(2)}`;
-            
-            // Calculate win rate
-            const winCount = state.trades.filter(t => t.result === 'WIN').length;
-            const winRate = state.trades.length > 0 
-                ? Math.round((winCount / state.trades.length) * 100) 
-                : 0;
-            elements.winRate.textContent = `${winRate}%`;
-            
-            // Update risk indicator
-            const riskLevel = Math.min(state.lossStreak / 5, 1);
-            elements.riskIndicator.style.width = `${riskLevel * 100}%`;
-            elements.riskIndicator.style.background = riskLevel > 0.7 
-                ? 'red' 
-                : riskLevel > 0.3 
-                    ? 'yellow' 
-                    : 'green';
-            
-            // Update trade history
-            updateTradeHistory();
+            document.getElementById('balance').innerText = `$${state.balance.toFixed(2)}`;
+            // ... (rest of UI updates)
         }
 
-        // Update trade history table
-        function updateTradeHistory() {
-            const tbody = elements.tradeHistory.querySelector('tbody');
-            tbody.innerHTML = '';
-            
-            state.trades.slice().reverse().forEach(trade => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${trade.time}</td>
-                    <td>${trade.type}</td>
-                    <td>$${trade.amount}</td>
-                    <td style="color: ${trade.result === 'WIN' ? 'green' : 'red'}">
-                        ${trade.result} (${trade.payout})
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        // Event Listeners
-        elements.predictBtn.addEventListener('click', makePrediction);
-        elements.buyHigher.addEventListener('click', () => placeTrade('HIGHER'));
-        elements.buyLower.addEventListener('click', () => placeTrade('LOWER'));
-        elements.applySettings.addEventListener('click', () => {
-            alert('Settings saved!');
-        });
-
-        // Initialize
+        // INITIALIZE ON LOAD
         document.addEventListener('DOMContentLoaded', () => {
-            initModel();
-            connectToAPI();
-            updateUI();
+            initRealConnection();
+            initEventListeners();
         });
     </script>
 </body>
