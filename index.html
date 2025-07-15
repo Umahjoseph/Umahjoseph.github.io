@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Advanced Binary Trading Assistant</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .panel { background: #f5f5f5; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        button { background: #4CAF50; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .hidden { display: none; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Binary Trading Advanced Toolkit</h1>
+    
+    <!-- Market Scanner Panel -->
+    <div class="panel">
+        <h2>📊 Smart Digit Scanner</h2>
+        <div id="digitAnalysis">
+            <button onclick="scanDigits()">Scan Last Digits</button>
+            <div id="digitResults" class="hidden">
+                <h3>Recommended Trade:</h3>
+                <p id="tradeRecommendation"></p>
+                <table id="digitStatsTable">
+                    <tr><th>Digit</th><th>Frequency</th><th>Strength</th></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Risk Manager Panel -->
+    <div class="panel">
+        <h2>⚖️ Advanced Risk Calculator</h2>
+        <div>
+            <label>Current Balance: $</label>
+            <input type="number" id="balance" value="100"><br><br>
+            
+            <label>Risk Percentage: </label>
+            <input type="range" id="riskPercent" min="1" max="10" value="2">
+            <span id="riskValue">2%</span><br><br>
+            
+            <button onclick="calculateStake()">Calculate Optimal Stake</button>
+            <p id="stakeResult"></p>
+            
+            <h3>Anti-Martingale Calculator</h3>
+            <label>Win Streak: </label>
+            <input type="number" id="winStreak" value="0" min="0"><br>
+            <p id="martingaleResult"></p>
+        </div>
+    </div>
+
+    <!-- Volatility Tools -->
+    <div class="panel">
+        <h2>📈 Volatility Analyzer</h2>
+        <div>
+            <button onclick="checkVolatility()">Check Current Volatility</button>
+            <div id="volatilityResult" class="hidden">
+                <p id="volatilityValue"></p>
+                <p id="volatilityAdvice"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trade Journal -->
+    <div class="panel">
+        <h2>📝 Trade Journal</h2>
+        <table id="tradeJournal">
+            <tr><th>Time</th><th>Asset</th><th>Direction</th><th>Result</th><th>Notes</th></tr>
+        </table>
+        <button onclick="addTradeEntry()">Add Manual Entry</button>
+    </div>
+
+<script>
+    // Digit Analysis Scanner
+    function scanDigits() {
+        // Simulate API call to get digit stats
+        setTimeout(() => {
+            document.getElementById('digitResults').classList.remove('hidden');
+            
+            // Sample data - in real use you'd connect to your data source
+            const digits = [
+                {digit: 3, frequency: 18, strength: 'High'},
+                {digit: 7, frequency: 15, strength: 'Medium'},
+                {digit: 1, frequency: 9, strength: 'Low'}
+            ];
+            
+            let tableHTML = `<tr><th>Digit</th><th>Frequency</th><th>Strength</th></tr>`;
+            digits.forEach(d => {
+                tableHTML += `<tr><td>${d.digit}</td><td>${d.frequency}%</td><td>${d.strength}</td></tr>`;
+            });
+            
+            document.getElementById('digitStatsTable').innerHTML = tableHTML;
+            document.getElementById('tradeRecommendation').innerHTML = 
+                `🔥 <strong>Trade Recommendation:</strong> BUY HIGHER on digit 3 (Strongest pattern)`;
+        }, 1000);
+    }
+
+    // Risk Management Calculator
+    document.getElementById('riskPercent').addEventListener('input', function() {
+        document.getElementById('riskValue').textContent = this.value + '%';
+    });
+
+    function calculateStake() {
+        const balance = parseFloat(document.getElementById('balance').value);
+        const riskPercent = parseFloat(document.getElementById('riskPercent').value);
+        const stake = (balance * riskPercent / 100).toFixed(2);
+        document.getElementById('stakeResult').innerHTML = 
+            `💵 <strong>Optimal Stake:</strong> $${stake} (${riskPercent}% of balance)`;
+    }
+
+    // Volatility Checker
+    function checkVolatility() {
+        // Simulate volatility check
+        const volatility = (Math.random() * 3 + 1).toFixed(2);
+        const advice = volatility > 2.5 ? 
+            "✅ Good trading conditions - High volatility" : 
+            "⚠️ Caution - Low volatility market";
+        
+        document.getElementById('volatilityResult').classList.remove('hidden');
+        document.getElementById('volatilityValue').textContent = `Current Volatility Index: ${volatility}/5`;
+        document.getElementById('volatilityAdvice').textContent = advice;
+    }
+
+    // Trade Journal
+    function addTradeEntry() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString();
+        const journal = document.getElementById('tradeJournal');
+        
+        // Add sample entry - in real use you'd collect user input
+        const newRow = journal.insertRow();
+        newRow.innerHTML = `
+            <td>${timeStr}</td>
+            <td>R_100</td>
+            <td>Higher</td>
+            <td>Pending</td>
+            <td><input type="text" placeholder="Notes..."></td>
+        `;
+    }
+</script>
+</body>
+</html>
