@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Advanced Binary Trading Dashboard</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f0f2f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr 1fr;
+            gap: 10px;
+            padding: 10px;
+            height: calc(100vh - 20px);
+            box-sizing: border-box;
+        }
+        .panel {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: auto;
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        h2 {
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+        }
+        select, button {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover { background: #45a049; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th { background: #f5f5f5; }
+        .volatility-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .volatility-bar {
+            height: 20px;
+            background: linear-gradient(to right, #4CAF50, #FFC107, #F44336);
+            border-radius: 10px;
+            flex-grow: 1;
+            position: relative;
+        }
+        .volatility-indicator {
+            position: absolute;
+            height: 24px;
+            width: 4px;
+            background: black;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .positive { color: #4CAF50; }
+        .negative { color: #F44336; }
+        #priceChart {
+            height: 200px;
+            width: 100%;
+            background: #f9f9f9;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="dashboard">
+        <!-- Market Scanner Panel -->
+        <div class="panel" style="grid-column: 1; grid-row: 1;">
+            <div class="panel-header">
+                <h2>📊 Smart Digit Scanner</h2>
+                <select id="assetSelect">
+                    <option value="R_100">Volatility 100 Index</option>
+                    <option value="R_75">Volatility 75 Index</option>
+                    <option value="R_50">Volatility 50 Index</option>
+                    <option value="JD150">Jump 150 Index</option>
+                    <option value="JD50">Jump 50 Index</option>
+                </select>
+            </div>
+            <div id="digitResults">
+                <table id="digitStatsTable">
+                    <tr><th>Digit</th><th>Frequency</th><th>Strength</th><th>Action</th></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Volatility Panel -->
+        <div class="panel" style="grid-column: 2; grid-row: 1;">
+            <div class="panel-header">
+                <h2>📈 Real-Time Volatility Analyzer</h2>
+                <span id="updateStatus">Updating...</span>
+            </div>
+            <div class="volatility-display">
+                <div>Volatility:</div>
+                <div class="volatility-bar">
+                    <div class="volatility-indicator" id="volIndicator"></div>
+                </div>
+                <div id="volatilityValue">2.5/5</div>
+            </div>
+            <div id="volatilityAdvice" class="positive">Good trading conditions</div>
+            <div id="priceChart"></div>
+        </div>
+
+        <!-- Risk Manager Panel -->
+        <div class="panel" style="grid-column: 1; grid-row: 2;">
+            <div class="panel-header">
+                <h2>⚖️ Risk Manager</h2>
+            </div>
+            <div>
+                <label>Balance: $</label>
+                <input type="number" id="balance" value="100" min="1"><br><br>
+                
+                <label>Risk: </label>
+                <input type="range" id="riskPercent" min="1" max="10" value="2">
+                <span id="riskValue">2%</span><br><br>
+                
+                <div id="stakeResult">Optimal Stake: $2.00</div>
+                
+                <h3>Anti-Martingale Multiplier</h3>
+                <label>Win Streak: </label>
+                <input type="number" id="winStreak" value="0" min="0">
+                <div id="martingaleResult">Next Stake: $2.00</div>
+            </div>
+        </div>
+
+        <!-- Trade Journal -->
+        <div class="panel" style="grid-column: 2; grid-row: 2;">
+            <div class="panel-header">
+                <h2>📝 Trade Journal</h2>
+                <button onclick="addTradeEntry()">+ Add</button>
+            </div>
+            <table id="tradeJournal">
+                <tr><th>Time</th><th>Asset</th><th>Direction</th><th>Amount</th><th>Result</th></tr>
+            </table>
+        </div>
+
+        <!-- Trading Terminal -->
+        <div class="panel" style="grid-column: 1 / span 2; grid-row: 3;">
+            <div class="panel-header">
+                <h2>🚀 Trading Terminal</h2>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <h3>Quick Trade</h3>
+                    <div>
+                        <label>Amount: $</label>
+                        <input type="number" id="tradeAmount" value="2.00" min="0.35" step="0.01">
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button onclick="placeTrade('higher')" style="background: #4CAF50;">BUY HIGHER</button>
+                        <button onclick="placeTrade('lower')" style="background: #F44336; margin-left: 10px;">BUY LOWER</button>
+                    </div>
+                </div>
+                <div>
+                    <h3>Last Trade</h3>
+                    <div id="lastTradeStatus">No trades yet</div>
+                    <div id="currentTradeInfo"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Configuration
+    const assets = {
+        'R_100': { name: 'Volatility 100 Index', digits: [0,1,2,3,4,5,6,7,8,9] },
+        'R_75': { name: 'Volatility 75 Index', digits: [0,1,2,3,4,5,6,7,8,9] },
+        'R_50': { name: 'Volatility 50 Index', digits: [0,1,2,3,4,5,6,7,8,9] },
+        'JD150': { name: 'Jump 150 Index', digits: [0,5] },
+        'JD50': { name: 'Jump 50 Index', digits: [0,5] }
+    };
+
+    // State
+    let currentAsset = 'R_100';
+    let volatility = 2.5;
+    let digitStats = {};
+    let trades = [];
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set up event listeners
+        document.getElementById('assetSelect').addEventListener('change', function() {
+            currentAsset = this.value;
+            initializeAsset();
+        });
+        
+        document.getElementById('riskPercent').addEventListener('input', function() {
+            document.getElementById('riskValue').textContent = this.value + '%';
+            calculateStake();
+        });
+        
+        document.getElementById('winStreak').addEventListener('input', calculateMartingale);
+        document.getElementById('balance').addEventListener('input', calculateStake);
+        
+        // Initialize data
+        initializeAsset();
+        calculateStake();
+        calculateMartingale();
+        
+        // Start real-time updates
+        setInterval(updateMarketData, 2000);
+        setInterval(updateVolatility, 3000);
+    });
+
+    // Core functions
+    function initializeAsset() {
+        const asset = assets[currentAsset];
+        digitStats = {};
+        
+        // Initialize digit stats
+        asset.digits.forEach(digit => {
+            digitStats[digit] = {
+                frequency: Math.random() * 20 + 5,
+                lastSeen: 0
+            };
+        });
+        
+        updateDigitTable();
+    }
+
+    function updateMarketData() {
+        // Simulate market data changes
+        const asset = assets[currentAsset];
+        
+        // Update digit frequencies
+        Object.keys(digitStats).forEach(digit => {
+            // Random walk pattern
+            const change = (Math.random() - 0.45) * 3;
+            digitStats[digit].frequency = Math.max(1, 
+                Math.min(30, digitStats[digit].frequency + change));
+            
+            // Update last seen counter
+            if (Math.random() > 0.7) {
+                digitStats[digit].lastSeen = 0;
+            } else {
+                digitStats[digit].lastSeen++;
+            }
+        });
+        
+        updateDigitTable();
+        document.getElementById('updateStatus').textContent = 
+            `Last update: ${new Date().toLocaleTimeString()}`;
+    }
+
+    function updateVolatility() {
+        // Simulate volatility changes (more realistic pattern)
+        const change = (Math.random() - 0.4) * 0.8;
+        volatility = Math.max(0.5, Math.min(5, volatility + change));
+        
+        // Update display
+        const volPercent = (volatility / 5) * 100;
+        document.getElementById('volIndicator').style.left = `${volPercent}%`;
+        document.getElementById('volatilityValue').textContent = `${volatility.toFixed(1)}/5`;
+        
+        // Update advice
+        const adviceElement = document.getElementById('volatilityAdvice');
+        if (volatility > 3.5) {
+            adviceElement.textContent = "❗ High volatility - Aggressive trades";
+            adviceElement.className = "positive";
+        } else if (volatility > 2) {
+            adviceElement.textContent = "✓ Good trading conditions";
+            adviceElement.className = "positive";
+        } else {
+            adviceElement.textContent = "⚠️ Low volatility - Trade carefully";
+            adviceElement.className = "negative";
+        }
+    }
+
+    function updateDigitTable() {
+        const table = document.getElementById('digitStatsTable');
+        const asset = assets[currentAsset];
+        
+        // Clear existing rows (keep header)
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+        
+        // Sort digits by frequency
+        const sortedDigits = Object.entries(digitStats)
+            .sort((a, b) => b[1].frequency - a[1].frequency);
+        
+        // Add rows
+        sortedDigits.forEach(([digit, stats]) => {
+            const strength = stats.frequency > 18 ? 'Strong' : 
+                           stats.frequency > 12 ? 'Medium' : 'Weak';
+            
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td>${digit}</td>
+                <td>${stats.frequency.toFixed(1)}%</td>
+                <td>${strength}</td>
+                <td>
+                    ${strength === 'Strong' ? 
+                        `<button onclick="quickTradeDigit(${digit}, 'higher')" style="background: #4CAF50; padding: 3px 8px; font-size: 12px;">HIGHER</button>
+                         <button onclick="quickTradeDigit(${digit}, 'lower')" style="background: #F44336; padding: 3px 8px; font-size: 12px; margin-left: 5px;">LOWER</button>` : 
+                        'Wait'}
+                </td>
+            `;
+        });
+    }
+
+    function calculateStake() {
+        const balance = parseFloat(document.getElementById('balance').value) || 100;
+        const riskPercent = parseFloat(document.getElementById('riskPercent').value);
+        const stake = (balance * riskPercent / 100).toFixed(2);
+        document.getElementById('stakeResult').innerHTML = 
+            `💵 <strong>Optimal Stake:</strong> $${stake} (${riskPercent}% of balance)`;
+    }
+
+    function calculateMartingale() {
+        const winStreak = parseInt(document.getElementById('winStreak').value) || 0;
+        const baseStake = parseFloat(document.getElementById('stakeResult').textContent.match(/\$\d+\.\d{2}/)[0].substring(1));
+        const multiplier = Math.pow(1.5, Math.min(winStreak, 5));
+        const nextStake = (baseStake * multiplier).toFixed(2);
+        document.getElementById('martingaleResult').innerHTML = 
+            `↑ <strong>Next Stake:</strong> $${nextStake} (${multiplier.toFixed(1)}x)`;
+    }
+
+    function quickTradeDigit(digit, direction) {
+        const amount = parseFloat(document.getElementById('stakeResult').textContent.match(/\$\d+\.\d{2}/)[0].substring(1));
+        document.getElementById('tradeAmount').value = amount;
+        placeTrade(direction);
+    }
+
+    function placeTrade(direction) {
+        const amount = parseFloat(document.getElementById('tradeAmount').value) || 1;
+        const asset = assets[currentAsset].name;
+        const now = new Date();
+        
+        // Simulate trade (70% win rate for demo)
+        const isWin = Math.random() > 0.3;
+        const payout = isWin ? (amount * 0.95).toFixed(2) : (amount * -1).toFixed(2);
+        
+        // Add to journal
+        trades.unshift({
+            time: now.toLocaleTimeString(),
+            asset: currentAsset,
+            direction: direction,
+            amount: amount,
+            result: isWin ? 'WIN' : 'LOSS',
+            payout: payout
+        });
+        
+        updateTradeJournal();
+        
+        // Update last trade status
+        document.getElementById('lastTradeStatus').innerHTML = 
+            `Last trade: <span class="${isWin ? 'positive' : 'negative'}">${isWin ? 'WIN' : 'LOSS'} ($${payout})</span>`;
+        
+        // Update current trade info
+        document.getElementById('currentTradeInfo').innerHTML = `
+            <div>Asset: ${asset}</div>
+            <div>Direction: ${direction.toUpperCase()}</div>
+            <div>Amount: $${amount.toFixed(2)}</div>
+            <div>Status: ${isWin ? 'Won' : 'Lost'}</div>
+        `;
+        
+        // Update win streak
+        const winStreakInput = document.getElementById('winStreak');
+        if (isWin) {
+            winStreakInput.value = parseInt(winStreakInput.value || 0) + 1;
+        } else {
+            winStreakInput.value = 0;
+        }
+        calculateMartingale();
+    }
+
+    function updateTradeJournal() {
+        const journal = document.getElementById('tradeJournal');
+        
+        // Clear existing rows (keep header)
+        while (journal.rows.length > 1) {
+            journal.deleteRow(1);
+        }
+        
+        // Add last 5 trades
+        trades.slice(0, 5).forEach(trade => {
+            const row = journal.insertRow();
+            row.innerHTML = `
+                <td>${trade.time}</td>
+                <td>${trade.asset}</td>
+                <td>${trade.direction.toUpperCase()}</td>
+                <td>$${trade.amount.toFixed(2)}</td>
+                <td class="${trade.result === 'WIN' ? 'positive' : 'negative'}">${trade.result} ($${trade.payout})</td>
+            `;
+        });
+    }
+
+    function addTradeEntry() {
+        const now = new Date();
+        trades.unshift({
+            time: now.toLocaleTimeString(),
+            asset: currentAsset,
+            direction: Math.random() > 0.5 ? 'higher' : 'lower',
+            amount: (Math.random() * 10 + 1).toFixed(2),
+            result: Math.random() > 0.5 ? 'WIN' : 'LOSS',
+            payout: (Math.random() * 20 - 10).toFixed(2)
+        });
+        updateTradeJournal();
+    }
+</script>
+</body>
+</html>
