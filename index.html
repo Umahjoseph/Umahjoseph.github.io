@@ -5,26 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TaskPays Tech Blog</title>
   <style>
-    /* --- RESET & BASE --- */
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.7;color:#222;background:#f6f8fa}
-    a{color:#007acc;text-decoration:none}
-    a:hover{text-decoration:underline}
-    /* --- HEADER --- */
+    img{max-width:100%;display:block;border-radius:6px}
     header{background:#007acc;color:#fff;padding:1.5rem 2rem;text-align:center}
     header h1{font-size:2rem}
-    /* --- CONTENT --- */
     main{max-width:750px;margin:2rem auto;padding:0 1rem}
     .page{display:none}
     .page.active{display:block}
-    .page img{width:100%;border-radius:6px;margin:1rem 0}
-    .page h2{margin:.8rem 0;font-size:2rem}
-    .page p{margin-bottom:1rem}
-    /* --- NAV BUTTONS --- */
+    .post-img{width:100%;height:auto;margin:.5rem 0;border-radius:6px}
+    .post-title{margin:.8rem 0;font-size:1.6rem}
+    .post-body{text-align:justify}
+    .read-more{cursor:pointer;color:#007acc;font-weight:bold}
+    .full-text{display:none}
     .nav-btns{display:flex;justify-content:space-between;margin:2rem 0}
     .nav-btns button{cursor:pointer;background:#007acc;color:#fff;border:none;padding:.75rem 1.25rem;border-radius:4px;font-size:.95rem}
     .nav-btns button:disabled{background:#aaa;cursor:not-allowed}
-    /* --- FOOTER --- */
     footer{text-align:center;padding:1.5rem;background:#e1e4e8;color:#444;font-size:.9rem}
   </style>
 </head>
@@ -38,48 +34,73 @@
 
 <!-- ========== PAGE 1 ========== -->
 <article id="page1" class="page active">
-  <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80" alt="Tech">
-  <h2>The Next Wave of Technology &amp; Inventions</h2>
-  <p><strong>Artificial Intelligence Everywhere.</strong> 2025 has been dubbed “the year AI goes ambient.” Large-language models are no longer confined to chat windows; they now live in silicon at the edge. Qualcomm’s latest Snapdragon X Elite ships with a 45-TOPS NPU that powers on-device translation, generative video, and even real-time radiology—no cloud required. Expect your next laptop to edit 4K footage, remove background noise, and rewrite your email tone in under 50 milliseconds.</p>
-
-  <p><strong>Quantum-as-a-Service.</strong> IBM’s 1 121-qubit “Condor” processor is now available via the cloud with error-rates below 0.1 %. Early adopters—Merck, Goldman Sachs, Hyundai—are running hybrid classical/quantum workflows for drug-discovery and portfolio optimization. A single call now solves combinatorial problems that used to take classical super-clusters weeks.</p>
-
-  <p><strong>Solid-State Batteries Hit Scale.</strong> Toyota’s sulfide electrolyte cells reached 1 000 charge-cycles with 80 % capacity retention last month. The first commercial packs—slated for 2026 EVs—promise 1 200 km range while cutting charging time to 8 minutes. Grid-scale stationary units are already being trialed in California to buffer solar over-generation.</p>
-
-  <p><strong>Neural Dust &amp; Brain Interfaces.</strong> Caltech’s new “motes” are grain-of-sand-sized sensors powered by ultrasound. Implanted in motor cortex, they stream high-fidelity neural data wirelessly, enabling paralyzed users to type 90 wpm using only thought. FDA breakthrough-device designation arrived in March; human trials expand this fall.</p>
-
-  <p><strong>Digital Twins of Cities.</strong> Singapore’s “Virtual Singapore 2.0” fuses satellite imagery, IoT sensors, and real-time traffic feeds into a living 3D model. Planners simulate flood scenarios, optimize bus routes, and test 5G antenna placement before pouring concrete. Dubai and Toronto have licensed the platform for their 2030 master plans.</p>
+  <img class="post-img" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1350&q=80" alt="Tech Innovation">
+  <h2 class="post-title">The Next Wave of Technology & Inventions</h2>
+  <div class="post-body">
+    <p>Artificial Intelligence Everywhere. 2025 has been dubbed “the year AI goes ambient.” Large-language models are no longer confined to chat windows; they now live in silicon at the edge. Qualcomm’s latest Snapdragon X Elite ships with a 45-TOPS NPU that powers on-device translation, generative video, and even real-time radiology—no cloud required.</p>
+    <span class="read-more" onclick="toggleReadMore(this, 'full1')">Read more</span>
+    <div id="full1" class="full-text">
+      <p>Quantum-as-a-Service. IBM’s 1 121-qubit “Condor” processor is now available via the cloud with error-rates below 0.1 %. Early adopters—Merck, Goldman Sachs, Hyundai—are running hybrid classical/quantum workflows for drug-discovery and portfolio optimization.</p>
+      <p>Solid-State Batteries Hit Scale. Toyota’s sulfide electrolyte cells reached 1 000 charge-cycles with 80 % capacity retention last month. The first commercial packs—slated for 2026 EVs—promise 1 200 km range while cutting charging time to 8 minutes.</p>
+      <p>Neural Dust & Brain Interfaces. Caltech’s new “motes” are grain-of-sand-sized sensors powered by ultrasound. Implanted in motor cortex, they stream high-fidelity neural data wirelessly, enabling paralyzed users to type 90 wpm using only thought.</p>
+      <p>Digital Twins of Cities. Singapore’s “Virtual Singapore 2.0” fuses satellite imagery, IoT sensors, and real-time traffic feeds into a living 3D model. Planners simulate flood scenarios, optimize bus routes, and test 5G antenna placement before pouring concrete.</p>
+    </div>
+  </div>
 </article>
 
 <!-- ========== PAGE 2 ========== -->
 <article id="page2" class="page">
-  <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1350&q=80" alt="Finance">
-  <h2>FinTech 2025: DeFi, CBDCs &amp; the End of Cash</h2>
-  <p>The European Central Bank’s digital euro pilot enrolled 30 million citizens last quarter. Offline NFC “tap-to-pay” wallets work without internet or bank accounts, storing value on secure elements inside smartphones. Meanwhile, JPMorgan’s Onyx blockchain settles repo trades in 15 seconds—down from T+2 days—saving $1.2 B annually in counter-party risk.</p>
+  <img class="post-img" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1350&q=80" alt="FinTech">
+  <h2 class="post-title">FinTech 2025: DeFi, CBDCs & the End of Cash</h2>
+  <div class="post-body">
+    <p>The European Central Bank’s digital euro pilot enrolled 30 million citizens last quarter. Offline NFC “tap-to-pay” wallets work without internet or bank accounts, storing value on secure elements inside smartphones.</p>
+    <span class="read-more" onclick="toggleReadMore(this, 'full2')">Read more</span>
+    <div id="full2" class="full-text">
+      <p>Meanwhile, JPMorgan’s Onyx blockchain settles repo trades in 15 seconds—down from T+2 days—saving $1.2 B annually in counter-party risk. Decentralized exchanges now handle more daily volume than the NASDAQ in 2005.</p>
+    </div>
+  </div>
 </article>
 
 <!-- ========== PAGE 3 ========== -->
 <article id="page3" class="page">
-  <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1350&q=80" alt="Health">
-  <h2>Bio-Printing &amp; Organ Factories</h2>
-  <p>3D-printed human kidneys using patient-derived stem cells passed Phase-II trials in Sweden last month. Scaffolds dissolve after transplantation, leaving fully vascularized tissue. The breakthrough could eliminate transplant waiting lists by 2030.</p>
+  <img class="post-img" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1350&q=80" alt="Bioprinting">
+  <h2 class="post-title">Bio-Printing & Organ Factories</h2>
+  <div class="post-body">
+    <p>3D-printed human kidneys using patient-derived stem cells passed Phase-II trials in Sweden last month. Scaffolds dissolve after transplantation, leaving fully vascularized tissue.</p>
+    <span class="read-more" onclick="toggleReadMore(this, 'full3')">Read more</span>
+    <div id="full3" class="full-text">
+      <p>The breakthrough could eliminate transplant waiting lists by 2030, cutting healthcare costs and saving millions of lives worldwide.</p>
+    </div>
+  </div>
 </article>
 
 <!-- ========== PAGE 4 ========== -->
 <article id="page4" class="page">
-  <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1350&q=80" alt="Space">
-  <h2>Commercial Space Habitats: Orbital 2025</h2>
-  <p>Axiom Space’s third module docked with the ISS last week. The 70-cubic-meter segment will detach in 2028 to become the first free-flying commercial station. Lease rates start at $55 M per 30-day mission—fully booked through 2031.</p>
+  <img class="post-img" src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1350&q=80" alt="Space">
+  <h2 class="post-title">Commercial Space Habitats: Orbital 2025</h2>
+  <div class="post-body">
+    <p>Axiom Space’s third module docked with the ISS last week. The 70-cubic-meter segment will detach in 2028 to become the first free-flying commercial station.</p>
+    <span class="read-more" onclick="toggleReadMore(this, 'full4')">Read more</span>
+    <div id="full4" class="full-text">
+      <p>Lease rates start at $55 M per 30-day mission—fully booked through 2031, proving that low-Earth-orbit real estate is the next trillion-dollar market.</p>
+    </div>
+  </div>
 </article>
 
 <!-- ========== PAGE 5 ========== -->
 <article id="page5" class="page">
-  <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1350&q=80" alt="Sustainability">
-  <h2>Green Tech: Fusion &amp; Carbon Capture</h2>
-  <p>Helion Energy fired its seventh net-positive fusion shot last month, delivering 16 MJ from 20 MJ input. Commercial reactors (50 MW) are slated for 2028 grids. Meanwhile, Climeworks’ new DAC plant in Iceland will remove 36 000 tCO₂/year—equivalent to taking 8 000 cars off the road.</p>
+  <img class="post-img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1350&q=80" alt="Sustainability">
+  <h2 class="post-title">Green Tech: Fusion & Carbon Capture</h2>
+  <div class="post-body">
+    <p>Helion Energy fired its seventh net-positive fusion shot last month, delivering 16 MJ from 20 MJ input. Commercial reactors (50 MW) are slated for 2028 grids.</p>
+    <span class="read-more" onclick="toggleReadMore(this, 'full5')">Read more</span>
+    <div id="full5" class="full-text">
+      <p>Meanwhile, Climeworks’ new DAC plant in Iceland will remove 36 000 tCO₂/year—equivalent to taking 8 000 cars off the road—while creating new green-collar jobs.</p>
+    </div>
+  </div>
 </article>
 
-<!-- ---------- NAV BUTTONS ---------- -->
+<!-- NAV BUTTONS -->
 <div class="nav-btns">
   <button id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
   <button id="nextBtn" onclick="changePage(1)">Next Page →</button>
@@ -105,6 +126,17 @@
     document.getElementById(`page${current}`).classList.add('active');
     prevBtn.disabled = current === 1;
     nextBtn.disabled = current === totalPages;
+  }
+
+  function toggleReadMore(btn, id){
+    const full = document.getElementById(id);
+    if(full.style.display === 'block'){
+      full.style.display = 'none';
+      btn.textContent = 'Read more';
+    }else{
+      full.style.display = 'block';
+      btn.textContent = 'Read less';
+    }
   }
 </script>
 
