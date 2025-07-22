@@ -25,6 +25,7 @@
             font-family: Arial, sans-serif;
             line-height: 1.6;
             color: var(--dark-color);
+            background-color: #fff;
         }
 
         .container {
@@ -45,10 +46,34 @@
             font-size: 2rem;
             font-weight: bold;
             color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Post Styles */
+        .post {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .post-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
         }
 
         /* Ad Styles */
-        .main-ad {
+        .post-ad {
             width: 100%;
             background: var(--light-color);
             padding: 20px;
@@ -57,7 +82,7 @@
             border-radius: 8px;
         }
 
-        .main-ad img {
+        .post-ad img {
             width: 100%;
             max-width: 800px;
             height: auto;
@@ -70,61 +95,6 @@
             color: #666;
             margin-bottom: 10px;
             text-transform: uppercase;
-        }
-
-        /* Ad Modal */
-        .ad-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .ad-modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-        }
-
-        .timer-display {
-            font-size: 2rem;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-
-        .success-message {
-            display: none;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--success-color);
-            margin: 20px 0;
-            text-transform: uppercase;
-        }
-
-        /* Content Styles */
-        .featured-post {
-            margin: 30px 0;
-        }
-
-        .featured-image {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .featured-content h1 {
-            font-size: 2rem;
-            margin: 20px 0;
         }
 
         /* Footer */
@@ -141,25 +111,34 @@
     <!-- Main Header -->
     <header class="main-header">
         <div class="container">
-            <div class="logo">TaskPays</div>
+            <a href="#" class="logo">TaskPays</a>
         </div>
     </header>
 
-    <!-- Main Ad - Big and Immediately Visible -->
-    <div class="main-ad">
-        <div class="ad-label">Advertisement</div>
-        <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg" alt="Earn Money Online" id="mainAdImage">
-    </div>
-
     <!-- Main Content -->
     <main class="container">
-        <section class="featured-post">
-            <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg" alt="Featured Post" class="featured-image">
-            <div class="featured-content">
-                <h1>How to Earn $1000/month Online Without Investment</h1>
-                <p>Discover proven methods to start earning money online today...</p>
+        <!-- First Post with Ad -->
+        <article class="post">
+            <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg" alt="Earn Money Online" class="post-image">
+            
+            <!-- Ad at the top of the first post -->
+            <div class="post-ad">
+                <div class="ad-label">Advertisement</div>
+                <a href="https://otieu.com/4/9611073" target="_blank" rel="noopener noreferrer">
+                    <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg" alt="Earn Money Online">
+                </a>
             </div>
-        </section>
+            
+            <h1 class="post-title">How to Earn $1000/month Online Without Investment</h1>
+            <p>Discover proven methods to start earning money online today. This comprehensive guide will show you 7 different ways to make money from home with no upfront costs...</p>
+        </article>
+
+        <!-- Additional Posts -->
+        <article class="post">
+            <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg" alt="AI Tools" class="post-image">
+            <h1 class="post-title">10 Free AI Tools That Can Make You Money</h1>
+            <p>Learn how to leverage artificial intelligence to create income streams with these powerful free tools...</p>
+        </article>
     </main>
 
     <!-- Footer -->
@@ -168,49 +147,5 @@
             <p>&copy; 2023 TaskPays. All Rights Reserved.</p>
         </div>
     </footer>
-
-    <!-- Ad Modal -->
-    <div class="ad-modal" id="adModal">
-        <div class="ad-modal-content">
-            <h2>Advertisement Visit</h2>
-            <div class="timer-display" id="timerDisplay">30</div>
-            <div class="success-message" id="successMessage">
-                YOU HAVE SUCCESSFULLY VISITED THIS AD
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get ad elements
-            const mainAd = document.getElementById('mainAdImage');
-            const modal = document.getElementById('adModal');
-            const timerDisplay = document.getElementById('timerDisplay');
-            const successMessage = document.getElementById('successMessage');
-            
-            // Ad click handler
-            mainAd.addEventListener('click', function() {
-                // Open ad link immediately in new tab
-                window.open('https://otieu.com/4/9611073', '_blank');
-                
-                // Show modal with timer
-                modal.style.display = 'flex';
-                
-                // Start 30 second timer
-                let seconds = 30;
-                
-                const timer = setInterval(() => {
-                    seconds--;
-                    timerDisplay.textContent = seconds;
-                    
-                    if (seconds <= 0) {
-                        clearInterval(timer);
-                        timerDisplay.style.display = 'none';
-                        successMessage.style.display = 'block';
-                    }
-                }, 1000);
-            });
-        });
-    </script>
 </body>
 </html>
