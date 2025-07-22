@@ -12,13 +12,7 @@
             --secondary-color: #ff6b00;
             --dark-color: #333;
             --light-color: #f8f9fa;
-            --gray-color: #6c757d;
             --success-color: #28a745;
-            --danger-color: #dc3545;
-            --warning-color: #ffc107;
-            --info-color: #17a2b8;
-            --font-main: 'Arial', sans-serif;
-            --font-heading: 'Arial Black', sans-serif;
         }
 
         * {
@@ -28,25 +22,9 @@
         }
 
         body {
-            font-family: var(--font-main);
+            font-family: Arial, sans-serif;
             line-height: 1.6;
             color: var(--dark-color);
-            background-color: #fff;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        a:hover {
-            color: var(--secondary-color);
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
         }
 
         .container {
@@ -57,594 +35,44 @@
         }
 
         /* Header Styles */
-        .top-bar {
-            background-color: var(--dark-color);
-            color: #fff;
-            font-size: 0.9rem;
-            padding: 8px 0;
-        }
-
-        .top-bar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .top-nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        .top-nav ul li {
-            margin-left: 20px;
-        }
-
-        .top-nav ul li a {
-            color: #fff;
-            font-size: 0.9rem;
-        }
-
         .main-header {
             padding: 20px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .main-header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .logo {
-            max-height: 60px;
-        }
-
-        .header-ads {
-            width: 728px;
-            height: 90px;
-            background: #f5f5f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-        }
-
-        /* Navigation */
-        .main-nav {
-            background-color: var(--primary-color);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .main-nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        .main-nav ul li a {
-            color: #fff;
-            padding: 15px 20px;
-            display: block;
-            font-weight: 500;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
-        }
-
-        .main-nav ul li a:hover {
-            background-color: rgba(255,255,255,0.1);
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-
-        .search-box input {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 4px 0 0 4px;
-            font-size: 0.9rem;
-        }
-
-        .search-box button {
-            background-color: var(--secondary-color);
-            color: #fff;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-        }
-
-        /* Breaking News */
-        .breaking-news {
-            background-color: var(--danger-color);
-            color: #fff;
-            padding: 10px 0;
-        }
-
-        .breaking-news .container {
-            display: flex;
-            align-items: center;
-        }
-
-        .breaking-label {
+            font-size: 2rem;
             font-weight: bold;
-            margin-right: 15px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        .ticker {
-            flex-grow: 1;
-            overflow: hidden;
-        }
-
-        .ticker ul {
-            list-style: none;
-            animation: ticker 15s linear infinite;
-            white-space: nowrap;
-        }
-
-        .ticker ul li {
-            margin-right: 30px;
-            display: inline-block;
-        }
-
-        .ticker ul li a {
-            color: #fff;
-            font-size: 0.95rem;
-        }
-
-        @keyframes ticker {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* Featured Post */
-        .featured-post {
-            margin: 30px 0;
-        }
-
-        .featured-post article {
-            display: flex;
-            gap: 30px;
-        }
-
-        .featured-image {
-            flex: 1;
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .featured-image img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-        }
-
-        .category-badge {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 5px 15px;
-            border-radius: 20px;
-            color: #fff;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .category-badge.money {
-            background-color: var(--success-color);
-        }
-
-        .featured-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .featured-content h1 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            line-height: 1.3;
-        }
-
-        .featured-content h1 a {
-            color: var(--dark-color);
-        }
-
-        .featured-content h1 a:hover {
             color: var(--primary-color);
-        }
-
-        .excerpt {
-            color: var(--gray-color);
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-
-        .post-meta {
-            display: flex;
-            gap: 15px;
-            color: var(--gray-color);
-            font-size: 0.9rem;
-        }
-
-        /* News Grid */
-        .news-grid {
-            display: flex;
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .grid-column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .news-card {
-            background: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .card-image {
-            position: relative;
-        }
-
-        .card-image img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .card-content {
-            padding: 20px;
-        }
-
-        .card-content h2 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-
-        .card-content h2 a {
-            color: var(--dark-color);
-        }
-
-        .card-content h2 a:hover {
-            color: var(--primary-color);
-        }
-
-        /* Newsletter */
-        .newsletter {
-            background-color: var(--primary-color);
-            color: #fff;
-            padding: 40px 0;
-            margin: 40px 0;
-            text-align: center;
-            border-radius: 8px;
-        }
-
-        .newsletter h2 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-        }
-
-        .newsletter p {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-        }
-
-        .newsletter-form {
-            display: flex;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .newsletter-form input {
-            flex: 1;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 4px 0 0 4px;
-            font-size: 1rem;
-        }
-
-        .newsletter-form button {
-            background-color: var(--secondary-color);
-            color: #fff;
-            border: none;
-            padding: 0 25px;
-            border-radius: 0 4px 4px 0;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .newsletter-form button:hover {
-            background-color: #e05d00;
-        }
-
-        .disclaimer {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            margin-top: 15px;
-        }
-
-        /* More Posts */
-        .more-posts {
-            margin: 40px 0;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
-        }
-
-        .post-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .list-post {
-            display: flex;
-            gap: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .list-image {
-            width: 200px;
-            flex-shrink: 0;
-        }
-
-        .list-image img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .list-content h3 {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-
-        .list-content h3 a {
-            color: var(--dark-color);
-        }
-
-        .list-content h3 a:hover {
-            color: var(--primary-color);
-        }
-
-        /* Footer */
-        .main-footer {
-            background-color: var(--dark-color);
-            color: #fff;
-            padding: 50px 0 20px;
-        }
-
-        .footer-columns {
-            display: flex;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-column {
-            flex: 1;
-        }
-
-        .footer-logo {
-            max-height: 50px;
-            margin-bottom: 20px;
-        }
-
-        .footer-column p {
-            margin-bottom: 20px;
-            opacity: 0.8;
-            font-size: 0.95rem;
-        }
-
-        .footer-column h3 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-column ul li a {
-            color: rgba(255,255,255,0.8);
-            font-size: 0.95rem;
-        }
-
-        .footer-column ul li a:hover {
-            color: #fff;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-links a {
-            color: #fff;
-            font-size: 1.2rem;
-            opacity: 0.8;
-        }
-
-        .social-links a:hover {
-            opacity: 1;
-        }
-
-        .tag-cloud {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .tag-cloud a {
-            background-color: rgba(255,255,255,0.1);
-            color: #fff;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        .tag-cloud a:hover {
-            background-color: var(--primary-color);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .footer-bottom p {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            margin-bottom: 5px;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .featured-post article {
-                flex-direction: column;
-            }
-            
-            .news-grid {
-                flex-direction: column;
-            }
-            
-            .footer-columns {
-                flex-wrap: wrap;
-            }
-            
-            .footer-column {
-                flex: 0 0 calc(50% - 20px);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-header .container {
-                flex-direction: column;
-            }
-            
-            .header-ads {
-                margin-top: 20px;
-                width: 100%;
-            }
-            
-            .main-nav ul {
-                flex-wrap: wrap;
-            }
-            
-            .search-box {
-                margin: 10px 0 0;
-                width: 100%;
-            }
-            
-            .list-post {
-                flex-direction: column;
-            }
-            
-            .list-image {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .footer-column {
-                flex: 0 0 100%;
-            }
-            
-            .newsletter-form {
-                flex-direction: column;
-            }
-            
-            .newsletter-form input, 
-            .newsletter-form button {
-                border-radius: 4px;
-            }
-            
-            .newsletter-form button {
-                margin-top: 10px;
-                padding: 12px 15px;
-            }
         }
 
         /* Ad Styles */
-        .ad-container {
-            margin: 20px 0;
+        .main-ad {
+            width: 100%;
+            background: var(--light-color);
+            padding: 20px;
             text-align: center;
-            padding: 15px;
-            background: #f5f5f5;
+            margin: 20px 0;
             border-radius: 8px;
         }
 
-        .ad-container img {
-            max-width: 100%;
+        .main-ad img {
+            width: 100%;
+            max-width: 800px;
             height: auto;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
         }
 
         .ad-label {
-            font-size: 0.8rem;
-            color: #999;
-            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
             text-transform: uppercase;
         }
 
-        .sticky-ad {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 300px;
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .close-ad {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: none;
-            border: none;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-
-        /* Ad Confirmation Modal */
+        /* Ad Modal */
         .ad-modal {
             display: none;
             position: fixed;
@@ -652,8 +80,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            z-index: 2000;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
         }
@@ -664,19 +92,13 @@
             border-radius: 8px;
             text-align: center;
             max-width: 500px;
-        }
-
-        .ad-modal h2 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-size: 2rem;
-            text-transform: uppercase;
+            width: 90%;
         }
 
         .timer-display {
-            font-size: 1.5rem;
+            font-size: 2rem;
             margin: 20px 0;
-            color: var(--dark-color);
+            font-weight: bold;
         }
 
         .success-message {
@@ -687,308 +109,71 @@
             margin: 20px 0;
             text-transform: uppercase;
         }
+
+        /* Content Styles */
+        .featured-post {
+            margin: 30px 0;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .featured-content h1 {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+
+        /* Footer */
+        .main-footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
     </style>
 </head>
 <body>
-    <!-- Top Navigation Bar -->
-    <div class="top-bar">
-        <div class="container">
-            <span class="date-display" id="current-date"></span>
-            <nav class="top-nav">
-                <ul>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="#advertise">Advertise</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-
     <!-- Main Header -->
     <header class="main-header">
         <div class="container">
-            <div class="logo-container">
-                <a href="#">
-                    <div class="logo" style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">TaskPays</div>
-                </a>
-            </div>
-            
-            <div class="header-ads">
-                <div class="ad-container">
-                    <div class="ad-label">Advertisement</div>
-                    <a href="#" class="ad-link" data-ad-url="https://otieu.com/4/9611073">
-                        <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg" alt="Make Money Online" style="width: 728px; height: 90px; object-fit: cover;">
-                    </a>
-                </div>
-            </div>
+            <div class="logo">TaskPays</div>
         </div>
     </header>
 
-    <!-- Main Navigation -->
-    <nav class="main-nav">
-        <div class="container">
-            <ul>
-                <li><a href="#">Earn Money</a></li>
-                <li><a href="#">Online Jobs</a></li>
-                <li><a href="#">Passive Income</a></li>
-            </ul>
-            <div class="search-box">
-                <input type="text" placeholder="Search...">
-                <button type="submit">Search</button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Breaking News Ticker -->
-    <div class="breaking-news">
-        <div class="container">
-            <span class="breaking-label">BREAKING:</span>
-            <div class="ticker">
-                <ul>
-                    <li><a href="#crypto">New crypto earning app pays users $50 just for signing up</a></li>
-                    <li><a href="#ai-jobs">AI creates 10,000 new remote jobs this month</a></li>
-                    <li><a href="#side-hustles">Top 5 side hustles to earn $100/day</a></li>
-                </ul>
-            </div>
-        </div>
+    <!-- Main Ad - Big and Immediately Visible -->
+    <div class="main-ad">
+        <div class="ad-label">Advertisement</div>
+        <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg" alt="Earn Money Online" id="mainAdImage">
     </div>
 
     <!-- Main Content -->
     <main class="container">
-        <!-- Featured Post -->
         <section class="featured-post">
-            <article>
-                <div class="featured-image">
-                    <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg" alt="Woman working on laptop">
-                    <div class="category-badge money">Make Money</div>
-                </div>
-                <div class="featured-content">
-                    <h1><a href="#earn-1000">How to Earn $1000/month Online Without Investment</a></h1>
-                    <p class="excerpt">Discover 7 proven methods to start earning money online today, even if you're a complete beginner...</p>
-                    <div class="post-meta">
-                        <span class="author">By John Smith</span>
-                        <span class="date">July 22, 2023</span>
-                        <span class="read-time">5 min read</span>
-                    </div>
-                </div>
-            </article>
-        </section>
-
-        <!-- In-content Ad 1 -->
-        <div class="ad-container">
-            <div class="ad-label">Sponsored</div>
-            <a href="#" class="ad-link" data-ad-url="https://otieu.com/4/9611073">
-                <img src="https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg" alt="Earn Money Online" style="width: 100%; height: auto;">
-            </a>
-        </div>
-
-        <!-- News Grid -->
-        <section class="news-grid">
-            <div class="grid-column">
-                <article class="news-card">
-                    <div class="card-image">
-                        <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg" alt="AI Technology">
-                        <div class="category-badge money">Make Money</div>
-                    </div>
-                    <div class="card-content">
-                        <h2><a href="#ai-tools">10 Free AI Tools That Can Make You Money</a></h2>
-                        <p class="excerpt">These powerful AI tools require no technical skills and can help you start earning immediately...</p>
-                        <div class="post-meta">
-                            <span class="date">July 21, 2023</span>
-                            <span class="read-time">4 min read</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card">
-                    <div class="card-image">
-                        <img src="https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg" alt="Remote team working">
-                        <div class="category-badge money">Make Money</div>
-                    </div>
-                    <div class="card-content">
-                        <h2><a href="#remote-jobs">15 High-Paying Remote Jobs Hiring Now</a></h2>
-                        <p class="excerpt">Companies are paying up to $50/hour for these work-from-home positions with no experience required...</p>
-                        <div class="post-meta">
-                            <span class="date">July 20, 2023</span>
-                            <span class="read-time">6 min read</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-
-            <div class="grid-column">
-                <!-- Mid-content Ad -->
-                <div class="ad-container" id="mid-content-ad">
-                    <div class="ad-label">Advertisement</div>
-                    <a href="#" class="ad-link" data-ad-url="https://otieu.com/4/9611073">
-                        <img src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg" alt="Make Money with AI" style="width: 100%; height: auto;">
-                    </a>
-                </div>
-
-                <article class="news-card">
-                    <div class="card-image">
-                        <img src="https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg" alt="Smartphone apps">
-                        <div class="category-badge money">Make Money</div>
-                    </div>
-                    <div class="card-content">
-                        <h2><a href="#phone-apps">Turn Your Smartphone Into a Money Machine</a></h2>
-                        <p class="excerpt">10 apps that pay you just for using your phone normally - start earning today...</p>
-                        <div class="post-meta">
-                            <span class="date">July 18, 2023</span>
-                            <span class="read-time">5 min read</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-
-            <div class="grid-column">
-                <article class="news-card">
-                    <div class="card-image">
-                        <img src="https://images.pexels.com/photos/730564/pexels-photo-730564.jpeg" alt="Cryptocurrency">
-                        <div class="category-badge money">Make Money</div>
-                    </div>
-                    <div class="card-content">
-                        <h2><a href="#crypto-income">3 Crypto Strategies for Passive Income</a></h2>
-                        <p class="excerpt">Earn 5-20% monthly returns with these low-risk crypto investment methods...</p>
-                        <div class="post-meta">
-                            <span class="date">July 16, 2023</span>
-                            <span class="read-time">8 min read</span>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- In-content Ad 2 -->
-                <div class="ad-container">
-                    <div class="ad-label">Sponsored</div>
-                    <a href="#" class="ad-link" data-ad-url="https://otieu.com/4/9611073">
-                        <img src="https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg" alt="Earn Money Testing Apps" style="width: 100%; height: auto;">
-                    </a>
-                </div>
+            <img src="https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg" alt="Featured Post" class="featured-image">
+            <div class="featured-content">
+                <h1>How to Earn $1000/month Online Without Investment</h1>
+                <p>Discover proven methods to start earning money online today...</p>
             </div>
         </section>
-
-        <!-- Newsletter Section -->
-        <section class="newsletter">
-            <div class="newsletter-content">
-                <h2>Get Money-Making Tips Direct to Your Inbox</h2>
-                <p>Join 50,000+ subscribers receiving our exclusive earning strategies</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Enter your email address" required>
-                    <button type="submit">Subscribe</button>
-                </form>
-                <p class="disclaimer">We never share your information. Unsubscribe anytime.</p>
-            </div>
-        </section>
-
-        <!-- More Posts Section -->
-        <section class="more-posts">
-            <h2 class="section-title">Latest Articles</h2>
-            <div class="post-list">
-                <!-- Post 1 -->
-                <article class="list-post">
-                    <div class="list-image">
-                        <img src="https://images.pexels.com/photos/1181271/pexels-photo-1181271.jpeg" alt="App testing">
-                    </div>
-                    <div class="list-content">
-                        <h3><a href="#app-testing">How I Made $3000 Last Month Testing Apps</a></h3>
-                        <div class="post-meta">
-                            <span class="category money">Make Money</span>
-                            <span class="date">July 15, 2023</span>
-                            <span class="read-time">4 min read</span>
-                        </div>
-                        <p class="excerpt">A step-by-step guide to getting paid for testing websites and mobile applications...</p>
-                    </div>
-                </article>
-                
-                <!-- Post 2 -->
-                <article class="list-post">
-                    <div class="list-image">
-                        <img src="https://images.pexels.com/photos/590016/pexels-photo-590016.jpeg" alt="Digital products">
-                    </div>
-                    <div class="list-content">
-                        <h3><a href="#printables">Earn Passive Income Selling Printables</a></h3>
-                        <div class="post-meta">
-                            <span class="category money">Make Money</span>
-                            <span class="date">July 14, 2023</span>
-                            <span class="read-time">6 min read</span>
-                        </div>
-                        <p class="excerpt">Create digital products once and earn money repeatedly with no additional work...</p>
-                    </div>
-                </article>
-            </div>
-            
-            <div class="pagination">
-                <a href="#" class="page-link active">1</a>
-                <a href="#" class="page-link">2</a>
-                <a href="#" class="page-link">3</a>
-                <span class="page-dots">...</span>
-                <a href="#" class="page-link">10</a>
-                <a href="#" class="next-link">Next →</a>
-            </div>
-        </section>
-
-        <!-- Bottom Ad -->
-        <div class="ad-container">
-            <div class="ad-label">Advertisement</div>
-            <a href="#" class="ad-link" data-ad-url="https://otieu.com/4/9611073">
-                <img src="https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg" alt="Work From Home Opportunities" style="width: 100%; height: auto;">
-            </a>
-        </div>
     </main>
 
     <!-- Footer -->
     <footer class="main-footer">
         <div class="container">
-            <div class="footer-columns">
-                <div class="footer-column">
-                    <div class="footer-logo" style="font-size: 1.8rem; font-weight: bold; color: white;">TaskPays</div>
-                    <p>TaskPays helps you discover legitimate ways to make money online.</p>
-                    <div class="social-links">
-                        <a href="#">FB</a>
-                        <a href="#">TW</a>
-                        <a href="#">IG</a>
-                    </div>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <li><a href="#privacy">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Popular Tags</h3>
-                    <div class="tag-cloud">
-                        <a href="#">#makemoney</a>
-                        <a href="#">#onlinejobs</a>
-                        <a href="#">#passiveincome</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2023 TaskPays. All Rights Reserved.</p>
-                <p>Disclaimer: The information provided on this website is for educational purposes only.</p>
-            </div>
+            <p>&copy; 2023 TaskPays. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- Sticky Bottom Ad -->
-    <div class="sticky-ad" id="stickyAd">
-        <button class="close-ad" onclick="document.getElementById('stickyAd').style.display='none'">×</button>
-        <a href="#" class="ad-link" data-ad-url="https://otieu.com/4/9611073">
-            <img src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg" alt="Limited Time Offer" style="width: 100%; height: auto;">
-        </a>
-    </div>
-
-    <!-- Ad Confirmation Modal -->
+    <!-- Ad Modal -->
     <div class="ad-modal" id="adModal">
         <div class="ad-modal-content">
             <h2>Advertisement Visit</h2>
-            <div class="timer-display" id="timerDisplay">30:00</div>
+            <div class="timer-display" id="timerDisplay">30</div>
             <div class="success-message" id="successMessage">
                 YOU HAVE SUCCESSFULLY VISITED THIS AD
             </div>
@@ -996,84 +181,36 @@
     </div>
 
     <script>
-        // Current Date Display
         document.addEventListener('DOMContentLoaded', function() {
-            // Display current date
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const today = new Date();
-            document.getElementById('current-date').textContent = today.toLocaleDateString('en-US', options);
-            
-            // Mobile menu toggle
-            const mobileMenuToggle = document.createElement('div');
-            mobileMenuToggle.className = 'mobile-menu-toggle';
-            mobileMenuToggle.innerHTML = '☰';
-            document.querySelector('.main-nav .container').prepend(mobileMenuToggle);
-            
-            mobileMenuToggle.addEventListener('click', function() {
-                document.querySelector('.main-nav ul').classList.toggle('active');
-            });
-            
-            // Newsletter form submission
-            const newsletterForm = document.querySelector('.newsletter-form');
-            if (newsletterForm) {
-                newsletterForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const email = this.querySelector('input[type="email"]').value;
-                    alert('Thank you for subscribing! You will receive our next newsletter.');
-                    this.reset();
-                });
-            }
-
-            // Show sticky ad immediately
-            document.getElementById('stickyAd').style.display = 'block';
-
-            // Handle ad clicks
-            const adLinks = document.querySelectorAll('.ad-link');
-            adLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const adUrl = this.getAttribute('data-ad-url');
-                    showAdConfirmation(adUrl);
-                });
-            });
-        });
-
-        // Ad confirmation with timer
-        function showAdConfirmation(adUrl) {
+            // Get ad elements
+            const mainAd = document.getElementById('mainAdImage');
             const modal = document.getElementById('adModal');
             const timerDisplay = document.getElementById('timerDisplay');
             const successMessage = document.getElementById('successMessage');
             
-            // Open the modal
-            modal.style.display = 'flex';
-            
-            // Open the ad in new tab immediately
-            window.open(adUrl, '_blank');
-            
-            // Start 30 minute timer
-            let minutes = 30;
-            let seconds = 0;
-            
-            const timer = setInterval(() => {
-                if (seconds === 0) {
-                    if (minutes === 0) {
+            // Ad click handler
+            mainAd.addEventListener('click', function() {
+                // Open ad link immediately in new tab
+                window.open('https://otieu.com/4/9611073', '_blank');
+                
+                // Show modal with timer
+                modal.style.display = 'flex';
+                
+                // Start 30 second timer
+                let seconds = 30;
+                
+                const timer = setInterval(() => {
+                    seconds--;
+                    timerDisplay.textContent = seconds;
+                    
+                    if (seconds <= 0) {
                         clearInterval(timer);
                         timerDisplay.style.display = 'none';
                         successMessage.style.display = 'block';
-                        return;
                     }
-                    minutes--;
-                    seconds = 59;
-                } else {
-                    seconds--;
-                }
-                
-                // Update display
-                const formattedMinutes = minutes.toString().padStart(2, '0');
-                const formattedSeconds = seconds.toString().padStart(2, '0');
-                timerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
-            }, 1000);
-        }
+                }, 1000);
+            });
+        });
     </script>
 </body>
 </html>
