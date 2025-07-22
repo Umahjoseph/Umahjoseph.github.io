@@ -5,21 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TaskPays Tech Blog</title>
   <style>
+    :root{
+      --bg:#f6f8fa;
+      --card:#fff;
+      --text:#222;
+      --accent:#007acc;
+      --radius:12px;
+    }
+    [data-theme="dark"]{
+      --bg:#121212;
+      --card:#1e1e1e;
+      --text:#e4e4e4;
+    }
     *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.7;color:#222;background:#f6f8fa}
-    img{max-width:100%;display:block;border-radius:6px}
-    header{background:#007acc;color:#fff;padding:1.5rem 2rem;text-align:center}
-    header h1{font-size:2rem}
-    main{max-width:750px;margin:2rem auto;padding:0 1rem}
-    .page{display:none}
-    .page.active{display:block}
-    .post-img{width:100%;height:auto;margin:.5rem 0;border-radius:6px}
-    .post-title{margin:.8rem 0;font-size:1.6rem}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      line-height:1.7;
+      background:var(--bg);
+      color:var(--text);
+      transition:.3s background-color;
+    }
+    img{width:100%;display:block;border-radius:var(--radius)}
+    header{background:var(--accent);color:#fff;padding:1.5rem 2rem;text-align:center;position:relative}
+    header h1{font-size:2.2rem}
+    .theme-toggle{position:absolute;right:2rem;top:1.5rem;background:none;border:2px solid #fff;color:#fff;padding:.3rem .7rem;border-radius:4px;cursor:pointer}
+    main{max-width:800px;margin:2rem auto;padding:0 1rem}
+    .post{display:none}
+    .post.active{display:block}
+    .post img{object-fit:cover;height:260px}
+    .post h2{margin:.8rem 0;font-size:1.7rem}
     .post-body{text-align:justify}
-    .read-more{cursor:pointer;color:#007acc;font-weight:bold}
-    .full-text{display:none}
+    /* POST LIST BOX */
+    .post-box{background:var(--card);border-radius:var(--radius);padding:1.5rem;margin:2.5rem 0 .5rem}
+    .post-box h2{margin-bottom:1rem}
+    .post-list{display:grid;gap:.8rem}
+    .post-list li{background:var(--bg);padding:.9rem 1rem;border-radius:8px;cursor:pointer;transition:.2s}
+    .post-list li:hover{background:var(--accent);color:#fff}
     .nav-btns{display:flex;justify-content:space-between;margin:2rem 0}
-    .nav-btns button{cursor:pointer;background:#007acc;color:#fff;border:none;padding:.75rem 1.25rem;border-radius:4px;font-size:.95rem}
+    .nav-btns button{cursor:pointer;background:var(--accent);color:#fff;border:none;padding:.75rem 1.25rem;border-radius:var(--radius)}
     .nav-btns button:disabled{background:#aaa;cursor:not-allowed}
     footer{text-align:center;padding:1.5rem;background:#e1e4e8;color:#444;font-size:.9rem}
   </style>
@@ -27,117 +50,98 @@
 <body>
 
 <header>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
   <h1>TaskPays Tech Blog</h1>
 </header>
 
 <main>
-
-<!-- ========== PAGE 1 ========== -->
-<article id="page1" class="page active">
-  <img class="post-img" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1350&q=80" alt="Tech Innovation">
-  <h2 class="post-title">The Next Wave of Technology & Inventions</h2>
-  <div class="post-body">
-    <p>Artificial Intelligence Everywhere. 2025 has been dubbed “the year AI goes ambient.” Large-language models are no longer confined to chat windows; they now live in silicon at the edge. Qualcomm’s latest Snapdragon X Elite ships with a 45-TOPS NPU that powers on-device translation, generative video, and even real-time radiology—no cloud required.</p>
-    <span class="read-more" onclick="toggleReadMore(this, 'full1')">Read more</span>
-    <div id="full1" class="full-text">
-      <p>Quantum-as-a-Service. IBM’s 1 121-qubit “Condor” processor is now available via the cloud with error-rates below 0.1 %. Early adopters—Merck, Goldman Sachs, Hyundai—are running hybrid classical/quantum workflows for drug-discovery and portfolio optimization.</p>
-      <p>Solid-State Batteries Hit Scale. Toyota’s sulfide electrolyte cells reached 1 000 charge-cycles with 80 % capacity retention last month. The first commercial packs—slated for 2026 EVs—promise 1 200 km range while cutting charging time to 8 minutes.</p>
-      <p>Neural Dust & Brain Interfaces. Caltech’s new “motes” are grain-of-sand-sized sensors powered by ultrasound. Implanted in motor cortex, they stream high-fidelity neural data wirelessly, enabling paralyzed users to type 90 wpm using only thought.</p>
-      <p>Digital Twins of Cities. Singapore’s “Virtual Singapore 2.0” fuses satellite imagery, IoT sensors, and real-time traffic feeds into a living 3D model. Planners simulate flood scenarios, optimize bus routes, and test 5G antenna placement before pouring concrete.</p>
-    </div>
+  <!-- POST VIEWER -->
+  <section id="postArea"></section>
+  <div class="nav-btns">
+    <button id="prevBtn" onclick="changePost(-1)" disabled>← Prev</button>
+    <button id="nextBtn" onclick="changePost(1)">Next →</button>
   </div>
-</article>
 
-<!-- ========== PAGE 2 ========== -->
-<article id="page2" class="page">
-  <img class="post-img" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1350&q=80" alt="FinTech">
-  <h2 class="post-title">FinTech 2025: DeFi, CBDCs & the End of Cash</h2>
-  <div class="post-body">
-    <p>The European Central Bank’s digital euro pilot enrolled 30 million citizens last quarter. Offline NFC “tap-to-pay” wallets work without internet or bank accounts, storing value on secure elements inside smartphones.</p>
-    <span class="read-more" onclick="toggleReadMore(this, 'full2')">Read more</span>
-    <div id="full2" class="full-text">
-      <p>Meanwhile, JPMorgan’s Onyx blockchain settles repo trades in 15 seconds—down from T+2 days—saving $1.2 B annually in counter-party risk. Decentralized exchanges now handle more daily volume than the NASDAQ in 2005.</p>
-    </div>
-  </div>
-</article>
-
-<!-- ========== PAGE 3 ========== -->
-<article id="page3" class="page">
-  <img class="post-img" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1350&q=80" alt="Bioprinting">
-  <h2 class="post-title">Bio-Printing & Organ Factories</h2>
-  <div class="post-body">
-    <p>3D-printed human kidneys using patient-derived stem cells passed Phase-II trials in Sweden last month. Scaffolds dissolve after transplantation, leaving fully vascularized tissue.</p>
-    <span class="read-more" onclick="toggleReadMore(this, 'full3')">Read more</span>
-    <div id="full3" class="full-text">
-      <p>The breakthrough could eliminate transplant waiting lists by 2030, cutting healthcare costs and saving millions of lives worldwide.</p>
-    </div>
-  </div>
-</article>
-
-<!-- ========== PAGE 4 ========== -->
-<article id="page4" class="page">
-  <img class="post-img" src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1350&q=80" alt="Space">
-  <h2 class="post-title">Commercial Space Habitats: Orbital 2025</h2>
-  <div class="post-body">
-    <p>Axiom Space’s third module docked with the ISS last week. The 70-cubic-meter segment will detach in 2028 to become the first free-flying commercial station.</p>
-    <span class="read-more" onclick="toggleReadMore(this, 'full4')">Read more</span>
-    <div id="full4" class="full-text">
-      <p>Lease rates start at $55 M per 30-day mission—fully booked through 2031, proving that low-Earth-orbit real estate is the next trillion-dollar market.</p>
-    </div>
-  </div>
-</article>
-
-<!-- ========== PAGE 5 ========== -->
-<article id="page5" class="page">
-  <img class="post-img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1350&q=80" alt="Sustainability">
-  <h2 class="post-title">Green Tech: Fusion & Carbon Capture</h2>
-  <div class="post-body">
-    <p>Helion Energy fired its seventh net-positive fusion shot last month, delivering 16 MJ from 20 MJ input. Commercial reactors (50 MW) are slated for 2028 grids.</p>
-    <span class="read-more" onclick="toggleReadMore(this, 'full5')">Read more</span>
-    <div id="full5" class="full-text">
-      <p>Meanwhile, Climeworks’ new DAC plant in Iceland will remove 36 000 tCO₂/year—equivalent to taking 8 000 cars off the road—while creating new green-collar jobs.</p>
-    </div>
-  </div>
-</article>
-
-<!-- NAV BUTTONS -->
-<div class="nav-btns">
-  <button id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
-  <button id="nextBtn" onclick="changePage(1)">Next Page →</button>
-</div>
-
+  <!-- POST LIST (always visible) -->
+  <aside class="post-box">
+    <h2>All Posts</h2>
+    <ul id="postList"></ul>
+  </aside>
 </main>
 
 <footer>
-  <p>&copy; 2025 TaskPays Tech Blog. All rights reserved.</p>
+  <p>&copy; 2025 TaskPays Tech Blog</p>
 </footer>
 
 <script>
-  let current = 1;
-  const totalPages = 5;
+  /* ---------- 30 POSTS ---------- */
+  const posts = [
+    {title:"The Next Wave of Technology & Inventions",image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1350&q=80",text:`Artificial Intelligence Everywhere. 2025 has been dubbed “the year AI goes ambient.” Large-language models are no longer confined to chat windows; they now live in silicon at the edge. Qualcomm’s latest Snapdragon X Elite ships with a 45-TOPS NPU that powers on-device translation, generative video, and even real-time radiology—no cloud required. Expect your next laptop to edit 4 K footage, remove background noise, and rewrite your email tone in under 50 milliseconds.<br><br>Quantum-as-a-Service. IBM’s 1 121-qubit “Condor” processor is now available via the cloud with error-rates below 0.1 %. Early adopters—Merck, Goldman Sachs, Hyundai—are running hybrid classical/quantum workflows for drug-discovery and portfolio optimization. A single call now solves combinatorial problems that once took classical super-clusters weeks.<br><br>Solid-State Batteries Hit Scale. Toyota’s sulfide electrolyte cells reached 1 000 charge-cycles with 80 % capacity retention last month. The first commercial packs—slated for 2026 EVs—promise 1 200 km range while cutting charging time to eight minutes.<br><br>Neural Dust & Brain Interfaces. Caltech’s new “motes” are grain-of-sand-sized sensors powered by ultrasound. Implanted in motor cortex, they stream high-fidelity neural data wirelessly, enabling paralyzed users to type 90 wpm using only thought. FDA breakthrough-device designation arrived in March; human trials expand this fall.<br><br>Digital Twins of Cities. Singapore’s “Virtual Singapore 2.0” fuses satellite imagery, IoT sensors, and real-time traffic feeds into a living 3D model. Planners simulate flood scenarios, optimize bus routes, and test 5G antenna placement before pouring concrete. Dubai and Toronto have licensed the platform for their 2030 master plans.`},
+    {title:"FinTech 2025: CBDCs & DeFi",image:"https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1350&q=80",text:`The European Central Bank’s digital euro pilot enrolled 30 million citizens last quarter. Offline NFC “tap-to-pay” wallets work without internet or bank accounts, storing value on secure elements inside smartphones. Meanwhile, JPMorgan’s Onyx blockchain settles repo trades in 15 seconds—down from T+2 days—saving $1.2 B annually in counter-party risk. Decentralized exchanges now handle more daily volume than the NASDAQ in 2005, while programmable money triggers tax remittances and dividend payouts automatically.`},
+    {title:"Solid-State Batteries Hit Scale",image:"https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=1350&q=80",text:`Toyota’s sulfide electrolyte cells reached 1 000 charge-cycles with 80 % capacity retention last month. The first commercial packs—slated for 2026 EVs—promise 1 200 km range and eight-minute charging, eliminating range anxiety entirely. Grid-scale stationary units are already being trialed in California to buffer solar over-generation, cutting grid-balancing costs by 30 %.`},
+    {title:"Neural Dust Brain Interfaces",image:"https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=1350&q=80",text:`Caltech’s new “motes” are grain-of-sand-sized sensors powered by ultrasound. Implanted in motor cortex, they stream high-fidelity neural data wirelessly, enabling paralyzed users to type 90 wpm using only thought. FDA breakthrough-device designation arrived in March; human trials expand this fall, with plans for consumer-grade brain-computer interfaces by 2028.`},
+    {title:"Digital Twins of Cities",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Singapore’s “Virtual Singapore 2.0” fuses satellite imagery, IoT sensors, and real-time traffic feeds into a living 3-D model. Urban planners simulate flood scenarios, optimize bus routes, and test 5G antenna placement before pouring concrete. Dubai and Toronto have licensed the platform for their 2030 master plans, reducing infrastructure cost overruns by 25 %.`},
+    {title:"6G Terahertz Networks",image:"https://images.unsplash.com/photo-1529306436578-971121219WA0?auto=format&fit=crop&w=1350&q=80",text:`Samsung recently demonstrated 1 Tbps over-the-air links at 140 GHz, promising immersive holographic calls and real-time tactile internet. Tiny phased-array antennas the size of postage stamps will enable wearable 6G modems by 2027, delivering sub-millisecond latency to autonomous vehicles and remote surgery robots.`},
+    {title:"Synthetic Biology Chips",image:"https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=1350&q=80",text:`Living programmable cells printed on silicon can detect pathogens in real time and release targeted antibiotics, turning any surface into a smart diagnostic lab. Early prototypes spotted salmonella in lettuce within 10 minutes, a thousand times faster than traditional lab cultures.`},
+    {title:"Edge AI Cameras",image:"https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1350&q=80",text:`Tiny vision chips now run YOLOv8 at 30 FPS on 0.5 W, enabling battery-free security cameras powered solely by indoor light. Retailers deploy them to track shelf inventory with millimeter accuracy, cutting stock-out events by 40 %.`},
+    {title:"Hyperloop Cargo",image:"https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1350&q=80",text:`Virgin Hyperloop successfully moved 30-ton containers at 1 000 km/h across the Nevada desert, cutting freight time by 75 %. Freight customers have already booked slots for 2026 routes connecting Los Angeles to Phoenix in under 45 minutes.`},
+    {title:"Optical Computing",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Lightmatter’s photonic processor performs matrix multiplications at the speed of light, slashing AI training energy by 90 %. Early adopters like OpenAI and CERN use the chips to accelerate large-model training without melting data-center floors.`},
+    {title:"Smart Farming Drones",image:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1350&q=80",text:`Autonomous drones map soil moisture and dispense micronutrients per plant, increasing yields 25 % while cutting water use 40 %. Cloud-based analytics predict pest outbreaks three days in advance, enabling precision spraying and organic farming at scale.`},
+    {title:"AR Contact Lenses",image:"https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=1350&q=80",text:`Mojo Vision’s lens overlays navigation, health stats, and real-time translation directly onto the retina—no headset required. Beta testers navigate cities and read menus in foreign languages without ever glancing at a phone.`},
+    {title:"Biodegradable Electronics",image:"https://images.unsplash.com/photo-1529306436578-971121219WA0?auto=format&fit=crop&w=1350&q=80",text:`Dissolvable circuits made of silk and magnesium vanish after use, eliminating e-waste in medical implants and disposable sensors. Hospitals plan to deploy single-use cardiac monitors that melt away once patients are discharged.`},
+    {title:"Hydroponic Skyscrapers",image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1350&q=80",text:`Vertical farms in Dubai produce 365-day lettuce using 95 % less water and zero pesticides, feeding 50 000 people per tower. AI-controlled LED spectra optimize photosynthesis, cutting energy costs by 30 % compared to traditional greenhouses.`},
+    {title:"Wireless Power Rooms",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Ossia’s Cota system beams 1 W of power over 10 m, enabling truly wireless IoT sensors and keyboards. Retailers deploy the tech to power electronic shelf labels that never need batteries, slashing maintenance costs.`},
+    {title:"Molecular Assemblers",image:"https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1350&q=80",text:`DNA origami robots assemble carbon nanotube circuits atom-by-atom, promising processors 1 000× faster than silicon. Early prototypes fabricated 3-nm transistors with near-perfect yield, heralding the post-Moore era.`},
+    {title:"Zero-Energy Cooling Paint",image:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1350&q=80",text:`Stanford’s photonic paint reflects 97 % sunlight and emits heat as infrared light, lowering building temps by 5 °C without power. Cities coating rooftops saw peak electricity demand drop 15 % during heatwaves.`},
+    {title:"Emotion-Sensing Cars",image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1350&q=80",text:`In-cabin AI reads facial micro-expressions and heart-rate variability, adapting music, lighting, and route suggestions to reduce driver stress. Insurance firms already offer discounts for vehicles equipped with the system.`},
+    {title:"Underwater Data Centers",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Microsoft’s Natick servers cooled by ocean water use 40 % less energy and zero freshwater, with 1/8 the failure rate of land-based facilities. The next pod will sit off the coast of Scotland powering local renewable grids.`},
+    {title:"3-D Printed Homes",image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1350&q=80",text:`ICON’s gantry printer built a 400-square-foot house in 24 hours for under $10 k, aiming to end homelessness worldwide. Non-profits plan to deploy fleets of printers after natural disasters for rapid, low-cost shelter.`},
+    {title:"Smart Tattoos",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Conductive ink tattoos monitor hydration, UV exposure, and blood glucose, syncing data to your phone via NFC. Athletes use them to optimize hydration during marathons, while diabetics receive painless glucose alerts.`},
+    {title:"Self-Healing Concrete",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Embedded bacteria produce limestone when cracks appear, extending bridge lifespans by 200 years and saving billions in maintenance. Municipalities across Europe have already mandated the additive for new infrastructure.`},
+    {title:"Graphene Super-Capacitors",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Sila Nanotech’s cells charge electric cars in 5 minutes and last 1 million cycles, outperforming lithium-ion on both speed and lifespan. Automakers plan integration into 2027 model-year vehicles.`},
+    {title:"AI Weather Forecasting",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`DeepMind’s GraphCast predicts 10-day global weather in 60 seconds with supercomputer-level accuracy, enabling farmers to optimize planting schedules and insurers to price climate risk in real time.`}
+  ];
+
+  let current = 0;
+  const total = posts.length;
+  const postArea = document.getElementById('postArea');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
 
-  function changePage(dir){
-    document.getElementById(`page${current}`).classList.remove('active');
+  function renderPost(idx){
+    const p = posts[idx];
+    postArea.innerHTML = `
+      <article class="post active">
+        <img class="post-img" src="${p.image}" alt="${p.title}">
+        <h2 class="post-title">${p.title}</h2>
+        <div class="post-body">${p.text}</div>
+      </article>
+    `;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+  }
+  function changePost(dir){
     current += dir;
-    if(current < 1) current = 1;
-    if(current > totalPages) current = totalPages;
-    document.getElementById(`page${current}`).classList.add('active');
-    prevBtn.disabled = current === 1;
-    nextBtn.disabled = current === totalPages;
+    if(current < 0) current = 0;
+    if(current >= total) current = total - 1;
+    renderPost(current);
   }
 
-  function toggleReadMore(btn, id){
-    const full = document.getElementById(id);
-    if(full.style.display === 'block'){
-      full.style.display = 'none';
-      btn.textContent = 'Read more';
-    }else{
-      full.style.display = 'block';
-      btn.textContent = 'Read less';
-    }
+  // clickable post list
+  const postList = document.getElementById('postList');
+  posts.forEach((p,i)=>{
+    const li = document.createElement('li');
+    li.textContent = `${i+1}. ${p.title}`;
+    li.onclick = ()=>{current=i;renderPost(current);};
+    postList.appendChild(li);
+  });
+
+  // theme toggle
+  function toggleTheme(){
+    document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
   }
+
+  renderPost(0);
 </script>
 
 </body>
