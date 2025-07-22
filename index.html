@@ -1,148 +1,1371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TaskPays Tech Blog</title>
-  <style>
-    :root{
-      --bg:#f6f8fa;
-      --card:#fff;
-      --text:#222;
-      --accent:#007acc;
-      --radius:12px;
-    }
-    [data-theme="dark"]{
-      --bg:#121212;
-      --card:#1e1e1e;
-      --text:#e4e4e4;
-    }
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      line-height:1.7;
-      background:var(--bg);
-      color:var(--text);
-      transition:.3s background-color;
-    }
-    img{width:100%;display:block;border-radius:var(--radius)}
-    header{background:var(--accent);color:#fff;padding:1.5rem 2rem;text-align:center;position:relative}
-    header h1{font-size:2.2rem}
-    .theme-toggle{position:absolute;right:2rem;top:1.5rem;background:none;border:2px solid #fff;color:#fff;padding:.3rem .7rem;border-radius:4px;cursor:pointer}
-    main{max-width:800px;margin:2rem auto;padding:0 1rem}
-    .post{display:none}
-    .post.active{display:block}
-    .post img{object-fit:cover;height:260px}
-    .post h2{margin:.8rem 0;font-size:1.7rem}
-    .post-body{text-align:justify}
-    /* POST LIST BOX */
-    .post-box{background:var(--card);border-radius:var(--radius);padding:1.5rem;margin:2.5rem 0 .5rem}
-    .post-box h2{margin-bottom:1rem}
-    .post-list{display:grid;gap:.8rem}
-    .post-list li{background:var(--bg);padding:.9rem 1rem;border-radius:8px;cursor:pointer;transition:.2s}
-    .post-list li:hover{background:var(--accent);color:#fff}
-    .nav-btns{display:flex;justify-content:space-between;margin:2rem 0}
-    .nav-btns button{cursor:pointer;background:var(--accent);color:#fff;border:none;padding:.75rem 1.25rem;border-radius:var(--radius)}
-    .nav-btns button:disabled{background:#aaa;cursor:not-allowed}
-    footer{text-align:center;padding:1.5rem;background:#e1e4e8;color:#444;font-size:.9rem}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="monetag" content="69e850f42419e9e3ffa38b9f81e3dc7b">
+    <title>TaskPays - Earn Money Online | Tech News | Lifestyle Tips</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #2a52be;
+            --secondary-color: #ff6b00;
+            --dark-color: #333;
+            --light-color: #f8f9fa;
+            --gray-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --font-main: 'Arial', sans-serif;
+            --font-heading: 'Arial Black', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #fff;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        .top-bar {
+            background-color: var(--dark-color);
+            color: #fff;
+            font-size: 0.9rem;
+            padding: 8px 0;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .top-nav ul li {
+            margin-left: 20px;
+        }
+
+        .top-nav ul li a {
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .main-header {
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            max-height: 60px;
+        }
+
+        .header-ads {
+            width: 728px;
+            height: 90px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background-color: var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .main-nav ul li a {
+            color: #fff;
+            padding: 15px 20px;
+            display: block;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .main-nav ul li a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .search-box input {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 0.9rem;
+        }
+
+        .search-box button {
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        /* Breaking News */
+        .breaking-news {
+            background-color: var(--danger-color);
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        .breaking-news .container {
+            display: flex;
+            align-items: center;
+        }
+
+        .breaking-label {
+            font-weight: bold;
+            margin-right: 15px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .ticker {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .ticker ul {
+            list-style: none;
+            animation: ticker 15s linear infinite;
+            white-space: nowrap;
+        }
+
+        .ticker ul li {
+            margin-right: 30px;
+            display: inline-block;
+        }
+
+        .ticker ul li a {
+            color: #fff;
+            font-size: 0.95rem;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Featured Post */
+        .featured-post {
+            margin: 30px 0;
+        }
+
+        .featured-post article {
+            display: flex;
+            gap: 30px;
+        }
+
+        .featured-image {
+            flex: 1;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .featured-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .category-badge.money {
+            background-color: var(--success-color);
+        }
+
+        .category-badge.technology {
+            background-color: var(--info-color);
+        }
+
+        .category-badge.lifestyle {
+            background-color: var(--secondary-color);
+        }
+
+        .category-badge.health {
+            background-color: var(--danger-color);
+        }
+
+        .category-badge.entertainment {
+            background-color: var(--warning-color);
+        }
+
+        .featured-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-content h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .featured-content h1 a {
+            color: var(--dark-color);
+        }
+
+        .featured-content h1 a:hover {
+            color: var(--primary-color);
+        }
+
+        .excerpt {
+            color: var(--gray-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 15px;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .grid-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .news-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-image {
+            position: relative;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h2 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .card-content h2 a {
+            color: var(--dark-color);
+        }
+
+        .card-content h2 a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 40px 0;
+            margin: 40px 0;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .newsletter h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .newsletter p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 4px 4px 0;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #e05d00;
+        }
+
+        .disclaimer {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 15px;
+        }
+
+        /* More Posts */
+        .more-posts {
+            margin: 40px 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .post-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .list-post {
+            display: flex;
+            gap: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .list-image {
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .list-image img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .list-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .list-content h3 a {
+            color: var(--dark-color);
+        }
+
+        .list-content h3 a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        .main-footer {
+            background-color: var(--dark-color);
+            color: #fff;
+            padding: 50px 0 20px;
+        }
+
+        .footer-columns {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+        }
+
+        .footer-logo {
+            max-height: 50px;
+            margin-bottom: 20px;
+        }
+
+        .footer-column p {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95rem;
+        }
+
+        .footer-column ul li a:hover {
+            color: #fff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: #fff;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .social-links a:hover {
+            opacity: 1;
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-cloud a {
+            background-color: rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .tag-cloud a:hover {
+            background-color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .featured-post article {
+                flex-direction: column;
+            }
+            
+            .news-grid {
+                flex-direction: column;
+            }
+            
+            .footer-columns {
+                flex-wrap: wrap;
+            }
+            
+            .footer-column {
+                flex: 0 0 calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-header .container {
+                flex-direction: column;
+            }
+            
+            .header-ads {
+                margin-top: 20px;
+                width: 100%;
+            }
+            
+            .main-nav ul {
+                flex-wrap: wrap;
+            }
+            
+            .search-box {
+                margin: 10px 0 0;
+                width: 100%;
+            }
+            
+            .list-post {
+                flex-direction: column;
+            }
+            
+            .list-image {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .footer-column {
+                flex: 0 0 100%;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-form input, 
+            .newsletter-form button {
+                border-radius: 4px;
+            }
+            
+            .newsletter-form button {
+                margin-top: 10px;
+                padding: 12px 15px;
+            }
+        }
+
+        /* Single Post Styles */
+        .single-post-container {
+            display: flex;
+            gap: 40px;
+            margin: 30px auto;
+        }
+
+        .single-post {
+            flex: 2;
+        }
+
+        .sidebar {
+            flex: 1;
+        }
+
+        .post-header {
+            margin-bottom: 30px;
+        }
+
+        .post-header h1 {
+            font-size: 2.2rem;
+            line-height: 1.3;
+            margin: 15px 0;
+        }
+
+        .featured-image {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .featured-image img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .image-caption {
+            text-align: center;
+            font-style: italic;
+            color: var(--gray-color);
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .post-content h2 {
+            font-size: 1.6rem;
+            margin: 30px 0 15px;
+            color: var(--dark-color);
+        }
+
+        .post-content h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+
+        .post-content p {
+            margin-bottom: 20px;
+        }
+
+        .post-content ul, 
+        .post-content ol {
+            margin-bottom: 20px;
+            padding-left: 30px;
+        }
+
+        .post-content li {
+            margin-bottom: 10px;
+        }
+
+        .content-image {
+            margin: 25px 0;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .earnings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .earnings-table th, 
+        .earnings-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .earnings-table th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+
+        .money-tip {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--secondary-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .money-tip h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+
+        .conclusion {
+            background-color: #f0f8ff;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .post-tags a {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .post-tags a:hover {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .author-box {
+            display: flex;
+            gap: 20px;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin: 30px 0;
+            align-items: center;
+        }
+
+        .author-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .post-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .post-navigation a {
+            font-weight: 600;
+            color: var(--dark-color);
+            max-width: 45%;
+        }
+
+        .related-posts {
+            margin: 40px 0;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .related-post {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .related-post img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .related-post h4 {
+            padding: 15px;
+            font-size: 1rem;
+        }
+
+        .comments-section {
+            margin: 40px 0;
+        }
+
+        .comment-form {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .comment-form h4 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: var(--font-main);
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #1c3d8a;
+        }
+
+        /* Sidebar Styles */
+        .sidebar-widget {
+            margin-bottom: 40px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .widget-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .popular-posts {
+            list-style: none;
+        }
+
+        .popular-posts li {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .popular-posts li:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .popular-posts a {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            color: var(--dark-color);
+        }
+
+        .popular-posts a:hover {
+            color: var(--primary-color);
+        }
+
+        .popular-posts img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-newsletter input {
+            width: 100%;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .sidebar-newsletter button {
+            width: 100%;
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list li {
+            margin-bottom: 10px;
+        }
+
+        .category-list a {
+            display: flex;
+            justify-content: space-between;
+            color: var(--dark-color);
+        }
+
+        .category-list a:hover {
+            color: var(--primary-color);
+        }
+
+        .category-list span {
+            background-color: var(--light-color);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Styles for Single Post */
+        @media (max-width: 992px) {
+            .single-post-container {
+                flex-direction: column;
+            }
+            
+            .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .post-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .post-navigation a {
+                max-width: 100%;
+            }
+            
+            .author-box {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Top Navigation Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <span class="date-display" id="current-date"></span>
+            <nav class="top-nav">
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#advertise">Advertise</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 
-<header>
-  <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
-  <h1>TaskPays Tech Blog</h1>
-</header>
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="logo-container">
+                <a href="#">
+                    <div class="logo" style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">TaskPays</div>
+                </a>
+            </div>
+            
+            <div class="header-ads">
+                Ad Space (728x90)
+            </div>
+        </div>
+    </header>
 
-<main>
-  <!-- POST VIEWER -->
-  <section id="postArea"></section>
-  <div class="nav-btns">
-    <button id="prevBtn" onclick="changePost(-1)" disabled>← Prev</button>
-    <button id="nextBtn" onclick="changePost(1)">Next →</button>
-  </div>
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#money">Make Money</a></li>
+                <li><a href="#technology">Technology</a></li>
+                <li><a href="#lifestyle">Lifestyle</a></li>
+                <li><a href="#health">Health</a></li>
+                <li><a href="#entertainment">Entertainment</a></li>
+            </ul>
+            <div class="search-box">
+                <input type="text" placeholder="Search...">
+                <button type="submit">Search</button>
+            </div>
+        </div>
+    </nav>
 
-  <!-- POST LIST (always visible) -->
-  <aside class="post-box">
-    <h2>All Posts</h2>
-    <ul id="postList"></ul>
-  </aside>
-</main>
+    <!-- Breaking News Ticker -->
+    <div class="breaking-news">
+        <div class="container">
+            <span class="breaking-label">BREAKING:</span>
+            <div class="ticker">
+                <ul>
+                    <li><a href="#crypto">New crypto earning app pays users $50 just for signing up</a></li>
+                    <li><a href="#ai-jobs">AI creates 10,000 new remote jobs this month</a></li>
+                    <li><a href="#side-hustles">Top 5 side hustles to earn $100/day</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-<footer>
-  <p>&copy; 2025 TaskPays Tech Blog</p>
-</footer>
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Featured Post -->
+        <section class="featured-post">
+            <article>
+                <div class="featured-image">
+                    <div style="width: 100%; height: 400px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                        Featured Image (800x400)
+                    </div>
+                    <div class="category-badge money">Make Money</div>
+                </div>
+                <div class="featured-content">
+                    <h1><a href="#earn-1000">How to Earn $1000/month Online Without Investment</a></h1>
+                    <p class="excerpt">Discover 7 proven methods to start earning money online today, even if you're a complete beginner...</p>
+                    <div class="post-meta">
+                        <span class="author">By John Smith</span>
+                        <span class="date">July 22, 2023</span>
+                        <span class="read-time">5 min read</span>
+                    </div>
+                </div>
+            </article>
+        </section>
 
-<script>
-  /* ---------- 30 POSTS ---------- */
-  const posts = [
-    {title:"The Next Wave of Technology & Inventions",image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1350&q=80",text:`Artificial Intelligence Everywhere. 2025 has been dubbed “the year AI goes ambient.” Large-language models are no longer confined to chat windows; they now live in silicon at the edge. Qualcomm’s latest Snapdragon X Elite ships with a 45-TOPS NPU that powers on-device translation, generative video, and even real-time radiology—no cloud required. Expect your next laptop to edit 4 K footage, remove background noise, and rewrite your email tone in under 50 milliseconds.<br><br>Quantum-as-a-Service. IBM’s 1 121-qubit “Condor” processor is now available via the cloud with error-rates below 0.1 %. Early adopters—Merck, Goldman Sachs, Hyundai—are running hybrid classical/quantum workflows for drug-discovery and portfolio optimization. A single call now solves combinatorial problems that once took classical super-clusters weeks.<br><br>Solid-State Batteries Hit Scale. Toyota’s sulfide electrolyte cells reached 1 000 charge-cycles with 80 % capacity retention last month. The first commercial packs—slated for 2026 EVs—promise 1 200 km range while cutting charging time to eight minutes.<br><br>Neural Dust & Brain Interfaces. Caltech’s new “motes” are grain-of-sand-sized sensors powered by ultrasound. Implanted in motor cortex, they stream high-fidelity neural data wirelessly, enabling paralyzed users to type 90 wpm using only thought. FDA breakthrough-device designation arrived in March; human trials expand this fall.<br><br>Digital Twins of Cities. Singapore’s “Virtual Singapore 2.0” fuses satellite imagery, IoT sensors, and real-time traffic feeds into a living 3D model. Planners simulate flood scenarios, optimize bus routes, and test 5G antenna placement before pouring concrete. Dubai and Toronto have licensed the platform for their 2030 master plans.`},
-    {title:"FinTech 2025: CBDCs & DeFi",image:"https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1350&q=80",text:`The European Central Bank’s digital euro pilot enrolled 30 million citizens last quarter. Offline NFC “tap-to-pay” wallets work without internet or bank accounts, storing value on secure elements inside smartphones. Meanwhile, JPMorgan’s Onyx blockchain settles repo trades in 15 seconds—down from T+2 days—saving $1.2 B annually in counter-party risk. Decentralized exchanges now handle more daily volume than the NASDAQ in 2005, while programmable money triggers tax remittances and dividend payouts automatically.`},
-    {title:"Solid-State Batteries Hit Scale",image:"https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=1350&q=80",text:`Toyota’s sulfide electrolyte cells reached 1 000 charge-cycles with 80 % capacity retention last month. The first commercial packs—slated for 2026 EVs—promise 1 200 km range and eight-minute charging, eliminating range anxiety entirely. Grid-scale stationary units are already being trialed in California to buffer solar over-generation, cutting grid-balancing costs by 30 %.`},
-    {title:"Neural Dust Brain Interfaces",image:"https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=1350&q=80",text:`Caltech’s new “motes” are grain-of-sand-sized sensors powered by ultrasound. Implanted in motor cortex, they stream high-fidelity neural data wirelessly, enabling paralyzed users to type 90 wpm using only thought. FDA breakthrough-device designation arrived in March; human trials expand this fall, with plans for consumer-grade brain-computer interfaces by 2028.`},
-    {title:"Digital Twins of Cities",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Singapore’s “Virtual Singapore 2.0” fuses satellite imagery, IoT sensors, and real-time traffic feeds into a living 3-D model. Urban planners simulate flood scenarios, optimize bus routes, and test 5G antenna placement before pouring concrete. Dubai and Toronto have licensed the platform for their 2030 master plans, reducing infrastructure cost overruns by 25 %.`},
-    {title:"6G Terahertz Networks",image:"https://images.unsplash.com/photo-1529306436578-971121219WA0?auto=format&fit=crop&w=1350&q=80",text:`Samsung recently demonstrated 1 Tbps over-the-air links at 140 GHz, promising immersive holographic calls and real-time tactile internet. Tiny phased-array antennas the size of postage stamps will enable wearable 6G modems by 2027, delivering sub-millisecond latency to autonomous vehicles and remote surgery robots.`},
-    {title:"Synthetic Biology Chips",image:"https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=1350&q=80",text:`Living programmable cells printed on silicon can detect pathogens in real time and release targeted antibiotics, turning any surface into a smart diagnostic lab. Early prototypes spotted salmonella in lettuce within 10 minutes, a thousand times faster than traditional lab cultures.`},
-    {title:"Edge AI Cameras",image:"https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1350&q=80",text:`Tiny vision chips now run YOLOv8 at 30 FPS on 0.5 W, enabling battery-free security cameras powered solely by indoor light. Retailers deploy them to track shelf inventory with millimeter accuracy, cutting stock-out events by 40 %.`},
-    {title:"Hyperloop Cargo",image:"https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1350&q=80",text:`Virgin Hyperloop successfully moved 30-ton containers at 1 000 km/h across the Nevada desert, cutting freight time by 75 %. Freight customers have already booked slots for 2026 routes connecting Los Angeles to Phoenix in under 45 minutes.`},
-    {title:"Optical Computing",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Lightmatter’s photonic processor performs matrix multiplications at the speed of light, slashing AI training energy by 90 %. Early adopters like OpenAI and CERN use the chips to accelerate large-model training without melting data-center floors.`},
-    {title:"Smart Farming Drones",image:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1350&q=80",text:`Autonomous drones map soil moisture and dispense micronutrients per plant, increasing yields 25 % while cutting water use 40 %. Cloud-based analytics predict pest outbreaks three days in advance, enabling precision spraying and organic farming at scale.`},
-    {title:"AR Contact Lenses",image:"https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=1350&q=80",text:`Mojo Vision’s lens overlays navigation, health stats, and real-time translation directly onto the retina—no headset required. Beta testers navigate cities and read menus in foreign languages without ever glancing at a phone.`},
-    {title:"Biodegradable Electronics",image:"https://images.unsplash.com/photo-1529306436578-971121219WA0?auto=format&fit=crop&w=1350&q=80",text:`Dissolvable circuits made of silk and magnesium vanish after use, eliminating e-waste in medical implants and disposable sensors. Hospitals plan to deploy single-use cardiac monitors that melt away once patients are discharged.`},
-    {title:"Hydroponic Skyscrapers",image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1350&q=80",text:`Vertical farms in Dubai produce 365-day lettuce using 95 % less water and zero pesticides, feeding 50 000 people per tower. AI-controlled LED spectra optimize photosynthesis, cutting energy costs by 30 % compared to traditional greenhouses.`},
-    {title:"Wireless Power Rooms",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Ossia’s Cota system beams 1 W of power over 10 m, enabling truly wireless IoT sensors and keyboards. Retailers deploy the tech to power electronic shelf labels that never need batteries, slashing maintenance costs.`},
-    {title:"Molecular Assemblers",image:"https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1350&q=80",text:`DNA origami robots assemble carbon nanotube circuits atom-by-atom, promising processors 1 000× faster than silicon. Early prototypes fabricated 3-nm transistors with near-perfect yield, heralding the post-Moore era.`},
-    {title:"Zero-Energy Cooling Paint",image:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1350&q=80",text:`Stanford’s photonic paint reflects 97 % sunlight and emits heat as infrared light, lowering building temps by 5 °C without power. Cities coating rooftops saw peak electricity demand drop 15 % during heatwaves.`},
-    {title:"Emotion-Sensing Cars",image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1350&q=80",text:`In-cabin AI reads facial micro-expressions and heart-rate variability, adapting music, lighting, and route suggestions to reduce driver stress. Insurance firms already offer discounts for vehicles equipped with the system.`},
-    {title:"Underwater Data Centers",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Microsoft’s Natick servers cooled by ocean water use 40 % less energy and zero freshwater, with 1/8 the failure rate of land-based facilities. The next pod will sit off the coast of Scotland powering local renewable grids.`},
-    {title:"3-D Printed Homes",image:"https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1350&q=80",text:`ICON’s gantry printer built a 400-square-foot house in 24 hours for under $10 k, aiming to end homelessness worldwide. Non-profits plan to deploy fleets of printers after natural disasters for rapid, low-cost shelter.`},
-    {title:"Smart Tattoos",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Conductive ink tattoos monitor hydration, UV exposure, and blood glucose, syncing data to your phone via NFC. Athletes use them to optimize hydration during marathons, while diabetics receive painless glucose alerts.`},
-    {title:"Self-Healing Concrete",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Embedded bacteria produce limestone when cracks appear, extending bridge lifespans by 200 years and saving billions in maintenance. Municipalities across Europe have already mandated the additive for new infrastructure.`},
-    {title:"Graphene Super-Capacitors",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`Sila Nanotech’s cells charge electric cars in 5 minutes and last 1 million cycles, outperforming lithium-ion on both speed and lifespan. Automakers plan integration into 2027 model-year vehicles.`},
-    {title:"AI Weather Forecasting",image:"https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&w=1350&q=80",text:`DeepMind’s GraphCast predicts 10-day global weather in 60 seconds with supercomputer-level accuracy, enabling farmers to optimize planting schedules and insurers to price climate risk in real time.`}
-  ];
+        <!-- News Grid -->
+        <section class="news-grid">
+            <div class="grid-column">
+                <article class="news-card">
+                    <div class="card-image">
+                        <div style="width: 100%; height: 200px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                            AI Tools Image
+                        </div>
+                        <div class="category-badge technology">Technology</div>
+                    </div>
+                    <div class="card-content">
+                        <h2><a href="#ai-tools">10 Free AI Tools That Can Make You Money</a></h2>
+                        <p class="excerpt">These powerful AI tools require no technical skills and can help you start earning immediately...</p>
+                        <div class="post-meta">
+                            <span class="date">July 21, 2023</span>
+                            <span class="read-time">4 min read</span>
+                        </div>
+                    </div>
+                </article>
 
-  let current = 0;
-  const total = posts.length;
-  const postArea = document.getElementById('postArea');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
+                <article class="news-card">
+                    <div class="card-image">
+                        <div style="width: 100%; height: 200px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Remote Jobs Image
+                        </div>
+                        <div class="category-badge money">Make Money</div>
+                    </div>
+                    <div class="card-content">
+                        <h2><a href="#remote-jobs">15 High-Paying Remote Jobs Hiring Now</a></h2>
+                        <p class="excerpt">Companies are paying up to $50/hour for these work-from-home positions with no experience required...</p>
+                        <div class="post-meta">
+                            <span class="date">July 20, 2023</span>
+                            <span class="read-time">6 min read</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
 
-  function renderPost(idx){
-    const p = posts[idx];
-    postArea.innerHTML = `
-      <article class="post active">
-        <img class="post-img" src="${p.image}" alt="${p.title}">
-        <h2 class="post-title">${p.title}</h2>
-        <div class="post-body">${p.text}</div>
-      </article>
-    `;
-    prevBtn.disabled = idx === 0;
-    nextBtn.disabled = idx === total - 1;
-  }
-  function changePost(dir){
-    current += dir;
-    if(current < 0) current = 0;
-    if(current >= total) current = total - 1;
-    renderPost(current);
-  }
+            <div class="grid-column">
+                <article class="news-card">
+                    <div class="card-image">
+                        <div style="width: 100%; height: 200px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Health Hacks Image
+                        </div>
+                        <div class="category-badge health">Health</div>
+                    </div>
+                    <div class="card-content">
+                        <h2><a href="#energy">5 Scientifically Proven Ways to Boost Your Energy</a></h2>
+                        <p class="excerpt">These simple lifestyle changes can dramatically increase your productivity and wellbeing...</p>
+                        <div class="post-meta">
+                            <span class="date">July 19, 2023</span>
+                            <span class="read-time">3 min read</span>
+                        </div>
+                    </div>
+                </article>
 
-  // clickable post list
-  const postList = document.getElementById('postList');
-  posts.forEach((p,i)=>{
-    const li = document.createElement('li');
-    li.textContent = `${i+1}. ${p.title}`;
-    li.onclick = ()=>{current=i;renderPost(current);};
-    postList.appendChild(li);
-  });
+                <div class="ad-slot" id="mid-content-ad" style="background-color: #f5f5f5; height: 250px; display: flex; align-items: center; justify-content: center; color: #999;">
+                    Ad Space (300x250)
+                </div>
 
-  // theme toggle
-  function toggleTheme(){
-    document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark';
-  }
+                <article class="news-card">
+                    <div class="card-image">
+                        <div style="width: 100%; height: 200px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Smartphone Tips Image
+                        </div>
+                        <div class="category-badge technology">Technology</div>
+                    </div>
+                    <div class="card-content">
+                        <h2><a href="#phone-apps">Turn Your Smartphone Into a Money Machine</a></h2>
+                        <p class="excerpt">10 apps that pay you just for using your phone normally - start earning today...</p>
+                        <div class="post-meta">
+                            <span class="date">July 18, 2023</span>
+                            <span class="read-time">5 min read</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
 
-  renderPost(0);
-</script>
+            <div class="grid-column">
+                <article class="news-card">
+                    <div class="card-image">
+                        <div style="width: 100%; height: 200px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Budget Travel Image
+                        </div>
+                        <div class="category-badge lifestyle">Lifestyle</div>
+                    </div>
+                    <div class="card-content">
+                        <h2><a href="#travel">How to Travel the World on $500/month</a></h2>
+                        <p class="excerpt">Digital nomads reveal their secrets for cheap travel while earning money online...</p>
+                        <div class="post-meta">
+                            <span class="date">July 17, 2023</span>
+                            <span class="read-time">7 min read</span>
+                        </div>
+                    </div>
+                </article>
 
+                <article class="news-card">
+                    <div class="card-image">
+                        <div style="width: 100%; height: 200px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Crypto Trading Image
+                        </div>
+                        <div class="category-badge money">Make Money</div>
+                    </div>
+                    <div class="card-content">
+                        <h2><a href="#crypto-income">3 Crypto Strategies for Passive Income</a></h2>
+                        <p class="excerpt">Earn 5-20% monthly returns with these low-risk crypto investment methods...</p>
+                        <div class="post-meta">
+                            <span class="date">July 16, 2023</span>
+                            <span class="read-time">8 min read</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter">
+            <div class="newsletter-content">
+                <h2>Get Money-Making Tips Direct to Your Inbox</h2>
+                <p>Join 50,000+ subscribers receiving our exclusive earning strategies</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+                <p class="disclaimer">We never share your information. Unsubscribe anytime.</p>
+            </div>
+        </section>
+
+        <!-- More Posts Section -->
+        <section class="more-posts">
+            <h2 class="section-title">Latest Articles</h2>
+            <div class="post-list">
+                <!-- Post 1 -->
+                <article class="list-post">
+                    <div class="list-image">
+                        <div style="width: 100%; height: 120px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Thumbnail
+                        </div>
+                    </div>
+                    <div class="list-content">
+                        <h3><a href="#app-testing">How I Made $3000 Last Month Testing Apps</a></h3>
+                        <div class="post-meta">
+                            <span class="category money">Make Money</span>
+                            <span class="date">July 15, 2023</span>
+                            <span class="read-time">4 min read</span>
+                        </div>
+                        <p class="excerpt">A step-by-step guide to getting paid for testing websites and mobile applications...</p>
+                    </div>
+                </article>
+                
+                <!-- Post 2 -->
+                <article class="list-post">
+                    <div class="list-image">
+                        <div style="width: 100%; height: 120px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Thumbnail
+                        </div>
+                    </div>
+                    <div class="list-content">
+                        <h3><a href="#printables">Earn Passive Income Selling Printables</a></h3>
+                        <div class="post-meta">
+                            <span class="category money">Make Money</span>
+                            <span class="date">July 14, 2023</span>
+                            <span class="read-time">6 min read</span>
+                        </div>
+                        <p class="excerpt">Create digital products once and earn money repeatedly with no additional work...</p>
+                    </div>
+                </article>
+                
+                <!-- Post 3 -->
+                <article class="list-post">
+                    <div class="list-image">
+                        <div style="width: 100%; height: 120px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Thumbnail
+                        </div>
+                    </div>
+                    <div class="list-content">
+                        <h3><a href="#chatgpt">How to Make Money with ChatGPT</a></h3>
+                        <div class="post-meta">
+                            <span class="category technology">Technology</span>
+                            <span class="date">July 13, 2023</span>
+                            <span class="read-time">5 min read</span>
+                        </div>
+                        <p class="excerpt">10 business ideas that leverage AI to generate income with minimal effort...</p>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="pagination">
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <span class="page-dots">...</span>
+                <a href="#" class="page-link">10</a>
+                <a href="#" class="next-link">Next →</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <div class="footer-logo" style="font-size: 1.8rem; font-weight: bold; color: white;">TaskPays</div>
+                    <p>TaskPays helps you discover legitimate ways to make money online, stay updated with technology trends, and improve your lifestyle.</p>
+                    <div class="social-links">
+                        <a href="#">FB</a>
+                        <a href="#">TW</a>
+                        <a href="#">IG</a>
+                        <a href="#">PIN</a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#money">Make Money</a></li>
+                        <li><a href="#technology">Technology</a></li>
+                        <li><a href="#lifestyle">Lifestyle</a></li>
+                        <li><a href="#health">Health</a></li>
+                        <li><a href="#entertainment">Entertainment</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#advertise">Advertise</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Popular Tags</h3>
+                    <div class="tag-cloud">
+                        <a href="#">#makemoney</a>
+                        <a href="#">#onlinejobs</a>
+                        <a href="#">#crypto</a>
+                        <a href="#">#remotework</a>
+                        <a href="#">#aitools</a>
+                        <a href="#">#sidehustle</a>
+                        <a href="#">#passiveincome</a>
+                        <a href="#">#digitalnomad</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 TaskPays. All Rights Reserved.</p>
+                <p>Disclaimer: The information provided on this website is for educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Current Date Display
+        document.addEventListener('DOMContentLoaded', function() {
+            // Display current date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const today = new Date();
+            document.getElementById('current-date').textContent = today.toLocaleDateString('en-US', options);
+            
+            // Mobile menu toggle
+            const mobileMenuToggle = document.createElement('div');
+            mobileMenuToggle.className = 'mobile-menu-toggle';
+            mobileMenuToggle.innerHTML = '☰';
+            document.querySelector('.main-nav .container').prepend(mobileMenuToggle);
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                document.querySelector('.main-nav ul').classList.toggle('active');
+            });
+            
+            // Newsletter form submission
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    alert('Thank you for subscribing! You will receive our next newsletter.');
+                    this.reset();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
